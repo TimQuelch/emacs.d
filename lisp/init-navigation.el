@@ -12,7 +12,9 @@
 
 ;; Projectile
 (use-package projectile
-  :hook (after-init . projectile-mode))
+  :hook (after-init . projectile-mode)
+  :config
+  (add-to-list 'projectile-globally-ignored-directories ".clangd"))
 
 ;; Helm
 (use-package helm
@@ -77,6 +79,10 @@
 (use-package helm-xref
   :after helm
   :demand)
+
+(use-package helm-projectile
+  :after (helm projectile)
+  :bind ("C-c C-p" . helm-projectile))
 
 (provide 'init-navigation)
 ;;; init-navigation.el ends here
