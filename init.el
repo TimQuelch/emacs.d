@@ -21,6 +21,10 @@
 ;; Add subdirectories to load path
 (add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))
 
+(defvar default-shell "bash")
+(setq-default shell-file-name (executable-find default-shell))
+(setq-default explicit-shell-file-name (executable-find default-shell))
+
 (require 'init-package)
 (require 'init-utils)
 
