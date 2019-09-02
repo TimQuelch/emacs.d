@@ -36,6 +36,12 @@
 (use-package cmake-font-lock
   :hook cmake-mode)
 
+;; Python
+(use-package python-mode
+  :mode "\\.py\\'"
+  :interpreter "python")
+
+;; Matlab
 (use-package matlab-mode
   :mode "\\.m\\'"
   :config
