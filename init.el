@@ -25,6 +25,8 @@
 (require 'init-utils)
 
 (require 'init-ui)
+(require 'init-hydra)
+
 (require 'init-dashboard)
 
 (require 'init-evil)
