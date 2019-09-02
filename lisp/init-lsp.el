@@ -8,8 +8,8 @@
 ;;; Code:
 
 (use-package lsp-mode
-  :hook ((c++-mode . lsp)
-         (python-mode . lsp))
+  :commands (lsp lsp-deferred)
+  :hook ((c-mode c++-mode python-mode) . lsp-deferred)
   :config
   (setq lsp-clients-clangd-args '("-j=4" "-background-index" "-log=error")
         lsp-prefer-flymake nil
@@ -42,6 +42,29 @@
         lsp-ui-peek-always-show t
         lsp-ui-peek-list-width 60
         lsp-ui-peek-peek-height 25))
+
+(use-package dap-mode
+  :commands dap-mode
+  :hook lsp-mode)
+
+(use-package dap-ui
+  :ensure nil
+  :after dap-mode
+  :demand
+  :config
+  (dap-ui-mode t)
+  (dap-tooltip-mode t)
+  (tooltip-mode t))
+
+(use-package dap-lldb
+  :ensure nil
+  :hook (c-mode c++-mode)
+  :config
+  (setq dap-lldb-debug-program (list (executable-find "lldb-vscode"))))
+
+(use-package dap-python
+  :ensure nil
+  :hook (python-mode))
 
 (provide 'init-lsp)
 ;;; init-lsp.el ends here
