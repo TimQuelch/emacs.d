@@ -25,6 +25,7 @@
 (require 'init-utils)
 
 (require 'init-ui)
+(require 'init-dashboard)
 
 (require 'init-evil)
 (require 'init-edit)
