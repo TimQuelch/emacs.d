@@ -28,6 +28,7 @@
 (require 'init-hydra)
 
 (require 'init-dashboard)
+(require 'init-window)
 
 (require 'init-evil)
 (require 'init-edit)
