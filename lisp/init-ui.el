@@ -76,5 +76,9 @@
 (use-package hl-todo
   :hook (after-init . global-hl-todo-mode))
 
+;; Use variable pitch in text mode (except for codey things)
+(use-package mixed-pitch
+  :hook (text-mode . mixed-pitch-mode))
+
 (provide 'init-ui)
 ;;; init-ui.el ends here
