@@ -79,7 +79,6 @@
   :demand)
 
 (use-package helm-projectile
-  :after (helm projectile)
   :bind ("C-c C-p" . helm-projectile))
 
 (provide 'init-navigation)
