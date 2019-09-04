@@ -23,6 +23,10 @@
       window-divider-default-right-width 4)
 (add-hook 'window-setup-hook #'window-divider-mode)
 
+(set-face-font 'default "DejaVu Sans Mono")
+(set-face-font 'variable-pitch "DejaVu Sans")
+(copy-face 'default 'fixed-pitch)
+
 (use-package doom-themes
   :init
   (setq doom-one-brighter-comments t
