@@ -31,7 +31,7 @@
 (require 'init-ui)
 (require 'init-hydra)
 
-(require 'init-dashboard)
+;; (require 'init-dashboard)
 (require 'init-window)
 
 (require 'init-evil)
