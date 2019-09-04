@@ -57,9 +57,13 @@
   :config
   (setq flycheck-emacs-lisp-load-path 'inherit))
 
-(use-package flycheck-pos-tip
+(use-package flycheck-posframe
   :after flycheck
-  :hook (flycheck-mode . flycheck-pos-tip-mode))
+  :hook (flycheck-mode . flycheck-posframe-mode)
+  :config
+  (setq flycheck-posframe-border-width 3)
+  (add-to-list 'flycheck-posframe-inhibit-functions
+               #'(lambda () (bound-and-true-p company-backend))))
 
 ;; Flyspell
 (use-package flyspell
