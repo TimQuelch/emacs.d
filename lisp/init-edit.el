@@ -68,7 +68,8 @@
 ;; Flyspell
 (use-package flyspell
   :ensure nil
-  :hook ((text-mode outline-mode LaTeX-mode) . flyspell-mode))
+  :hook (((text-mode outline-mode) . flyspell-mode)
+         (prog-mode . flyspell-prog-mode)))
 
 ;; Compilation
 (bind-key "<f5>" (lambda ()
