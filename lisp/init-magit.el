@@ -8,7 +8,9 @@
 ;;; Code:
 
 (use-package magit
-  :bind ("C-x g" . magit-status))
+  :bind ("C-x g" . magit-status)
+  :config
+  (set-face-attribute 'magit-branch-current nil :box t))
 
 (use-package evil-magit
   :after magit
