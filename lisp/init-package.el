@@ -31,5 +31,12 @@
 (setq use-package-expand-minimally t)
 (setq use-package-compute-statistics t)
 
+;; Auto compile elisp files when saved and loaded by emacs
+(use-package auto-compile
+  :hook (emacs-lisp-mode . auto-compile-on-save-mode)
+  :demand
+  :config
+  (auto-compile-on-load-mode))
+
 (provide 'init-package)
 ;;; init-package.el ends here

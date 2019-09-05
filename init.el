@@ -25,6 +25,9 @@
 (setq-default shell-file-name (executable-find default-shell))
 (setq-default explicit-shell-file-name (executable-find default-shell))
 
+;; Use newer .el file if it is newer than compiled .elc
+(setq load-prefer-newer t)
+
 (require 'init-package)
 (require 'init-utils)
 

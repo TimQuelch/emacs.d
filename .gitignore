@@ -7,3 +7,4 @@ projectile-bookmarks.eld
 srecode-map.el
 .dap-breakpoints
 recentf
+*.elc
