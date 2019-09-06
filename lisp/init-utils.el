@@ -18,8 +18,7 @@
 (defun align-trailing-comments (beginning end)
   "Align comments in region BEGINNING to END."
   (interactive "*r")
-  (let (indent-tabs-mode align-to-tab-stop)
-    (align-regexp beginning end (concat "\\(\\s-*\\)" (regexp-quote comment-start)))))
+  (align-regexp beginning end (concat "\\(\\s-*\\)" (regexp-quote comment-start))))
 
 (defun kill-other-buffers ()
   "Kill all other buffers."
