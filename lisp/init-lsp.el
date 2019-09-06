@@ -8,8 +8,9 @@
 ;;; Code:
 
 (use-package lsp-mode
+  :defines lsp-clients-clangd-args
   :commands (lsp lsp-deferred)
-  :hook ((c-mode c++-mode python-mode) . lsp-deferred)
+  :hook ((c-mode c++-mode python-mode) . lsp)
   :config
   (setq lsp-clients-clangd-args '("-j=4" "-background-index" "-log=error")
         lsp-prefer-flymake nil
