@@ -19,6 +19,8 @@
 (use-package clang-format
   :defines c-mode-base-map
   :commands (clang-format-buffer clang-format-region clang-format)
+  :init
+  (require 'cc-mode)
   :bind (:map c-mode-base-map ("C-c C-f" . clang-format-buffer)))
 
 ;; OpenCL
