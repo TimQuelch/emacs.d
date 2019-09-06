@@ -17,11 +17,9 @@
   :hook (c++-mode . modern-c++-font-lock-mode))
 
 (use-package clang-format
+  :defines c-mode-base-map
   :commands (clang-format-buffer clang-format-region clang-format)
-  :init
-  ;; Bind clang-format within all C modes. bind-key rather than :bind required for autoload
-  (require 'cc-mode)
-  (bind-key "C-c C-f" 'clang-format-buffer c-mode-base-map))
+  :bind (:map c-mode-base-map ("C-c C-f" . clang-format-buffer)))
 
 ;; OpenCL
 (use-package opencl-mode
@@ -43,6 +41,7 @@
 
 ;; Matlab
 (use-package matlab-mode
+  :defines matlab-fill-code
   :mode "\\.m\\'"
   :config
   (defvaralias 'matlab-indent-level 'tab-width)
