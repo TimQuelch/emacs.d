@@ -41,12 +41,13 @@
 
 ;; Matlab
 (use-package matlab-mode
-  :defines matlab-fill-code
+  :defines (matlab-fill-code matlab-shell-command-switches)
   :mode "\\.m\\'"
   :config
   (defvaralias 'matlab-indent-level 'tab-width)
   (defvaralias 'matlab-cont-level 'tab-width)
-  (setq matlab-fill-code nil))
+  (setq matlab-fill-code nil
+        matlab-shell-command-switches '("-nodesktop" "-nosplash")))
 
 (provide 'init-languages)
 ;;; init-languages.el ends here
