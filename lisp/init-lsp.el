@@ -46,7 +46,9 @@
 
 (use-package dap-mode
   :commands dap-mode
-  :hook lsp-mode)
+  :hook lsp-mode
+  :init
+  (setq dap-print-io t))
 
 (use-package dap-ui
   :ensure nil
@@ -61,8 +63,18 @@
   :ensure nil
   :after dap-mode
   :demand
-  :config
-  (setq dap-lldb-debug-program (list (executable-find "lldb-vscode"))))
+  :init
+  (setq dap-lldb-debug-program "~/.vscode/extensions/llvm-org.lldb-vscode-0.1.0/bin/lldb-vscode")
+  (setq dap-lldb-debug-program (executable-find "lldb-vscode"))
+  )
+
+;; (use-package dap-gdb-lldb
+;;   :ensure nil
+;;   :demand
+;;   :functions dap-gdb-lldb-setup
+;;   :after dap-mode
+;;   :config
+;;   (dap-gdb-lldb-setup))
 
 (use-package dap-python
   :ensure nil
