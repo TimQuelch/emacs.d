@@ -59,13 +59,15 @@
 
 (use-package dap-lldb
   :ensure nil
-  :hook (c-mode c++-mode)
+  :after dap-mode
+  :demand
   :config
   (setq dap-lldb-debug-program (list (executable-find "lldb-vscode"))))
 
 (use-package dap-python
   :ensure nil
-  :hook (python-mode))
+  :after dap-mode
+  :demand)
 
 (provide 'init-lsp)
 ;;; init-lsp.el ends here
