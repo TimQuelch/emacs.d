@@ -51,7 +51,7 @@
 (use-package helpful
   :bind (([remap describe-key] . helpful-key)
          ([remap describe-symbol] . helpful-symbol)
-         ([remap describe-function] . helpful-function)
+         ([remap describe-function] . helpful-callable)
          ([remap describe-variable] . helpful-variable)
          ("C-c C-d" . helpful-at-point))
   :commands helpful--buffer)
