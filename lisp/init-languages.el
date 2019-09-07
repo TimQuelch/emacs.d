@@ -9,18 +9,16 @@
 
 
 ;; C++
-(use-package c++-mode
+(use-package cc-mode
   :ensure nil
-  :mode "\\.h\\'")
+  :mode ("\\.h\\'" . c++-mode))
 
 (use-package modern-cpp-font-lock
   :hook (c++-mode . modern-c++-font-lock-mode))
 
 (use-package clang-format
-  :defines c-mode-base-map
+  :after cc-mode
   :commands (clang-format-buffer clang-format-region clang-format)
-  :init
-  (require 'cc-mode)
   :bind (:map c-mode-base-map ("C-c C-f" . clang-format-buffer)))
 
 ;; OpenCL
