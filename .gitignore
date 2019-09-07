@@ -8,3 +8,5 @@ srecode-map.el
 .dap-breakpoints
 recentf
 *.elc
+.extension/
+url
