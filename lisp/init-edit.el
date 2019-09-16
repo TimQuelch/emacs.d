@@ -38,8 +38,9 @@
   :bind ([remap comment-dwim] . comment-dwim-2))
 
 ;; Autocomplete parens
-(use-package smartparens
-  :hook (after-init . smartparens-global-mode))
+(use-package electric-pair-mode
+  :ensure nil
+  :hook (after-init . electric-pair-mode))
 
 ;; Adding in parenthesis and other brackets from visual mode
 (use-package evil-surround
