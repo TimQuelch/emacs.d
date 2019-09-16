@@ -16,5 +16,14 @@
   :after magit
   :demand)
 
+(use-package diff-hl
+  :hook (after-init . global-diff-hl-mode)
+  :config
+  (diff-hl-flydiff-mode 1)
+  (setq-default fringes-outside-margins t)
+
+  (with-eval-after-load 'magit
+    (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh)))
+
 (provide 'init-magit)
 ;;; init-magit.el ends here
