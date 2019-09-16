@@ -14,6 +14,7 @@
          :map company-active-map
          ("C-j" . company-select-next-or-abort)
          ("C-k" . company-select-previous-or-abort)
+         ("C-<tab>" . company-complete-selection)
          ("<tab>" . company-complete-common-or-cycle)
          ("<backtab>" . abort-and-company-yasnippet))
   :init
@@ -40,7 +41,7 @@
   :init (setq company-box-backends-colors nil
               company-box-show-single-candidate t
               company-box-max-candidates 50
-              company-box-doc-delay 0.5)
+              company-box-doc-delay 0.2)
   :config
   ;; Support `company-common'
   (defun my-company-box--make-line (candidate)
