@@ -10,3 +10,4 @@ recentf
 *.elc
 .extension/
 url
+forge-database.sqlite
