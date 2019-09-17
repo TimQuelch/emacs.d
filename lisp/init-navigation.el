@@ -29,6 +29,17 @@
          ("C-i" . helm-execute-persistent-action)
          ("C-z" . helm-select-action)
          )
+  :defines (helm-ff-search-library-in-sexp
+            helm-ff-file-name-history-use-recentf
+            helm-buffer-skip-remote-checking
+            helm-mode-fuzzy-match
+            helm-buffers-fuzzy-matching
+            helm-org-headings-fontify
+            helm-semantic-fuzzy-match
+            helm-M-x-fuzzy-match
+            helm-imenu-fuzzy-match
+            helm-lisp-fuzzy-completion
+            helm-locate-fuzzy-match)
   :config
   (require 'helm-config)
   (require 'helm-files)

@@ -17,7 +17,7 @@
          ("C-<tab>" . company-complete-selection)
          ("<tab>" . company-complete-common-or-cycle)
          ("<backtab>" . abort-and-company-yasnippet))
-  :init
+  :preface
   (defun abort-and-company-yasnippet ()
     (interactive)
     (company-abort)
@@ -131,6 +131,7 @@
   (add-to-list 'company-backends 'company-c-headers))
 
 (use-package company-auctex
+  :functions company-auctex-init
   :after (company latex)
   :demand
   :config
