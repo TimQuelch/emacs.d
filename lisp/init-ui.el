@@ -23,6 +23,7 @@
       window-divider-default-right-width 4)
 (add-hook 'window-setup-hook #'window-divider-mode)
 
+;; Set fonts
 (set-face-font 'default "DejaVu Sans Mono")
 (set-face-font 'variable-pitch "DejaVu Sans")
 (copy-face 'default 'fixed-pitch)
@@ -58,7 +59,8 @@
 
 (use-package hlinum
   :hook (global-linum-mode . hlinum-activate)
-  :config (setq linum-highlight-in-all-buffersp t))
+  :config
+  (setq linum-highlight-in-all-buffersp t))
 
 ;; Highlight current line
 (use-package hl-line
