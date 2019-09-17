@@ -72,10 +72,15 @@
   :hook ((text-mode outline-mode) . flyspell-mode))
 
 ;; Compilation
-(bind-key "<f5>" (lambda ()
-                   (interactive)
-                   (setq-local compilation-read-command nil)
-                   (call-interactively 'compile)))
+(use-package compile
+  :ensure nil
+  :commands compile
+  :preface
+  (defun call-compile ()
+    (interactive)
+    (setq-local compilation-read-command nil)
+    (call-interactively 'compile))
+  :bind ("<f5>" . call-compile))
 
 (provide 'init-edit)
 ;;; init-edit.el ends here
