@@ -27,12 +27,12 @@
 
 ;; CMake
 (use-package cmake-mode
-  :mode "CMakeLists.txt"
+  :commands cmake-mode
   :config
-  (defvaralias 'cmake-tab-width 'tab-width))
+  (setq cmake-tab-width tab-width))
 
 (use-package cmake-font-lock
-  :hook cmake-mode)
+  :hook (cmake-mode . cmake-font-lock-activate))
 
 ;; Python
 (use-package python-mode
@@ -41,12 +41,12 @@
 
 ;; Matlab
 (use-package matlab-mode
-  :defines (matlab-fill-code matlab-shell-command-switches)
+  :defines (matlab-fill-code matlab-shell-command-switches matlab-indent-level matlab-cont-level)
   :mode "\\.m\\'"
   :config
-  (defvaralias 'matlab-indent-level 'tab-width)
-  (defvaralias 'matlab-cont-level 'tab-width)
   (setq matlab-fill-code nil
+        matlab-indent-level tab-width
+        matlab-cont-level tab-width
         matlab-shell-command-switches '("-nodesktop" "-nosplash")))
 
 (provide 'init-languages)

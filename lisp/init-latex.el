@@ -11,14 +11,14 @@
   :ensure auctex
   :mode ("\\.tex\\'" . LaTeX-mode)
   :config
-  (setq TeX-parse-self t)
-  (setq-default TeX-master nil)
   (add-hook 'LaTeX-mode-hook 'visual-line-mode)
   (add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
-  (setq TeX-PDF-mode t)
-  (defvaralias 'LaTeX-indent-level 'tab-width)
-  (defvaralias 'TeX-brace-indent-level 'tab-width)
-  (setq LaTeX-item-indent -2))
+  (setq-default TeX-master nil
+                TeX-PDF-mode t
+                LaTeX-indent-level tab-width
+                TeX-brace-indent-level tab-width
+                LaTeX-item-indent -2)
+  (setq TeX-parse-self t))
 
 (use-package reftex
   :after latex

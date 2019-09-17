@@ -28,6 +28,7 @@
 (copy-face 'default 'fixed-pitch)
 
 (use-package doom-themes
+  :defines (doom-one-brighter-comments doom-one-comment-bg)
   :init
   (setq doom-one-brighter-comments t
         doom-one-comment-bg nil)
