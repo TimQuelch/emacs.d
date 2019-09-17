@@ -11,3 +11,4 @@ recentf
 .extension/
 url
 forge-database.sqlite
+package-quickstart.el

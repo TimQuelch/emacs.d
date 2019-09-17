@@ -17,6 +17,7 @@
 (add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/"))
 
 (setq package-enable-at-startup nil)
+(setq package-quickstart t)
 (package-initialize)
 
 ;; Set up use-package
