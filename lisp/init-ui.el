@@ -17,6 +17,8 @@
       inhibit-splash-screen t                      ; Disable splash screen
       inhibit-startup-echo-area-message t)         ; Disable startup message
 
+(push '(alpha . 90) default-frame-alist)             ; Turn on transparency
+
 ;; Display dividers between windows
 (setq window-divider-default-places t
       window-divider-default-bottom-width 4
@@ -24,6 +26,7 @@
 (add-hook 'window-setup-hook #'window-divider-mode)
 
 ;; Set fonts
+(push '(font . "DejaVu Sans Mono") default-frame-alist)
 (set-face-font 'default "DejaVu Sans Mono")
 (set-face-font 'variable-pitch "DejaVu Sans")
 (copy-face 'default 'fixed-pitch)
@@ -48,10 +51,6 @@
   (setq doom-modeline-major-mode-color-icon t
         doom-modeline-minor-modes nil
         doom-modeline-mu4e nil))
-
-;; Turn on transparency
-(set-frame-parameter (selected-frame) 'alpha 90)
-(add-to-list 'default-frame-alist '(alpha . 90))
 
 ;; Turn on line numbers
 (use-package linum
