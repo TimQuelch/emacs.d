@@ -38,7 +38,7 @@
   :bind ([remap comment-dwim] . comment-dwim-2))
 
 ;; Autocomplete parens
-(use-package electric-pair-mode
+(use-package elec-pair
   :ensure nil
   :hook (after-init . electric-pair-mode))
 

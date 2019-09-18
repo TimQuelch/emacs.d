@@ -40,7 +40,8 @@
   :interpreter "python")
 
 ;; Matlab
-(use-package matlab-mode
+(use-package matlab
+  :ensure matlab-mode
   :defines (matlab-fill-code matlab-shell-command-switches matlab-indent-level matlab-cont-level)
   :mode "\\.m\\'"
   :config
