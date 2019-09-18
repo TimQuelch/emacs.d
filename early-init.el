@@ -30,7 +30,9 @@
 (push '(tool-bar-lines . 0) default-frame-alist)   ; Disable tool bar
 (push '(menu-bar-lines . 0) default-frame-alist)   ; Disable menu bar
 (push '(vertical-scroll-bars) default-frame-alist) ; Disable scroll bar
-(push '(alpha . 90) default-frame-alist)             ; Turn on transparency
+(push '(alpha . 90) default-frame-alist)           ; Turn on transparency
+(push '(left-fringe . 11) default-frame-alist)     ; Configure fringes
+(push '(right-fringe . 11) default-frame-alist)    ; Configure fringes
 
 ;; Set fonts
 (push '(font . "DejaVu Sans Mono") default-frame-alist)
