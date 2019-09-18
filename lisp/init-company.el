@@ -23,7 +23,7 @@
     (company-abort)
     (call-interactively 'company-yasnippet))
   :config
-  (setq company-idle-delay 0
+  (setq company-idle-delay 0.2
         company-minimum-prefix-length 1
         company-selection-wrap-around t))
 
