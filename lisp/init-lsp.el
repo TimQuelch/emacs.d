@@ -10,11 +10,17 @@
 (use-package lsp-mode
   :defines lsp-clients-clangd-args
   :commands (lsp lsp-deferred)
-  :hook ((c-mode c++-mode python-mode dockerfile-mode) . lsp)
+  :hook ((c-mode
+          c++-mode
+          python-mode
+          dockerfile-mode
+          java-mode) . lsp)
   :config
   (setq lsp-clients-clangd-args '("-j=4" "-background-index" "-log=error")
         lsp-prefer-flymake nil
         lsp-enable-snippet nil))
+
+(use-package lsp-java)
 
 (use-package lsp-ui
   :hook (lsp-mode . lsp-ui-mode)

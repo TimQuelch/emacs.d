@@ -12,3 +12,5 @@ recentf
 url
 forge-database.sqlite
 package-quickstart.el
+eclipse.jdt.ls/
+workspace/
