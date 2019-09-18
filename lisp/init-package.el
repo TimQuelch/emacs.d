@@ -1,4 +1,4 @@
-;;; init-package.el --- Initialise package and use-package -*- lexical-binding: t -*-
+;;; init-package.el --- Initialise package and use-package -*- lexical-binding: t; no-byte-compile: t -*-
 ;;
 ;; Author: Tim Quelch
 ;;
