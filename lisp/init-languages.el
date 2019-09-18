@@ -50,5 +50,10 @@
         matlab-cont-level tab-width
         matlab-shell-command-switches '("-nodesktop" "-nosplash")))
 
+;; Dockerfile
+(use-package dockerfile-mode
+  :config
+  (setq dockerfile-use-sudo t))
+
 (provide 'init-languages)
 ;;; init-languages.el ends here
