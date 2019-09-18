@@ -7,29 +7,17 @@
 ;;
 ;;; Code:
 
-(push '(tool-bar-lines . 0) default-frame-alist)   ; Disable tool bar
-(push '(menu-bar-lines . 0) default-frame-alist)   ; Disable menu bar
-(push '(vertical-scroll-bars) default-frame-alist) ; Disable scroll bar
-
 (setq use-file-dialog nil                          ; Disable file dialog
       use-dialog-box nil                           ; Disable dialog box
       inhibit-startup-screen t                     ; Diable startup screen
       inhibit-splash-screen t                      ; Disable splash screen
       inhibit-startup-echo-area-message t)         ; Disable startup message
 
-(push '(alpha . 90) default-frame-alist)             ; Turn on transparency
-
 ;; Display dividers between windows
 (setq window-divider-default-places t
       window-divider-default-bottom-width 4
       window-divider-default-right-width 4)
 (add-hook 'window-setup-hook #'window-divider-mode)
-
-;; Set fonts
-(push '(font . "DejaVu Sans Mono") default-frame-alist)
-(set-face-font 'default "DejaVu Sans Mono")
-(set-face-font 'variable-pitch "DejaVu Sans")
-(copy-face 'default 'fixed-pitch)
 
 (use-package doom-themes
   :defines (doom-one-brighter-comments doom-one-comment-bg)
