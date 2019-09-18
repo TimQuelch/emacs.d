@@ -137,5 +137,12 @@
   :config
   (company-auctex-init))
 
+(use-package company-matlab-shell
+  :ensure nil
+  :after (company matlab)
+  :demand
+  :config
+  (add-to-list 'company-backends 'company-matlab-shell))
+
 (provide 'init-company)
 ;;; init-company.el ends here

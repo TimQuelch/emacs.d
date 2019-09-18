@@ -43,7 +43,7 @@
 (use-package matlab
   :ensure matlab-mode
   :defines (matlab-fill-code matlab-shell-command-switches matlab-indent-level matlab-cont-level)
-  :mode "\\.m\\'"
+  :commands (matlab-mode matlab-shell)
   :config
   (setq matlab-fill-code nil
         matlab-indent-level tab-width
