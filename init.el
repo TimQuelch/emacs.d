@@ -19,10 +19,6 @@
 ;; Add subdirectories to load path
 (add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))
 
-(defvar default-shell "bash")
-(setq-default shell-file-name (executable-find default-shell))
-(setq-default explicit-shell-file-name (executable-find default-shell))
-
 ;; Use newer .el file if it is newer than compiled .elc
 (setq load-prefer-newer t)
 
@@ -44,6 +40,7 @@
 (require 'init-yasnippet)
 (require 'init-latex)
 (require 'init-languages)
+(require 'init-shell)
 
 (provide 'init)
 ;;; init.el ends here
