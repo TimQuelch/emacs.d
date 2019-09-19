@@ -80,7 +80,9 @@
     (interactive)
     (setq-local compilation-read-command nil)
     (call-interactively 'compile))
-  :bind ("<f5>" . call-compile))
+  :bind ("<f5>" . call-compile)
+  :config
+  (setq compilation-scroll-output 'first-error))
 
 (provide 'init-edit)
 ;;; init-edit.el ends here
