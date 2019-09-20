@@ -35,6 +35,7 @@
 (require 'init-edit)
 (require 'init-magit)
 (require 'init-navigation)
+(require 'init-org)
 (require 'init-lsp)
 (require 'init-company)
 (require 'init-yasnippet)
