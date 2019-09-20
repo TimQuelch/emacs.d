@@ -20,7 +20,7 @@
 
   ;; Todos and agenda
   (setq org-todo-keywords '((sequence "TODO(t)" "|" "DONE(d)" "CANCEL(c)")
-                            (sequence "EMAIL(e) "| "SENT(s)")))
+                            (sequence "EMAIL(e)" "|" "SENT(s)")))
 
   (setq org-agenda-files (list org-directory)
         org-default-notes-file (expand-file-name "notes.org" org-directory)
