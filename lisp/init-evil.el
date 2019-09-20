@@ -17,7 +17,11 @@
          ([remap evil-next-line] . evil-next-visual-line)
          ([remap evil-previous-line] . evil-previous-visual-line))
   :init
-  (setq evil-cross-lines t))
+  (setq evil-cross-lines t)
+
+  ;; Unbind record and use macro keys (I don't use them)
+  (unbind-key "q" evil-normal-state-map)
+  (unbind-key "@" evil-normal-state-map))
 
 (provide 'init-evil)
 ;;; init-evil.el ends here
