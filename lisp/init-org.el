@@ -41,7 +41,7 @@
                             (sequence "EMAIL(e)" "|" "SENT(s)")))
 
   (setq org-agenda-files (list org-directory)
-        org-default-notes-file (expand-file-name "notes.org" org-directory)
+        org-default-notes-file (expand-file-name "refile.org" org-directory)
         org-log-done 'time
         org-refile-targets '((nil :maxlevel . 9)
                              (org-agenda-files :maxlevel . 9))
