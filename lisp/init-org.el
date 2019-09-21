@@ -12,7 +12,25 @@
   :ensure nil
   :bind (("C-c a" . org-agenda)
          ("C-c b" . org-switchb)
-         ("C-c c" . org-capture))
+         ("C-c c" . org-capture)
+         :map org-mode-map
+         ("M-j" . org-metadown)
+         ("M-k" . org-metaup)
+         ("M-h" . org-metaleft)
+         ("M-l" . org-metaright)
+         ("S-J" . org-shiftdown)
+         ("S-K" . org-shiftup)
+         ("S-H" . org-shiftleft)
+         ("S-L" . org-shiftright)
+         ("M-S-J" . org-shiftmetadown)
+         ("M-S-K" . org-shiftmetaup)
+         ("M-S-H" . org-shiftmetaleft)
+         ("M-S-L" . org-shiftmetaright)
+         ("C-S-J" . org-shiftcontroldown)
+         ("C-S-K" . org-shiftcontrolup)
+         ("C-S-H" . org-shiftcontrolleft)
+         ("C-S-L" . org-shiftcontrolright)
+         )
   :config
   (setq org-directory (expand-file-name "documents/org" (getenv "HOME"))
         org-catch-invisible-edits 'smart
