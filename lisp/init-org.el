@@ -37,7 +37,7 @@
         org-startup-indented t)
 
   ;; Todos and agenda
-  (setq org-todo-keywords '((sequence "TODO(t)" "|" "DONE(d)" "CANCEL(c)")
+  (setq org-todo-keywords '((sequence "TODO(t)" "WAITING(w)" "|" "DONE(d)" "CANCELLED(c)")
                             (sequence "EMAIL(e)" "|" "SENT(s)")))
 
   (setq org-agenda-files (list org-directory)
