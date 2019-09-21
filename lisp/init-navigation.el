@@ -28,6 +28,8 @@
          ("<tab>" . helm-execute-persistent-action)
          ("C-i" . helm-execute-persistent-action)
          ("C-z" . helm-select-action)
+         ("C-j" . helm-next-line)
+         ("C-k" . helm-previous-line)
          )
   :defines (helm-ff-search-library-in-sexp
             helm-ff-file-name-history-use-recentf
