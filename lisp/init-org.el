@@ -27,11 +27,15 @@
          ("C-S-K" . org-shiftcontrolup)
          ("C-S-H" . org-shiftcontrolleft)
          ("C-S-L" . org-shiftcontrolright))
+  :preface
+  (defun my/verify-refile-target()
+    "Exclude done todo states from refile targets"
+    (not (member (nth 2 (org-heading-components)) org-done-keywords)))
   :init
   (setq org-directory (expand-file-name "documents/org" (getenv "HOME"))
         org-todo-keywords '((sequence "TODO(t)" "WAITING(w)" "|" "DONE(d)")
                             (sequence "EMAIL(e)" "|" "SENT(s)")
-                            (sequence "| CANCELLED(c)")))
+                            (sequence "|" "CANCELLED(c)")))
   :config
   (setq org-catch-invisible-edits 'smart
         org-startup-indented t
@@ -40,7 +44,14 @@
         org-log-into-drawer t
         org-refile-allow-creating-parent-nodes 'confirm
         org-refile-targets '((nil :maxlevel . 9)
-                             (org-agenda-files :maxlevel . 9)))
+                             (org-agenda-files :maxlevel . 9))
+        org-refile-target-verify-function 'my/verify-refile-target
+        org-refile-use-outline-path t
+        org-outline-path-complete-in-steps nil
+        org-tags-column -80
+        org-treat-S-cursor-todo-selection-as-state-change nil)
+
+  (add-hook 'org-mode-hook 'visual-line-mode)
 
   ;; Unbind org add file and remove file
   (unbind-key "C-c [" org-mode-map)
@@ -58,15 +69,43 @@
   (setq org-agenda-files (list org-directory))
   :config
   (setq org-agenda-dim-blocked-tasks t
-        org-refile-use-outline-path t
-        org-outline-path-complete-in-steps nil))
+        org-agenda-follow-indirect t
+        org-agenda-span 'week)
+
+  (setq org-agenda-custom-commands
+        '((" " "Agenda"
+          ((agenda "" nil)
+           (tags "REFILE"
+                 ((org-agenda-overriding-header "Tasks to Refile")
+                  (orgs-tag-match-list-sublevels nil))))))))
 
 (use-package org-capture
   :ensure nil
   :bind ("C-c c" . org-capture)
   :config
   (setq org-default-notes-file (expand-file-name "refile.org" org-directory)
-        org-capture-bookmark nil))
+        org-capture-bookmark nil)
+
+  (setq org-capture-templates
+        '(("t" "todo" entry (file org-default-notes-file)
+           "* TODO %?\n%U\n" :clock-in t :clock-resume t)
+          ("n" "note" entry (file org-default-notes-file)
+           "* %?\n%U\n" :clock-in t :clock-resume t)
+          ("e" "email" entry (file org-default-notes-file)
+           "* EMAIL %?\n%U\n" :clock-in t :clock-resume t)
+          ("r" "reply" entry (file org-default-notes-file)
+           "* EMAIL Reply to %?\n%U\n" :clock-in t :clock-resume t))))
+
+(use-package org-clock
+  :ensure nil
+  :init
+  (org-clock-persistence-insinuate)
+  :config
+  (setq org-clock-in-resume t
+        org-clock-into-drawer t
+        org-clock-out-remove-zero-time-clocks t
+        org-clock-out-when-done t
+        org-clock-persist t))
 
 (provide 'init-org)
 ;;; init-org.el ends here
