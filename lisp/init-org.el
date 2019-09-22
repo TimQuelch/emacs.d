@@ -8,11 +8,8 @@
 ;;; Code:
 
 (use-package org
-  :defines org-capture-bookmark
   :ensure nil
-  :bind (("C-c a" . org-agenda)
-         ("C-c b" . org-switchb)
-         ("C-c c" . org-capture)
+  :bind (("C-c b" . org-switchb)
          :map org-mode-map
          ("M-j" . org-metadown)
          ("M-k" . org-metaup)
@@ -29,29 +26,47 @@
          ("C-S-J" . org-shiftcontroldown)
          ("C-S-K" . org-shiftcontrolup)
          ("C-S-H" . org-shiftcontrolleft)
-         ("C-S-L" . org-shiftcontrolright)
-         )
-  :config
+         ("C-S-L" . org-shiftcontrolright))
+  :init
   (setq org-directory (expand-file-name "documents/org" (getenv "HOME"))
-        org-catch-invisible-edits 'smart
-        org-startup-indented t)
-
-  ;; Todos and agenda
-  (setq org-todo-keywords '((sequence "TODO(t)" "WAITING(w)" "|" "DONE(d)" "CANCELLED(c)")
-                            (sequence "EMAIL(e)" "|" "SENT(s)")))
-
-  (setq org-agenda-files (list org-directory)
-        org-default-notes-file (expand-file-name "refile.org" org-directory)
+        org-todo-keywords '((sequence "TODO(t)" "WAITING(w)" "|" "DONE(d)")
+                            (sequence "EMAIL(e)" "|" "SENT(s)")
+                            (sequence "| CANCELLED(c)")))
+  :config
+  (setq org-catch-invisible-edits 'smart
+        org-startup-indented t
+        org-enforce-todo-dependencies t
         org-log-done 'time
-        org-refile-targets '((nil :maxlevel . 9)
-                             (org-agenda-files :maxlevel . 9))
-        org-refile-use-outline-path t
+        org-log-into-drawer t
         org-refile-allow-creating-parent-nodes 'confirm
-        org-capture-bookmark nil)
+        org-refile-targets '((nil :maxlevel . 9)
+                             (org-agenda-files :maxlevel . 9)))
 
   ;; Unbind org add file and remove file
   (unbind-key "C-c [" org-mode-map)
   (unbind-key "C-c ]" org-mode-map))
+
+(use-package org-agenda
+  :ensure nil
+  :bind (("C-c a" . org-agenda)
+         :map org-agenda-mode-map
+         ("j" . org-agenda-next-line)
+         ("k" . org-agenda-previous-line)
+         ("J" . org-agenda-next-item)
+         ("K" . org-agenda-previousitem))
+  :init
+  (setq org-agenda-files (list org-directory))
+  :config
+  (setq org-agenda-dim-blocked-tasks t
+        org-refile-use-outline-path t
+        org-outline-path-complete-in-steps nil))
+
+(use-package org-capture
+  :ensure nil
+  :bind ("C-c c" . org-capture)
+  :config
+  (setq org-default-notes-file (expand-file-name "refile.org" org-directory)
+        org-capture-bookmark nil))
 
 (provide 'init-org)
 ;;; init-org.el ends here
