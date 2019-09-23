@@ -7,11 +7,13 @@
 ;;
 ;;; Code:
 
-(setq use-file-dialog nil                          ; Disable file dialog
-      use-dialog-box nil                           ; Disable dialog box
-      inhibit-startup-screen t                     ; Diable startup screen
-      inhibit-splash-screen t                      ; Disable splash screen
-      inhibit-startup-echo-area-message t)         ; Disable startup message
+(setq use-file-dialog nil                 ; Disable file dialog
+      use-dialog-box nil                  ; Disable dialog box
+      inhibit-startup-screen t            ; Diable startup screen
+      inhibit-splash-screen t             ; Disable splash screen
+      inhibit-startup-echo-area-message t ; Disable startup message
+      initial-major-mode 'text-mode       ; Change scratch buffer to be text
+      initial-scratch-message nil)        ; Remove scratch buffer message
 
 ;; Display dividers between windows
 (setq window-divider-default-places t
