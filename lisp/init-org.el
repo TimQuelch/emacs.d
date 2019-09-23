@@ -26,7 +26,12 @@
          ("C-S-J" . org-shiftcontroldown)
          ("C-S-K" . org-shiftcontrolup)
          ("C-S-H" . org-shiftcontrolleft)
-         ("C-S-L" . org-shiftcontrolright))
+         ("C-S-L" . org-shiftcontrolright)
+         :map org-read-date-minibuffer-local-map
+         ("M-j" . (lambda () (interactive) (org-eval-in-calendar '(calendar-forward-week 1))))
+         ("M-k" . (lambda () (interactive) (org-eval-in-calendar '(calendar-backward-week 1))))
+         ("M-h" . (lambda () (interactive) (org-eval-in-calendar '(calendar-backward-day 1))))
+         ("M-l" . (lambda () (interactive) (org-eval-in-calendar '(calendar-forward-day 1)))))
   :preface
   (defun my/verify-refile-target()
     "Exclude done todo states from refile targets"
