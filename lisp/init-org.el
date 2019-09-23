@@ -58,6 +58,10 @@
 
   (add-hook 'org-mode-hook 'visual-line-mode)
 
+  ;; Setup latex equation preview
+  (setq org-preview-latex-default-process 'dvisvgm
+        org-format-latex-options (plist-put org-format-latex-options :scale 1.5))
+
   ;; Unbind org add file and remove file
   (unbind-key "C-c [" org-mode-map)
   (unbind-key "C-c ]" org-mode-map))
