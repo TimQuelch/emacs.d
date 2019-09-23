@@ -42,7 +42,6 @@
     "Exclude done todo states from refile targets"
     (not (member (nth 2 (org-heading-components)) org-done-keywords)))
   (setq org-catch-invisible-edits 'smart
-        org-startup-indented t
         org-enforce-todo-dependencies t
         org-log-done 'time
         org-log-into-drawer t
@@ -120,6 +119,12 @@
         org-clock-out-remove-zero-time-clocks t
         org-clock-out-when-done t
         org-clock-persist t))
+
+(use-package org-indent
+  :init (setq org-startup-indented t)
+  :ensure nil
+  :config
+  (set-face-attribute 'org-indent nil :inherit '(org-hide fixed-pitch)))
 
 (provide 'init-org)
 ;;; init-org.el ends here
