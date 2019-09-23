@@ -74,10 +74,16 @@
 
   (setq org-agenda-custom-commands
         '((" " "Agenda"
-          ((agenda "" nil)
-           (tags "REFILE"
-                 ((org-agenda-overriding-header "Tasks to Refile")
-                  (orgs-tag-match-list-sublevels nil))))))))
+           ((agenda "" nil)
+            (tags "REFILE"
+                  ((org-agenda-overriding-header "Tasks to Refile")
+                   (orgs-tag-match-list-sublevels nil)))
+            (tags-todo "-EMACS"
+                  ((org-agenda-overriding-header "Unscheduled Tasks")
+                   (org-agenda-skip-function '(org-agenda-skip-entry-if 'scheduled))))
+            (tags-todo "EMACS"
+                  ((org-agenda-overriding-header "Emacs configuration")))
+            )))))
 
 (use-package org-capture
   :ensure nil
