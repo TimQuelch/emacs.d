@@ -56,6 +56,11 @@
 
   (add-hook 'org-mode-hook 'visual-line-mode)
 
+  ;; Setup autosaves so that org files are always saved when changed
+  (add-hook 'org-capture-after-finalize-hook 'org-save-all-org-buffers)
+  (add-hook 'org-after-refile-insert-hook 'org-save-all-org-buffers)
+  (advice-add 'org-agenda-quit :before 'org-save-all-org-buffers)
+
   ;; Setup latex equation preview
   (setq org-preview-latex-default-process 'dvisvgm
         org-format-latex-options (plist-put org-format-latex-options :scale 1.5))
