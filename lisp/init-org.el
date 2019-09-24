@@ -121,5 +121,25 @@
         org-clock-out-when-done t
         org-clock-persist t))
 
+(use-package oauth2)
+
+(use-package org-caldav
+  :defines (gcal-oauth-client-id gcal-oauth-client-secret)
+  :init
+  (require 'config-secrets)
+  (setq org-caldav-oauth2-client-id gcal-oauth-client-id
+        org-caldav-oauth2-client-secret gcal-oauth-client-secret
+        org-caldav-url 'google)
+
+  (setq org-caldav-calendar-id gcal-qutwork-id
+        org-caldav-inbox (expand-file-name "calendars/qutwork.org" org-directory)
+        org-caldav-files '(""))
+  ;; (setq org-caldav-calendars
+  ;;       '((:calendar-id
+  ;;          gcal-qutwork-id
+  ;;          :inbox
+  ;;          (expand-file-name "calendars/qutwork.org" org-directory))))
+  )
+
 (provide 'init-org)
 ;;; init-org.el ends here
