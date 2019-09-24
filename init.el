@@ -17,7 +17,6 @@
 (load custom-file)
 
 ;; Add subdirectories to load path
-(add-to-list 'load-path user-emacs-directory)
 (add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))
 
 ;; Use newer .el file if it is newer than compiled .elc
