@@ -37,6 +37,10 @@
         org-todo-keywords '((sequence "TODO(t)" "WAITING(w)" "|" "DONE(d)")
                             (sequence "EMAIL(e)" "|" "SENT(s)")
                             (sequence "|" "CANCELLED(c)")))
+
+  (defvar my/org-agenda-calendar-dir (expand-file-name "calendars" org-directory))
+  (defvar my/org-agenda-refile-targets (list org-directory))
+  (setq org-agenda-files (append my/org-agenda-refile-targets (list my/org-agenda-calendar-dir)))
   :config
   (defun my/verify-refile-target()
     "Exclude done todo states from refile targets"
@@ -47,8 +51,8 @@
         org-log-done 'time
         org-log-into-drawer t
         org-refile-allow-creating-parent-nodes 'confirm
-        org-refile-targets '((nil :maxlevel . 9)
-                             (org-agenda-files :maxlevel . 9))
+        org-refile-targets `((nil :maxlevel . 9)
+                             (,my/org-agenda-refile-targets :maxlevel . 9))
         org-refile-target-verify-function 'my/verify-refile-target
         org-refile-use-outline-path t
         org-outline-path-complete-in-steps nil
@@ -73,8 +77,6 @@
          ("k" . org-agenda-previous-line)
          ("J" . org-agenda-next-item)
          ("K" . org-agenda-previousitem))
-  :init
-  (setq org-agenda-files (list org-directory))
   :config
   (setq org-agenda-dim-blocked-tasks t
         org-agenda-follow-indirect t
@@ -87,10 +89,10 @@
                   ((org-agenda-overriding-header "Tasks to Refile")
                    (orgs-tag-match-list-sublevels nil)))
             (tags-todo "-EMACS"
-                  ((org-agenda-overriding-header "Unscheduled Tasks")
-                   (org-agenda-skip-function '(org-agenda-skip-entry-if 'scheduled))))
+                       ((org-agenda-overriding-header "Unscheduled Tasks")
+                        (org-agenda-skip-function '(org-agenda-skip-entry-if 'scheduled))))
             (tags-todo "EMACS"
-                  ((org-agenda-overriding-header "Emacs configuration")))
+                       ((org-agenda-overriding-header "Emacs configuration")))
             )))))
 
 (use-package org-capture
@@ -124,21 +126,58 @@
 (use-package oauth2)
 
 (use-package org-caldav
+  :if (require 'config-secrets nil t)
   :defines (gcal-oauth-client-id gcal-oauth-client-secret)
   :init
-  (require 'config-secrets)
+  (defun my/org-caldav-sync-on-close ()
+    "This function will be called on close to sync calendar and save"
+    (org-caldav-sync)
+    (org-save-all-org-buffers))
+
+  (defun my/expand-full-name (calendar-name)
+    "Expands a calendar name into the inbox file"
+    (expand-file-name (concat calendar-name ".org") my/org-agenda-calendar-dir))
+
+  (defvar my/org-caldav-sync-timer nil "Timer that org-caldav-push-timer uses to rechedule")
+
+  (defun my/org-caldav-sync-with-delay (secs)
+    "Sync after emacs is idle for SECS seconds"
+    (when my/org-caldav-sync-timer
+      (cancel-timer my/org-caldav-sync-timer))
+    (setq my/org-caldav-sync-timer (run-with-idle-timer (* 1 secs) nil 'org-caldav-sync)))
+
   (setq org-caldav-oauth2-client-id gcal-oauth-client-id
         org-caldav-oauth2-client-secret gcal-oauth-client-secret
-        org-caldav-url 'google)
+        plstore-cache-passphrase-for-symmetric-encryption t)
 
-  (setq org-caldav-calendar-id gcal-qutwork-id
-        org-caldav-inbox (expand-file-name "calendars/qutwork.org" org-directory)
-        org-caldav-files '(""))
-  ;; (setq org-caldav-calendars
-  ;;       '((:calendar-id
-  ;;          gcal-qutwork-id
-  ;;          :inbox
-  ;;          (expand-file-name "calendars/qutwork.org" org-directory))))
+  (setq org-caldav-url 'google)
+
+  (setq org-caldav-calendars
+        `((:calendar-id ,gcal-qutwork-id
+                        :inbox ,(my/expand-full-name "qutwork")
+                        :files ,(list (my/expand-full-name "qutwork")))
+          (:calendar-id ,gcal-default-id
+                        :inbox ,(my/expand-full-name "default")
+                        :files ,(list (my/expand-full-name "default")))
+          (:calendar-id ,gcal-us-id
+                        :inbox ,(my/expand-full-name "us")
+                        :files ,(list (my/expand-full-name "us")))
+          (:calendar-id ,gcal-org-id
+                        :inbox "cal-inbox.org"
+                        :files ("todo.org"))))
+  (setq org-caldav-save-directory my/org-agenda-calendar-dir)
+
+  :config
+  (setq org-icalendar-alarm-time 1
+        org-icalendar-include-todo t
+        org-icalendar-use-deadline '(event-if-todo event-if-not-todo todo-due)
+        org-icalendar-use-scheduled '(todo-start event-if-todo event-if-not-todo))
+
+  (add-hook 'after-save-hook
+            (lambda ()
+              (when (eq major-mode 'org-mode)
+                (my/org-caldav-sync-with-delay 300))))
+  (add-hook 'kill-emacs-hook 'org-caldav-sync-at-close)
   )
 
 (provide 'init-org)
