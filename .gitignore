@@ -14,3 +14,8 @@ forge-database.sqlite
 package-quickstart.el
 eclipse.jdt.ls/
 workspace/
+.org-id-locations
+bookmarks
+lisp/config-secrets.el
+oauth2.plstore
+org-clock-save.el
