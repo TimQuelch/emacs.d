@@ -34,9 +34,9 @@
          ("M-l" . (lambda () (interactive) (org-eval-in-calendar '(calendar-forward-day 1)))))
   :init
   (setq org-directory (expand-file-name "documents/org" (getenv "HOME"))
-        org-todo-keywords '((sequence "TODO(t)" "WAITING(w)" "|" "DONE(d)")
+        org-todo-keywords '((sequence "TODO(t)" "WAITING(w@/!)" "|" "DONE(d)")
                             (sequence "EMAIL(e)" "|" "SENT(s)")
-                            (sequence "|" "CANCELLED(c)")))
+                            (sequence "|" "CANCELLED(c@/!)")))
   :config
   (defun my/verify-refile-target()
     "Exclude done todo states from refile targets"
