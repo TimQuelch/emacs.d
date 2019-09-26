@@ -74,5 +74,9 @@
 (use-package mixed-pitch
   :hook (text-mode . mixed-pitch-mode))
 
+;; Configure scrolling
+(setq scroll-margin 10
+      scroll-conservatively 100)
+
 (provide 'init-ui)
 ;;; init-ui.el ends here
