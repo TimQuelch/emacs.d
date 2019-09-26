@@ -76,7 +76,9 @@
          ("j" . org-agenda-next-line)
          ("k" . org-agenda-previous-line)
          ("J" . org-agenda-next-item)
-         ("K" . org-agenda-previousitem))
+         ("K" . org-agenda-previousitem)
+         ("C-d" . scroll-up-command)
+         ("C-S-D" . scroll-down-command))
   :init
   (setq org-agenda-files (list org-directory))
   :config
