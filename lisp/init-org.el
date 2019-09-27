@@ -133,5 +133,10 @@
   :config
   (set-face-attribute 'org-indent nil :inherit '(org-hide fixed-pitch)))
 
+(use-package org-habit
+  :ensure nil
+  :init
+  (add-to-list 'org-modules 'org-habit))
+
 (provide 'init-org)
 ;;; init-org.el ends here
