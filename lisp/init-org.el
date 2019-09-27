@@ -52,7 +52,8 @@
         org-refile-use-outline-path t
         org-outline-path-complete-in-steps nil
         org-tags-column -80
-        org-treat-S-cursor-todo-selection-as-state-change nil)
+        org-treat-S-cursor-todo-selection-as-state-change nil
+        org-return-follows-link t)
 
   (add-hook 'org-mode-hook 'visual-line-mode)
 
