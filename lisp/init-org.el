@@ -85,7 +85,9 @@
   :config
   (setq org-agenda-dim-blocked-tasks t
         org-agenda-follow-indirect t
-        org-agenda-span 'week)
+        org-agenda-span 'week
+        org-agenda-window-setup 'only-window
+        org-agenda-restore-windows-after-quit t)
 
   (setq org-agenda-custom-commands
         '((" " "Agenda"
