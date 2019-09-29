@@ -91,7 +91,8 @@
 
   (setq org-agenda-custom-commands
         '((" " "Agenda"
-           ((agenda "" nil)
+           ((agenda ""
+                    ((org-agenda-span 1)))
             (tags "REFILE"
                   ((org-agenda-overriding-header "Tasks to Refile")
                    (orgs-tag-match-list-sublevels nil)))
