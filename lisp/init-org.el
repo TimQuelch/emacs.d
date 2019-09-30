@@ -140,7 +140,9 @@
 (use-package org-habit
   :ensure nil
   :init
-  (add-to-list 'org-modules 'org-habit))
+  (add-to-list 'org-modules 'org-habit)
+  :config
+  (setq org-habit-graph-column 65))
 
 (provide 'init-org)
 ;;; init-org.el ends here
