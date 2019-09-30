@@ -144,5 +144,17 @@
   :config
   (setq org-habit-graph-column 65))
 
+(defvar default-bibliography (expand-file-name "documents/zotero/library.bib" (getenv "HOME")))
+
+(use-package org-ref
+  :init
+  (setq org-ref-bibliography-notes (expand-file-name "bibnotes.org" org-directory)
+        org-ref-default-bibliography (list default-bibliography)))
+
+(use-package helm-bibtex
+  :config
+  (setq bibtex-completion-pdf-field "file"
+        bibtex-completion-pdf-open-function 'helm-open-file-with-default-tool))
+
 (provide 'init-org)
 ;;; init-org.el ends here

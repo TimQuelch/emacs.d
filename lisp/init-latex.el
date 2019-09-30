@@ -23,8 +23,11 @@
 (use-package reftex
   :after latex
   :demand
+  :defines (default-bibliography)
   :config
-  (setq reftex-plug-into-AUCTeX t))
+  (require 'init-org)
+  (setq reftex-plug-into-AUCTeX t
+        reftex-default-bibliography (list default-bibliography)))
 
 (provide 'init-latex)
 ;;; init-latex.el ends here
