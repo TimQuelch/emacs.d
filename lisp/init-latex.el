@@ -29,5 +29,10 @@
   (setq reftex-plug-into-AUCTeX t
         reftex-default-bibliography (list default-bibliography)))
 
+(use-package bibtex
+  :ensure nil
+  :config
+  (setq bibtex-dialect 'biblatex))
+
 (provide 'init-latex)
 ;;; init-latex.el ends here
