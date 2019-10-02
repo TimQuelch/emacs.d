@@ -43,11 +43,9 @@
         doom-modeline-mu4e nil))
 
 ;; Turn on line numbers
-(use-package nlinum
-  :hook (after-init . global-nlinum-mode)
-  :config
-  (setq nlinum-highlight-current-line t
-        nlinum-format "%d "))
+(use-package display-line-numbers
+  :ensure nil
+  :hook (after-init . global-display-line-numbers-mode))
 
 ;; Highlight current line
 (use-package hl-line
