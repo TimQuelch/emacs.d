@@ -156,5 +156,24 @@
   (setq bibtex-completion-pdf-field "file"
         bibtex-completion-pdf-open-function 'helm-open-file-with-default-tool))
 
+(use-package ox-latex
+  :ensure nil
+  :config
+  (add-to-list 'org-latex-packages-alist
+               '("titletoc, title" "appendix" nil))
+  (add-to-list 'org-latex-packages-alist
+               '("" "tocbibind" nil))
+  (add-to-list 'org-latex-packages-alist
+               '("" "pdflscape" nil))
+  (add-to-list 'org-latex-packages-alist
+               '("" "pdfpages" nil))
+  (add-to-list 'org-latex-packages-alist
+               '("" "subcaption" nil))
+  (add-to-list 'org-latex-packages-alist
+               '("" "listings" nil))
+  (add-to-list 'org-latex-packages-alist
+               '("" "color" nil))
+  )
+
 (provide 'init-org)
 ;;; init-org.el ends here
