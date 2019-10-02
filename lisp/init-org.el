@@ -103,6 +103,13 @@
                   ((org-agenda-overriding-header "Emacs configuration")))
             )))))
 
+(use-package org-archive
+  :ensure nil
+  :init
+  (defvar archive-directory (expand-file-name "archive" org-directory))
+  :config
+  (setq org-archive-location (concat (file-name-as-directory archive-directory) "%s_archive::datetree/")))
+
 (use-package org-capture
   :ensure nil
   :bind ("C-c c" . org-capture)
