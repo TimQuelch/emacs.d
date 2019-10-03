@@ -10,6 +10,7 @@
 (use-package org
   :ensure nil
   :bind (("C-c b" . org-switchb)
+         ("C-c l" . org-store-link)
          :map org-mode-map
          ("M-j" . org-metadown)
          ("M-k" . org-metaup)
@@ -73,6 +74,7 @@
 (use-package org-agenda
   :ensure nil
   :bind (("C-c a" . org-agenda)
+         ("<f12>" . org-agenda)
          :map org-agenda-mode-map
          ("j" . org-agenda-next-line)
          ("k" . org-agenda-previous-line)
@@ -129,6 +131,8 @@
 
 (use-package org-clock
   :ensure nil
+  :bind (("<f11>" . org-clock-goto)
+         ("C-<f11>" . org-clock-in))
   :init
   (org-clock-persistence-insinuate)
   :config
