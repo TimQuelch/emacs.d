@@ -58,7 +58,7 @@
 ;; Highlight matching parens
 (use-package paren
   :ensure nil
-  :hook (prog-init . show-paren-mode)
+  :hook (prog-mode . show-paren-mode)
   :config (setq show-paren-delay 0
                 show-paren-when-point-inside-paren t
                 show-paren-when-point-in-periphery t))
