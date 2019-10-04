@@ -54,7 +54,12 @@
         org-outline-path-complete-in-steps nil
         org-tags-column -80
         org-treat-S-cursor-todo-selection-as-state-change nil
-        org-return-follows-link t)
+        org-return-follows-link t
+        org-highlight-latex-and-related '(latex script entities))
+
+  (setq org-file-apps '((auto-mode . emacs)
+                        ("\\.x?html?\\'" . default)
+                        ("\\.pdf\\'" . "evince %s")))
 
   (add-hook 'org-mode-hook 'visual-line-mode)
 
@@ -158,14 +163,18 @@
 (defvar default-bibliography (expand-file-name "documents/zotero/library.bib" (getenv "HOME")))
 
 (use-package org-ref
+  :after org
+  :demand
   :init
   (setq org-ref-bibliography-notes (expand-file-name "bibnotes.org" org-directory)
-        org-ref-default-bibliography (list default-bibliography)))
+        org-ref-default-bibliography (list default-bibliography)
+        org-ref-get-pdf-filename-function 'org-ref-get-pdf-filename-helm-bibtex))
 
 (use-package helm-bibtex
   :config
   (setq bibtex-completion-pdf-field "file"
-        bibtex-completion-pdf-open-function 'helm-open-file-with-default-tool))
+        bibtex-completion-pdf-open-function 'helm-open-file-externally
+        helm-bibtex-full-frame nil))
 
 (use-package ox-latex
   :ensure nil
