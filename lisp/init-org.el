@@ -170,21 +170,37 @@
 (use-package ox-latex
   :ensure nil
   :config
-  (add-to-list 'org-latex-packages-alist
-               '("titletoc, title" "appendix" nil))
-  (add-to-list 'org-latex-packages-alist
-               '("" "tocbibind" nil))
-  (add-to-list 'org-latex-packages-alist
-               '("" "pdflscape" nil))
-  (add-to-list 'org-latex-packages-alist
-               '("" "pdfpages" nil))
-  (add-to-list 'org-latex-packages-alist
-               '("" "subcaption" nil))
-  (add-to-list 'org-latex-packages-alist
-               '("" "listings" nil))
-  (add-to-list 'org-latex-packages-alist
-               '("" "color" nil))
-  )
+  (add-to-list 'org-latex-classes '("a4article"
+                                    "\\documentclass[11pt,a4paper]{article}"
+                                    ("\\section{%s}" . "\\section*{%s}")
+                                    ("\\subsection{%s}" . "\\subsection*{%s}")
+                                    ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+                                    ("\\paragraph{%s}" . "\\paragraph*{%s}")
+                                    ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
+  (setq org-latex-default-class "a4article")
+  (setq org-latex-packages-alist '(("titletoc, title" "appendix" nil) ; Setup appendices
+                                   ("margin=25mm" "geometry")         ; Setup margins
+                                   ("" "tocbibind" nil)               ; Put bibliography in TOC
+                                   ("" "pdflscape" nil)               ; Allow landscape pages
+                                   ("" "pdfpages" nil)                ; Allow inclusion of pdfs
+                                   ("" "subcaption" nil)              ; Allow subcaptions
+                                   ("" "listings" nil)                ; Source code listings
+                                   ("" "color" nil)))                 ; Color in source code listings
+  (setq org-latex-listings t)                                         ; Turn on source code inclusion
+  (setq org-latex-listings-options '(("basicstyle" "\\linespread{0.85}\\ttfamily")
+                                     ("numbers" "left")
+                                     ("numberstyle" "\\tiny")
+                                     ("frame" "tb")
+                                     ("tabsize" "4")
+                                     ("columns" "fixed")
+                                     ("showstringspaces" "false")
+                                     ("showtabs" "false")
+                                     ("keepspaces" "true")
+                                     ("commentstyle" "\\color{red}")
+                                     ("keywordstyle" "\\color{blue}")
+                                     ("breaklines" "true")))
+
+  (setq org-latex-pdf-process '("latexmk -shell-escape -bibtex -pdf %f")))
 
 (provide 'init-org)
 ;;; init-org.el ends here
