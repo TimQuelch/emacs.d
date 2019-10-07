@@ -168,7 +168,8 @@
   :init
   (setq org-ref-bibliography-notes (expand-file-name "bibnotes.org" org-directory)
         org-ref-default-bibliography (list default-bibliography)
-        org-ref-get-pdf-filename-function 'org-ref-get-pdf-filename-helm-bibtex))
+        org-ref-get-pdf-filename-function 'org-ref-get-pdf-filename-helm-bibtex
+        org-ref-default-citation-link "autocite"))
 
 (use-package helm-bibtex
   :config
