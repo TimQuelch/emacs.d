@@ -195,6 +195,10 @@
                                    ("" "subcaption" nil)              ; Allow subcaptions
                                    ("" "listings" nil)                ; Source code listings
                                    ("" "color" nil)))                 ; Color in source code listings
+
+  (setq org-latex-default-packages-alist (remove '("" "hyperref" nil) org-latex-default-packages-alist))
+  (add-to-list 'org-latex-default-packages-alist '("hidelinks" "hyperref" nil))
+
   (setq org-latex-listings t)                                         ; Turn on source code inclusion
   (setq org-latex-listings-options '(("basicstyle" "\\linespread{0.85}\\ttfamily")
                                      ("numbers" "left")
