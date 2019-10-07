@@ -45,7 +45,7 @@
 ;; Turn on line numbers
 (use-package display-line-numbers
   :ensure nil
-  :hook (after-init . global-display-line-numbers-mode)
+  :hook ((prog-mode text-mode) . display-line-numbers-mode)
   :config
   (set-face-attribute 'line-number nil :inherit '(fixed-pitch))
   (set-face-attribute 'line-number-current-line nil :inherit '(fixed-pitch hl-line)))
