@@ -40,7 +40,8 @@
 
   (setq doom-modeline-major-mode-color-icon t
         doom-modeline-minor-modes nil
-        doom-modeline-mu4e nil))
+        doom-modeline-mu4e nil
+        column-number-mode t))
 
 ;; Turn on line numbers
 (use-package display-line-numbers
