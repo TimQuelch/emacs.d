@@ -151,7 +151,8 @@
   :init (setq org-startup-indented t)
   :ensure nil
   :config
-  (set-face-attribute 'org-indent nil :inherit '(org-hide fixed-pitch)))
+  (set-face-attribute 'org-hide nil :inherit '(fixed-pitch))
+  (set-face-attribute 'org-indent nil :inherit '(org-hide)))
 
 (use-package org-habit
   :ensure nil
