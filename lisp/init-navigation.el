@@ -92,7 +92,7 @@
   :demand)
 
 (use-package helm-projectile
-  :bind ("C-c C-p" . helm-projectile))
+  :bind ("C-x C-p" . helm-projectile))
 
 (provide 'init-navigation)
 ;;; init-navigation.el ends here
