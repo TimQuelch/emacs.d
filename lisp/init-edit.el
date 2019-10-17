@@ -75,12 +75,6 @@
 (use-package compile
   :ensure nil
   :commands compile
-  :preface
-  (defun call-compile ()
-    (interactive)
-    (setq-local compilation-read-command nil)
-    (call-interactively 'compile))
-  :bind ("<f5>" . call-compile)
   :config
   (setq compilation-scroll-output 'first-error))
 

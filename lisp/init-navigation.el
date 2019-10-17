@@ -13,8 +13,31 @@
 ;; Projectile
 (use-package projectile
   :hook (after-init . projectile-mode)
+  :preface
+  (defun my/projectile-or-compile (func)
+    (setq-local compilation-read-command nil)
+    (if (projectile-project-p)
+        (call-interactively func)
+      (call-interactively 'compile)))
+  (defun my/configure-project ()
+    (interactive)
+    (my/projectile-or-compile 'projectile-configure-project))
+  (defun my/compile-project ()
+    (interactive)
+    (my/projectile-or-compile 'projectile-compile-project))
+  (defun my/test-project ()
+    (interactive)
+    (my/projectile-or-compile 'projectile-test-project))
+  :bind (("<f4>" . my/configure-project)
+         ("<f5>" . my/compile-project)
+         ("<f6>" . my/test-project))
   :config
-  (add-to-list 'projectile-globally-ignored-directories ".clangd"))
+  (add-to-list 'projectile-globally-ignored-directories ".clangd")
+  (projectile-register-project-type 'cmake '("CMakeLists.txt")
+                                    :compilation-dir "build" ; This is the only thing different from default
+                                    :configure "cmake %s"
+                                    :compile "cmake --build ."
+                                    :test "ctest"))
 
 ;; Helm
 (use-package helm
