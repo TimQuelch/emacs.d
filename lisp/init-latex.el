@@ -34,5 +34,16 @@
   :config
   (setq bibtex-dialect 'biblatex))
 
+(use-package company-auctex
+  :functions company-auctex-init
+  :after (company latex)
+  :demand
+  :compdef (plain-TeX-mode LaTeX-mode ams-tex-mode ConTeXt-mode Texinfo-mode docTeX-mode)
+  :company (company-auctex-macros
+            company-auctex-symbols
+            company-auctex-environments
+            company-auctex-bibs
+            company-auctex-labels))
+
 (provide 'init-latex)
 ;;; init-latex.el ends here

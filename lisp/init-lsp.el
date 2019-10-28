@@ -50,6 +50,16 @@
         lsp-ui-peek-list-width 60
         lsp-ui-peek-peek-height 25))
 
+(use-package company-lsp
+  :after (company lsp-mode)
+  :demand
+  :compdef lsp-mode
+  :company company-lsp
+  :config
+  (setq company-lsp-async t
+        company-lsp-cache-candidates nil
+        company-lsp-enable-recompletion t))
+
 (use-package dap-mode
   :commands dap-mode
   :hook lsp-mode)

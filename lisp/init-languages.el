@@ -13,6 +13,12 @@
   :ensure nil
   :mode ("\\.h\\'" . c++-mode))
 
+(use-package company-c-headers
+  :after (company cc-mode)
+  :demand
+  :compdef (c-mode c++-mode)
+  :company company-c-headers)
+
 (use-package modern-cpp-font-lock
   :hook (c++-mode . modern-c++-font-lock-mode))
 
@@ -34,6 +40,12 @@
 (use-package cmake-font-lock
   :hook (cmake-mode . cmake-font-lock-activate))
 
+(use-package company-cmake              ; Included in company
+  :ensure nil
+  :after (company cmake-mode)
+  :compdef cmake-mode
+  :company company-cmake)
+
 ;; Python
 (use-package python-mode
   :mode "\\.py\\'"
@@ -49,6 +61,13 @@
         matlab-indent-level tab-width
         matlab-cont-level tab-width
         matlab-shell-command-switches '("-nodesktop" "-nosplash")))
+
+(use-package company-matlab-shell
+  :ensure nil
+  :after (company matlab)
+  :demand
+  :compdef matlab-shell-mode
+  :company company-matlab-shell)
 
 ;; Dockerfile
 (use-package dockerfile-mode

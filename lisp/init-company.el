@@ -27,6 +27,9 @@
         company-minimum-prefix-length 1
         company-selection-wrap-around t))
 
+(use-package compdef
+  :demand)
+
 (use-package company-box
   :diminish
   :functions (my-company-box--make-line
@@ -115,34 +118,6 @@
           (Template . ,(all-the-icons-material "format_align_center" :height 0.9 :v-adjust -0.2)))
         company-box-icons-alist 'company-box-icons-all-the-icons))
 
-(use-package company-lsp
-  :after (company lsp-mode)
-  :demand
-  :config
-  (push 'company-lsp company-backends)
-  (setq company-lsp-async t
-        company-lsp-cache-candidates nil
-        company-lsp-enable-recompletion t))
-
-(use-package company-c-headers
-  :after (company)
-  :demand
-  :config
-  (add-to-list 'company-backends 'company-c-headers))
-
-(use-package company-auctex
-  :functions company-auctex-init
-  :after (company latex)
-  :demand
-  :config
-  (company-auctex-init))
-
-(use-package company-matlab-shell
-  :ensure nil
-  :after (company matlab)
-  :demand
-  :config
-  (add-to-list 'company-backends 'company-matlab-shell))
 
 (provide 'init-company)
 ;;; init-company.el ends here
