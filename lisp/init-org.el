@@ -8,7 +8,7 @@
 ;;; Code:
 
 (use-package org
-  :ensure nil
+  :ensure org-plus-contrib
   :bind (("C-c b" . org-switchb)
          ("C-c l" . org-store-link)
          :map org-mode-map
@@ -177,6 +177,13 @@
   (setq bibtex-completion-pdf-field "file"
         bibtex-completion-pdf-open-function 'helm-open-file-externally
         helm-bibtex-full-frame nil))
+
+(use-package ox-extra
+  :ensure nil
+  :after org
+  :demand
+  :config
+  (ox-extras-activate '(ignore-headlines)))
 
 (use-package ox-latex
   :ensure nil
