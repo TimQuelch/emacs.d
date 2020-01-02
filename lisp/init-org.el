@@ -97,7 +97,7 @@
         org-agenda-restore-windows-after-quit t)
 
   (setq org-agenda-custom-commands
-        '((" " "Agenda"
+        '(("j" "Agenda"
            ((agenda ""
                     ((org-agenda-span 1)))
             (tags "REFILE"
