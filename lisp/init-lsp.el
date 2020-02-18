@@ -53,8 +53,7 @@
 (use-package company-lsp
   :after (company lsp-mode)
   :demand
-  :compdef lsp-mode
-  :company company-lsp
+  :hook (lsp-mode . (my/add-company-backend-locally 'company-lsp))
   :config
   (setq company-lsp-async t
         company-lsp-cache-candidates nil

@@ -8,7 +8,7 @@
 ;;; Code:
 
 
-;; C++
+;; C and C++
 (use-package cc-mode
   :ensure nil
   :mode ("\\.h\\'" . c++-mode))
@@ -16,8 +16,7 @@
 (use-package company-c-headers
   :after (company cc-mode)
   :demand
-  :compdef (c-mode c++-mode)
-  :company company-c-headers)
+  :hook ((c-mode c++-mode) . (my/add-company-backend-locally 'company-c-headers)))
 
 (use-package modern-cpp-font-lock
   :hook (c++-mode . modern-c++-font-lock-mode))
@@ -43,8 +42,7 @@
 (use-package company-cmake              ; Included in company
   :ensure nil
   :after (company cmake-mode)
-  :compdef cmake-mode
-  :company company-cmake)
+  :hook (cmake-mode . (my/add-company-backend-locally 'company-cmake)))
 
 ;; Python
 (use-package python-mode
@@ -66,8 +64,7 @@
   :ensure nil
   :after (company matlab)
   :demand
-  :compdef matlab-shell-mode
-  :company company-matlab-shell)
+  :hook (matlab-shell-mode . (my/add-company-backend-locally 'company-matlab-shell)))
 
 ;; Dockerfile
 (use-package dockerfile-mode

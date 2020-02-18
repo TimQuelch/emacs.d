@@ -23,12 +23,11 @@
     (company-abort)
     (call-interactively 'company-yasnippet))
   :config
+  (defmacro my/add-company-backend-locally (backend)
+    (lambda () (add-to-list (make-local-variable 'company-backends) backend)))
   (setq company-idle-delay 0.2
         company-minimum-prefix-length 1
         company-selection-wrap-around t))
-
-(use-package compdef
-  :demand)
 
 (use-package company-box
   :diminish
