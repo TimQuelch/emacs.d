@@ -7,6 +7,10 @@
 ;;
 ;;; Code:
 
+;; Configure Name and Email
+(setq user-full-name "Tim Quelch"
+      user-mail-address "tim@quelch.name")
+
 ;; Load early init if this is not done automatically
 (when (version< emacs-version "27")
   (require 'early-init)
