@@ -21,6 +21,7 @@
   (setq TeX-parse-self t))
 
 (use-package reftex
+  :ensure nil
   :after latex
   :demand
   :defines (default-bibliography)
