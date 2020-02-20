@@ -45,9 +45,11 @@
   :hook (cmake-mode . (my/add-company-backend-locally 'company-cmake)))
 
 ;; Python
-(use-package python-mode
-  :mode "\\.py\\'"
-  :interpreter "python")
+(use-package elpy
+  :hook (elpy-mode . (my/add-company-backend-locally 'elpy-company-backend))
+  :init                                 ;
+  (remove-hook 'elpy-modules 'elpy-module-company)
+  (advice-add 'python-mode :before 'elpy-enable))
 
 ;; Matlab
 (use-package matlab
