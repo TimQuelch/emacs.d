@@ -35,7 +35,8 @@
 
 ;; Better comment dwim
 (use-package comment-dwim-2
-  :bind ([remap comment-dwim] . comment-dwim-2))
+  :bind ([remap comment-dwim] . comment-dwim-2)
+  :config (setq cd2/region-command 'cd2/comment-or-uncomment-region))
 
 ;; Autocomplete parens
 (use-package elec-pair
