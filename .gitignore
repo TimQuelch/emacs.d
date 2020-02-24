@@ -21,3 +21,4 @@ oauth2.plstore
 org-clock-save.el
 .cache/
 projectile.cache
+elpy
