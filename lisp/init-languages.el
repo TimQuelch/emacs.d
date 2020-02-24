@@ -11,7 +11,9 @@
 ;; C and C++
 (use-package cc-mode
   :ensure nil
-  :mode ("\\.h\\'" . c++-mode))
+  :mode ("\\.h\\'" . c++-mode)
+  :hook (c-mode . (lambda () (setq comment-start "// "
+                                   comment-end ""))))
 
 (use-package company-c-headers
   :after (company cc-mode)
