@@ -108,7 +108,9 @@
                         (org-agenda-skip-function '(org-agenda-skip-entry-if 'scheduled))))
             (tags-todo "EMACS"
                        ((org-agenda-overriding-header "Emacs configuration")))
-            )))))
+            ))))
+
+  (unbind-key ":" org-agenda-mode-map))
 
 (use-package org-archive
   :ensure nil
