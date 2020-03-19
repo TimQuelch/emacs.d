@@ -1,0 +1,130 @@
+* Lisp
+Set the custom file to another file. I don't want this to be the default of =init.el=
+#+begin_src emacs-lisp
+  (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
+  (load custom-file)
+#+end_src
+
+Add in my lisp directory as a load path
+#+begin_src emacs-lisp
+  (add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))
+#+end_src
+
+Load newer =.el= files even if =.elc= files exist
+#+begin_src emacs-lisp
+  (setq load-prefer-newer t)
+#+end_src
+
+* Initial GUI Configuration
+This needs to be done near the start to prevent flashes of ugly GUI
+
+I don't really want the tool bars, menu bars, or system scroll-bars
+#+begin_src emacs-lisp
+  (push '(tool-bar-lines . 0) default-frame-alist)
+  (push '(menu-bar-lines . 0) default-frame-alist)
+  (push '(vertical-scroll-bars) default-frame-alist)
+#+end_src
+
+Set up frame to be transparent
+#+begin_src emacs-lisp
+  (push '(alpha . 90) default-frame-alist)
+#+end_src
+
+Widen fringes
+#+begin_src emacs-lisp
+  (push '(left-fringe . 11) default-frame-alist)
+  (push '(right-fringe . 11) default-frame-alist)
+#+end_src
+
+*** TODO Check if I really need the fringes
+
+** Setup fonts
+#+begin_src emacs-lisp
+  (push '(font . "DejaVu Sans Mono") default-frame-alist)
+  (set-face-font 'default "DejaVu Sans Mono")
+  (set-face-font 'variable-pitch "DejaVu Sans")
+  (copy-face 'default 'fixed-pitch)
+#+end_src
+
+* Personalisation
+#+begin_src emacs-lisp
+  (setq user-full-name "Tim Quelch"
+        user-mail-address "tim@quelch.name")
+#+end_src
+
+* Packages
+I'm using =use-package=  to manage all my modules. It was initially loaded early in the =init.el= bootstrap, but I'll do more configuration of it here
+#+begin_src emacs-lisp
+  (setq use-package-always-ensure t       ; Always install the packages
+        use-package-always-defer t        ; Defer loading
+        use-package-expand-minimally t    ; Expand macros as small as possible
+        use-package-compute-statistics t) ; Generate timing reports
+#+end_src
+
+#+begin_src emacs-lisp
+  (require 'init-utils)
+#+end_src
+
+#+begin_src emacs-lisp
+  (require 'init-ui)
+#+end_src
+
+#+begin_src emacs-lisp
+  (require 'init-hydra)
+#+end_src
+
+#+begin_src emacs-lisp
+  ;; (require 'init-dashboard)
+#+end_src
+
+#+begin_src emacs-lisp
+  (require 'init-window)
+#+end_src
+
+#+begin_src emacs-lisp
+  (require 'init-evil)
+#+end_src
+
+#+begin_src emacs-lisp
+  (require 'init-edit)
+#+end_src
+
+#+begin_src emacs-lisp
+  (require 'init-magit)
+#+end_src
+
+#+begin_src emacs-lisp
+  (require 'init-navigation)
+#+end_src
+
+#+begin_src emacs-lisp
+  (require 'init-treemacs)
+#+end_src
+
+#+begin_src emacs-lisp
+  (require 'init-org)
+#+end_src
+
+#+begin_src emacs-lisp
+  (require 'init-lsp)
+#+end_src
+
+#+begin_src emacs-lisp
+  (require 'init-company)
+#+end_src
+
+#+begin_src emacs-lisp
+  (require 'init-yasnippet)
+#+end_src
+
+#+begin_src emacs-lisp
+  (require 'init-latex)
+#+end_src
+
+#+begin_src emacs-lisp
+  (require 'init-languages)
+#+end_src
+
+#+begin_src emacs-lisp
+  (require 'init-shell)
+#+end_src
