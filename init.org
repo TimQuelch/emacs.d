@@ -1,6 +1,22 @@
 * All the config
 
 #+begin_src emacs-lisp
+  (push '(tool-bar-lines . 0) default-frame-alist)   ; Disable tool bar
+  (push '(menu-bar-lines . 0) default-frame-alist)   ; Disable menu bar
+  (push '(vertical-scroll-bars) default-frame-alist) ; Disable scroll bar
+  (push '(alpha . 90) default-frame-alist)           ; Turn on transparency
+  (push '(left-fringe . 11) default-frame-alist)     ; Configure fringes
+  (push '(right-fringe . 11) default-frame-alist)    ; Configure fringes
+#+end_src
+
+#+begin_src emacs-lisp
+  (push '(font . "DejaVu Sans Mono") default-frame-alist)
+  (set-face-font 'default "DejaVu Sans Mono")
+  (set-face-font 'variable-pitch "DejaVu Sans")
+  (copy-face 'default 'fixed-pitch)
+#+end_src
+
+#+begin_src emacs-lisp
   ;; Configure Name and Email
   (setq user-full-name "Tim Quelch"
         user-mail-address "tim@quelch.name")
@@ -25,14 +41,21 @@
 #+begin_src emacs-lisp
   (require 'init-package)
   (require 'init-utils)
+#+end_src
 
+#+begin_src emacs-lisp
   (require 'init-ui)
   (require 'init-hydra)
+#+end_src
 
+#+begin_src emacs-lisp
   ;; (require 'init-dashboard)
   (require 'init-window)
 
   (require 'init-evil)
+#+end_src
+
+#+begin_src emacs-lisp
   (require 'init-edit)
   (require 'init-magit)
   (require 'init-navigation)
