@@ -17,22 +17,29 @@
 #+end_src
 
 #+begin_src emacs-lisp
-  ;; Configure Name and Email
   (setq user-full-name "Tim Quelch"
         user-mail-address "tim@quelch.name")
+#+end_src
 
+#+begin_src emacs-lisp
   ;; Load early init if this is not done automatically
   (when (version< emacs-version "27")
     (require 'early-init)
     (package-initialize))
+#+end_src
 
+#+begin_src emacs-lisp
   ;; Set customize file location
   (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
   (load custom-file)
+#+end_src
 
+#+begin_src emacs-lisp
   ;; Add subdirectories to load path
   (add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))
+#+end_src
 
+#+begin_src emacs-lisp
   ;; Use newer .el file if it is newer than compiled .elc
   (setq load-prefer-newer t)
 
@@ -40,33 +47,72 @@
 
 #+begin_src emacs-lisp
   (require 'init-package)
+#+end_src
+
+#+begin_src emacs-lisp
   (require 'init-utils)
 #+end_src
 
 #+begin_src emacs-lisp
   (require 'init-ui)
+#+end_src
+
+#+begin_src emacs-lisp
   (require 'init-hydra)
 #+end_src
 
 #+begin_src emacs-lisp
   ;; (require 'init-dashboard)
-  (require 'init-window)
+#+end_src
 
+#+begin_src emacs-lisp
+  (require 'init-window)
+#+end_src
+
+#+begin_src emacs-lisp
   (require 'init-evil)
 #+end_src
 
 #+begin_src emacs-lisp
   (require 'init-edit)
-  (require 'init-magit)
-  (require 'init-navigation)
-  (require 'init-treemacs)
-  (require 'init-org)
-  (require 'init-lsp)
-  (require 'init-company)
-  (require 'init-yasnippet)
-  (require 'init-latex)
-  (require 'init-languages)
-  (require 'init-shell)
+#+end_src
 
-  (provide 'init)
+#+begin_src emacs-lisp
+  (require 'init-magit)
+#+end_src
+
+#+begin_src emacs-lisp
+  (require 'init-navigation)
+#+end_src
+
+#+begin_src emacs-lisp
+  (require 'init-treemacs)
+#+end_src
+
+#+begin_src emacs-lisp
+  (require 'init-org)
+#+end_src
+
+#+begin_src emacs-lisp
+  (require 'init-lsp)
+#+end_src
+
+#+begin_src emacs-lisp
+  (require 'init-company)
+#+end_src
+
+#+begin_src emacs-lisp
+  (require 'init-yasnippet)
+#+end_src
+
+#+begin_src emacs-lisp
+  (require 'init-latex)
+#+end_src
+
+#+begin_src emacs-lisp
+  (require 'init-languages)
+#+end_src
+
+#+begin_src emacs-lisp
+  (require 'init-shell)
 #+end_src
