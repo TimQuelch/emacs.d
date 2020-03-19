@@ -7,46 +7,23 @@
 ;;
 ;;; Code:
 
-;; Configure Name and Email
-(setq user-full-name "Tim Quelch"
-      user-mail-address "tim@quelch.name")
-
 ;; Load early init if this is not done automatically
 (when (version< emacs-version "27")
   (require 'early-init)
   (package-initialize))
 
-;; Set customize file location
-(setq custom-file (expand-file-name "custom.el" user-emacs-directory))
-(load custom-file)
+;; Set up use-package
+(unless (package-installed-p 'use-package)
+  (package-refresh-contents)
+  (package-install 'use-package))
 
-;; Add subdirectories to load path
-(add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))
+(eval-when-compile
+  (require 'use-package))
 
-;; Use newer .el file if it is newer than compiled .elc
-(setq load-prefer-newer t)
-
-(require 'init-package)
-(require 'init-utils)
-
-(require 'init-ui)
-(require 'init-hydra)
-
-;; (require 'init-dashboard)
-(require 'init-window)
-
-(require 'init-evil)
-(require 'init-edit)
-(require 'init-magit)
-(require 'init-navigation)
-(require 'init-treemacs)
-(require 'init-org)
-(require 'init-lsp)
-(require 'init-company)
-(require 'init-yasnippet)
-(require 'init-latex)
-(require 'init-languages)
-(require 'init-shell)
+;; Load org mode config file
+(use-package org
+  :ensure org-plus-contrib)
+(org-babel-load-file (expand-file-name "config.org" user-emacs-directory))
 
 (provide 'init)
 ;;; init.el ends here
