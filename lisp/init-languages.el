@@ -74,5 +74,8 @@
   :config
   (setq dockerfile-use-sudo t))
 
+;; Systemd
+(use-package systemd)
+
 (provide 'init-languages)
 ;;; init-languages.el ends here
