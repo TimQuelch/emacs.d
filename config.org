@@ -1,3 +1,4 @@
+#+PROPERTY: header-args :results silent
 * Lisp
 ** Load path
 Add in my lisp directory as a load path
@@ -109,7 +110,7 @@ Display dividers between split windows
     (load-theme 'doom-one t))
 #+end_src
 
-Ensure that all the icons are installed. On new installs this will require =(all-the-icons-install-fonts)= to be run
+Ensure that all the icons are installed. On new installs this will require ~(all-the-icons-install-fonts)~ to be run
 #+begin_src emacs-lisp
   (use-package all-the-icons)
 #+end_src
@@ -1341,7 +1342,6 @@ Use \LaTeX to preview maths
     :demand
     :defines (default-bibliography)
     :config
-    (require 'init-org)
     (setq reftex-plug-into-AUCTeX t
           reftex-default-bibliography (list default-bibliography)))
 
