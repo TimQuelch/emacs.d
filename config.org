@@ -1017,6 +1017,16 @@ Use \LaTeX to preview maths
     (setq org-latex-pdf-process '("latexmk -shell-escape -bibtex -pdf %f")))
 #+end_src
 
+** Roam
+
+#+begin_src emacs-lisp
+  (use-package org-roam
+    :straight (:host github :repo "jethrokuan/org-roam")
+    :hook (after-init . org-roam-mode)
+    :init
+    (setq org-roam-directory (expand-file-name "notes" org-directory)))
+#+end_src
+
 * LSP
 #+begin_src emacs-lisp
   (use-package lsp-mode
