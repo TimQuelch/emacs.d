@@ -64,12 +64,20 @@ Setup name and email
 * Packages
 I'm using =use-package=  to manage all my modules. It was initially loaded early in the =init.el= bootstrap, but I'll do more configuration of it here
 #+begin_src emacs-lisp
-  (setq use-package-always-ensure t       ; Always install the packages
-        use-package-always-defer t        ; Defer loading
+  (setq use-package-always-defer t        ; Defer loading until package is required
         use-package-expand-minimally t    ; Expand macros as small as possible
-        use-package-compute-statistics t) ; Generate timing reports
+        use-package-compute-statistics t ); Generate timing reports
 #+end_src
 
+Ensure that ~straight~ is used for all packages
+#+begin_src emacs-lisp 
+  (setq straight-use-package-by-default t)
+#+end_src
+
+Only clone the required commit. This will ensure that fresh installs are faster and take up less storage. This doesn't effect packages that are version locked by straight
+#+begin_src emacs-lisp
+  (setq straight-vc-git-default-clone-depth 1)
+#+end_src
 * UI
 ** Window configurations
 Disable some unwanted UI elements
@@ -126,14 +134,14 @@ Configure the doom modeline
 Highlight the current line slightly darker
 #+begin_src emacs-lisp
   (use-package hl-line
-    :ensure nil
+    :straight nil
     :hook (after-init . global-hl-line-mode))
 #+end_src
 
 Highlight the matching delimiter. This only happens in programming modes
 #+begin_src emacs-lisp
   (use-package paren
-    :ensure nil
+    :straight nil
     :hook (prog-mode . show-paren-mode)
     :config (setq show-paren-delay 0
                   show-paren-when-point-inside-paren t
@@ -559,7 +567,7 @@ Reload the configuration file (not init.el, but just this config.org)
 #+begin_src emacs-lisp
   ;; Auto reload files modified by external program
   (use-package autorevert
-    :ensure nil
+    :straight nil
     :hook (after-init . global-auto-revert-mode))
 #+end_src
 
@@ -573,7 +581,7 @@ Reload the configuration file (not init.el, but just this config.org)
 #+begin_src emacs-lisp
   ;; Autocomplete parens
   (use-package elec-pair
-    :ensure nil
+    :straight nil
     :hook (after-init . electric-pair-mode))
 #+end_src
 
@@ -586,7 +594,7 @@ Reload the configuration file (not init.el, but just this config.org)
 #+begin_src emacs-lisp
   ;; Subword splitting
   (use-package subword
-    :ensure nil
+    :straight nil
     :hook ((prog-mode . subword-mode)
            (minibuffer-setup . subword-mode)))
 #+end_src
@@ -613,14 +621,14 @@ Reload the configuration file (not init.el, but just this config.org)
 #+begin_src emacs-lisp
   ;; Flyspell
   (use-package flyspell
-    :ensure nil
+    :straight nil
     :hook ((text-mode outline-mode) . flyspell-mode))
 #+end_src
 
 #+begin_src emacs-lisp
   ;; Compilation
   (use-package compile
-    :ensure nil
+    :straight nil
     :commands compile
     :config
     (setq compilation-scroll-output 'first-error))
@@ -656,7 +664,7 @@ Highlight  changed lines in fringes
            (magit-post-refresh-hook . diff-h-magit-post-refresh))
     :config
     (diff-hl-flydiff-mode 1)
-    (setq-default fringes-outside-margins t)
+    (setq-default fringes-outside-margins t))
 #+end_src
 
 Also include some small major modes for editing git specific files
@@ -670,7 +678,7 @@ Also include some small major modes for editing git specific files
 ** Base
 #+begin_src emacs-lisp :noweb yes
   (use-package org
-    :ensure org-plus-contrib
+    :straight org-plus-contrib
     :bind (
            <<org-bindings>>
            )
@@ -833,7 +841,7 @@ Use \LaTeX to preview maths
 ** Agenda
 #+begin_src emacs-lisp
   (use-package org-agenda
-    :ensure nil
+    :straight nil
     :bind (("C-c a" . org-agenda)
            ("<f12>" . org-agenda)
            :map org-agenda-mode-map
@@ -872,7 +880,7 @@ Use \LaTeX to preview maths
 ** Archiving
 #+begin_src emacs-lisp
   (use-package org-archive
-    :ensure nil
+    :straight nil
     :init
     (defvar archive-directory (expand-file-name "archive" org-directory))
     :config
@@ -882,7 +890,7 @@ Use \LaTeX to preview maths
 ** Capture
 #+begin_src emacs-lisp
   (use-package org-capture
-    :ensure nil
+    :straight nil
     :bind ("C-c c" . org-capture)
     :config
     (setq org-default-notes-file (expand-file-name "refile.org" org-directory)
@@ -902,7 +910,7 @@ Use \LaTeX to preview maths
 ** Clocking
 #+begin_src emacs-lisp
   (use-package org-clock
-    :ensure nil
+    :straight nil
     :bind (("<f11>" . org-clock-goto)
            ("C-<f11>" . org-clock-in))
     :init
@@ -919,7 +927,7 @@ Use \LaTeX to preview maths
 #+begin_src emacs-lisp
   (use-package org-indent
     :init (setq org-startup-indented t)
-    :ensure nil
+    :straight nil
     :config
     (set-face-attribute 'org-hide nil :inherit '(fixed-pitch))
     (set-face-attribute 'org-indent nil :inherit '(org-hide)))
@@ -928,7 +936,7 @@ Use \LaTeX to preview maths
 ** Habits
 #+begin_src emacs-lisp
   (use-package org-habit
-    :ensure nil
+    :straight nil
     :init
     (add-to-list 'org-modules 'org-habit)
     :config
@@ -960,7 +968,7 @@ Use \LaTeX to preview maths
 ** Exporting
 #+begin_src emacs-lisp
   (use-package ox-extra
-    :ensure nil
+    :straight nil
     :after org
     :demand
     :config
@@ -969,7 +977,7 @@ Use \LaTeX to preview maths
 
 #+begin_src emacs-lisp
   (use-package ox-latex
-    :ensure nil
+    :straight nil
     :config
     (add-to-list 'org-latex-classes '("a4article"
                                       "\\documentclass[11pt,a4paper]{article}"
@@ -1067,7 +1075,7 @@ Use \LaTeX to preview maths
     :hook lsp-mode)
 
   (use-package dap-ui
-    :ensure nil
+    :straight nil
     :after dap-mode
     :demand
     :config
@@ -1076,14 +1084,14 @@ Use \LaTeX to preview maths
     (tooltip-mode t))
 
   (use-package dap-lldb
-    :ensure nil
+    :straight nil
     :after dap-mode
     :demand
     :config
     (setq dap-lldb-debug-program (list (executable-find "lldb-vscode"))))
 
   (use-package dap-python
-    :ensure nil
+    :straight nil
     :after dap-mode
     :demand)
 #+end_src
@@ -1214,7 +1222,7 @@ Use \LaTeX to preview maths
 #+begin_src emacs-lisp
   ;; C and C++
   (use-package cc-mode
-    :ensure nil
+    :straight nil
     :mode ("\\.h\\'" . c++-mode)
     :hook (c-mode . (lambda () (c-toggle-comment-style -1))))
 #+end_src
@@ -1261,7 +1269,7 @@ Use \LaTeX to preview maths
 
 #+begin_src emacs-lisp
   (use-package company-cmake              ; Included in company
-    :ensure nil
+    :straight nil
     :after (company cmake-mode)
     :hook (cmake-mode . (my/add-company-backend-locally 'company-cmake)))
 #+end_src
@@ -1280,7 +1288,7 @@ Use \LaTeX to preview maths
 #+begin_src emacs-lisp
   ;; Matlab
   (use-package matlab
-    :ensure matlab-mode
+    :straight matlab-mode
     :defines (matlab-fill-code matlab-shell-command-switches matlab-indent-level matlab-cont-level)
     :commands (matlab-mode matlab-shell)
     :config
@@ -1292,7 +1300,7 @@ Use \LaTeX to preview maths
 
 #+begin_src emacs-lisp
   (use-package company-matlab-shell
-    :ensure nil
+    :straight nil
     :after (company matlab)
     :demand
     :hook (matlab-shell-mode . (my/add-company-backend-locally 'company-matlab-shell)))
@@ -1315,7 +1323,7 @@ Use \LaTeX to preview maths
 ** Latex
 #+begin_src emacs-lisp
   (use-package latex
-    :ensure auctex
+    :straight auctex
     :mode ("\\.tex\\'" . LaTeX-mode)
     :config
     (add-hook 'LaTeX-mode-hook 'visual-line-mode)
@@ -1328,7 +1336,7 @@ Use \LaTeX to preview maths
     (setq TeX-parse-self t))
 
   (use-package reftex
-    :ensure nil
+    :straight nil
     :after latex
     :demand
     :defines (default-bibliography)
@@ -1338,7 +1346,7 @@ Use \LaTeX to preview maths
           reftex-default-bibliography (list default-bibliography)))
 
   (use-package bibtex
-    :ensure nil
+    :straight nil
     :config
     (setq bibtex-dialect 'biblatex))
 

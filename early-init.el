@@ -14,16 +14,5 @@
   (add-hook 'emacs-startup-hook
             (lambda () (setq gc-cons-threshold normal-gc-cons-threshold)))) ; Reset back down after init
 
-;; Setup package manager
-(require 'package)
-
-(add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/"))
-(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
-(add-to-list 'package-archives '("melpa-stable" . "http://stable.melpa.org/packages/"))
-(add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/"))
-
-(setq package-enable-at-startup t)      ; Emacs will initialise packages between early-init and init
-(setq package-quickstart t)             ; Compile package autoloads into one file
-
 (provide 'early-init)
 ;;; early-init.el ends here

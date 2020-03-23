@@ -9,20 +9,31 @@
 
 ;; Load early init if this is not done automatically
 (when (version< emacs-version "27")
-  (require 'early-init)
-  (package-initialize))
+  (require 'early-init))
+
+;; Bootstrap straight.el
+(defvar bootstrap-version)
+(let ((bootstrap-file
+       (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
+      (bootstrap-version 5))
+  (unless (file-exists-p bootstrap-file)
+    (with-current-buffer
+        (url-retrieve-synchronously
+         "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
+         'silent 'inhibit-cookies)
+      (goto-char (point-max))
+      (eval-print-last-sexp)))
+  (load bootstrap-file nil 'nomessage))
 
 ;; Set up use-package
-(unless (package-installed-p 'use-package)
-  (package-refresh-contents)
-  (package-install 'use-package))
+(straight-use-package 'use-package)
 
 (eval-when-compile
   (require 'use-package))
 
 ;; Load org mode config file
 (use-package org
-  :ensure org-plus-contrib)
+  :straight org-plus-contrib)
 (org-babel-load-file (expand-file-name "config.org" user-emacs-directory))
 
 (provide 'init)
