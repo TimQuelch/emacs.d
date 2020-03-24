@@ -1,4 +1,5 @@
 #+PROPERTY: header-args :results silent
+
 * Lisp
 ** Load path
 Add in my lisp directory as a load path
@@ -71,7 +72,7 @@ I'm using =use-package=  to manage all my modules. It was initially loaded early
 #+end_src
 
 Ensure that ~straight~ is used for all packages
-#+begin_src emacs-lisp 
+#+begin_src emacs-lisp
   (setq straight-use-package-by-default t)
 #+end_src
 
@@ -128,7 +129,8 @@ Configure the doom modeline
     (setq doom-modeline-major-mode-color-icon t
           doom-modeline-minor-modes nil
           doom-modeline-mu4e nil
-          column-number-mode t))
+          column-number-mode t
+          doom-modeline-icon t))
 #+end_src
 
 ** Buffers
@@ -210,7 +212,7 @@ Start scrolling in buffers before point leaves buffer
               (if this-win-2nd (other-window 1))))))
     :pretty-hydra
     ((:title "Window management"
-      :foreign-keys warn :quit-key "q")
+             :foreign-keys warn :quit-key "q")
      ("Actions"
       (("TAB" other-window "switch")
        ("x" ace-delete-window "delete")
@@ -721,22 +723,22 @@ Rebinding all the direction keys to use evil-like keys
 
 Additionally change the movement keys in the date-picker to have evil-like movement
 #+begin_src emacs-lisp
-    :map org-read-date-minibuffer-local-map
-    ("M-j" . (lambda ()
-               (interactive) (org-eval-in-calendar '(calendar-forward-week 1))))
-    ("M-k" . (lambda ()
-               (interactive) (org-eval-in-calendar '(calendar-backward-week 1))))
-    ("M-h" . (lambda ()
-               (interactive) (org-eval-in-calendar '(calendar-backward-day 1))))
-    ("M-l" . (lambda ()
-               (interactive) (org-eval-in-calendar '(calendar-forward-day 1))))
+  :map org-read-date-minibuffer-local-map
+  ("M-j" . (lambda ()
+             (interactive) (org-eval-in-calendar '(calendar-forward-week 1))))
+  ("M-k" . (lambda ()
+             (interactive) (org-eval-in-calendar '(calendar-backward-week 1))))
+  ("M-h" . (lambda ()
+             (interactive) (org-eval-in-calendar '(calendar-backward-day 1))))
+  ("M-l" . (lambda ()
+             (interactive) (org-eval-in-calendar '(calendar-forward-day 1))))
 #+end_src
 
 Unbind keys that add/remove files from agenda. I instead just use all the files in the org directory.
 #+begin_src emacs-lisp :noweb-ref org-config
-    ;; Unbind org add file and remove file
-    (unbind-key "C-c [" org-mode-map)
-    (unbind-key "C-c ]" org-mode-map)
+  ;; Unbind org add file and remove file
+  (unbind-key "C-c [" org-mode-map)
+  (unbind-key "C-c ]" org-mode-map)
 #+end_src
 
 *** Configuration
@@ -965,7 +967,6 @@ Use \LaTeX to preview maths
           bibtex-completion-pdf-open-function 'helm-open-file-externally
           helm-bibtex-full-frame nil))
 #+end_src
-
 ** Exporting
 #+begin_src emacs-lisp
   (use-package ox-extra
