@@ -948,14 +948,13 @@ Use \LaTeX to preview maths
 
 ** Referencing
 #+begin_src emacs-lisp
-  (defvar default-bibliography (expand-file-name "documents/zotero/library.bib" (getenv "HOME")))
+  (defvar default-bibliography (expand-file-name "documents/library.bib" (getenv "HOME")))
 
   (use-package org-ref
     :after org
     :demand
     :init
-    (setq org-ref-bibliography-notes (expand-file-name "bibnotes.org" org-directory)
-          org-ref-default-bibliography (list default-bibliography)
+    (setq org-ref-default-bibliography (list default-bibliography)
           org-ref-get-pdf-filename-function 'org-ref-get-pdf-filename-helm-bibtex
           org-ref-default-citation-link "autocite"))
 #+end_src
