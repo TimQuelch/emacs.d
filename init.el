@@ -25,6 +25,9 @@
       (eval-print-last-sexp)))
   (load bootstrap-file nil 'nomessage))
 
+;; Limit clone depth to speed up installs
+(setq straight-vc-git-default-clone-depth 1)
+
 ;; Set up use-package
 (straight-use-package 'use-package)
 
