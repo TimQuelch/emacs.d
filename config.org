@@ -516,6 +516,11 @@ Align trailing comments
     :commands helpful--buffer)
 #+end_src
 
+#+begin_src emacs-lisp
+  (use-package which-key
+    :hook (after-init . which-key-mode))
+#+end_src
+
 ** Configuration functions
 Edit this configuration file
 #+begin_src emacs-lisp
