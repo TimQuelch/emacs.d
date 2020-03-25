@@ -995,6 +995,7 @@ Use \LaTeX to preview maths
     (setq org-latex-default-class "a4article")
     (setq org-latex-packages-alist '(("titletoc, title" "appendix" nil) ; Setup appendices
                                      ("margin=25mm" "geometry")         ; Setup margins
+                                     ("" "biblatex")                    ; Setup margins
                                      ("" "tocbibind" nil)               ; Put bibliography in TOC
                                      ("" "pdflscape" nil)               ; Allow landscape pages
                                      ("" "pdfpages" nil)                ; Allow inclusion of pdfs
