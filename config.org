@@ -1077,6 +1077,12 @@ Use org-roam for my notes. Currently not in MELPA so need to manually specify th
     (setq org-journal-dir org-roam-directory))
 #+end_src
 
+** Babel
+Don't ask to confirm running source code blocks
+#+begin_src emacs-lisp
+  (setq org-confirm-babel-evaluate nil)
+#+end_src
+
 * LSP
 #+begin_src emacs-lisp
   (use-package lsp-mode
