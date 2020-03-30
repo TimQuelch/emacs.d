@@ -1065,6 +1065,39 @@ Use org-roam for my notes. Currently not in MELPA so need to manually specify th
     (setq deft-directory org-roam-directory)
     (setq deft-recursive t))
 #+end_src
+
+Capturing reference notes
+#+begin_src emacs-lisp
+  (defun my/org-roam-open-ref-note (key)
+    (let ((match (assoc key (org-roam-sql [:select [ref file] :from refs]))))
+      (if match
+          ;; notes already exists, open those notes
+          (find-file (cadr match))
+        ;; notes do not exist, create new notes
+        (let* ((bibtex-completion-bibliography (org-ref-find-bibliography))
+               (entry (bibtex-completion-get-entry key))
+               (get-and-strip (lambda (field)
+                                (let ((value (bibtex-completion-get-value field entry)))
+                                  (if value (replace-regexp-in-string
+                                             "[{}]" ""
+                                             (s-collapse-whitespace value))))))
+               (path (f-join org-roam-directory
+                             (concat (format-time-string "%Y%m%d%H%M%S" (current-time))
+                                     "-" key ".org"))))
+          (find-file path)
+          (insert
+           (concat "#+TITLE: "
+                   (funcall get-and-strip "title")
+                   "\n#+ROAM_KEY: " key "\n\n"))))))
+(setq org-ref-notes-function 'my/org-roam-open-ref-note)
+#+end_src
+
+#+begin_src emacs-lisp
+  (helm-delete-action-from-source "Edit notes" helm-source-bibtex)
+  (helm-add-action-to-source "Edit notes"
+                             'my/org-roam-open-ref-note helm-source-bibtex 7)
+#+end_src
+
 ** Journal
 #+begin_src emacs-lisp
   (use-package org-journal
