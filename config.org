@@ -1395,7 +1395,8 @@ Don't ask to confirm running source code blocks
     (setq matlab-fill-code nil
           matlab-indent-level tab-width
           matlab-cont-level tab-width
-          matlab-shell-command-switches '("-nodesktop" "-nosplash")))
+          matlab-shell-command-switches '("-nodesktop" "-nosplash")
+          matlab-shell-emacsclient-command ""))
 #+end_src
 
 #+begin_src emacs-lisp
