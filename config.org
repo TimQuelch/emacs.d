@@ -1465,6 +1465,11 @@ Don't ask to confirm running source code blocks
               (company-auctex-init))))
 #+end_src
 
+** JSON
+#+begin_src emacs-lisp
+  (use-package json-mode)
+#+end_src
+
 * Shell
 #+begin_src emacs-lisp
   (defvar default-shell (getenv "SHELL"))
