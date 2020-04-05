@@ -541,8 +541,8 @@ Reload the configuration file (not init.el, but just this config.org)
 #+end_src
 
 * Editing
+Setup backups. I usually will never use them but it doesn't hurt I guess
 #+begin_src emacs-lisp
-  ;; Set backup file location
   (setq backup-directory-alist `(("." . "~/.saves")))
   (setq delete-old-versions t)
   (setq kept-new-versions 6)
@@ -550,11 +550,12 @@ Reload the configuration file (not init.el, but just this config.org)
   (setq version-control t)
 #+end_src
 
+Disable autosaves
 #+begin_src emacs-lisp
-  ;; Disable autosaves
   (setq auto-save-default nil)
 #+end_src
 
+Setup tabs to be a width of 4
 #+begin_src emacs-lisp
   ;; Set default tab width
   (setq-default tab-width 4)
@@ -562,53 +563,54 @@ Reload the configuration file (not init.el, but just this config.org)
   (defvaralias 'c-basic-offset 'tab-width)
 #+end_src
 
+Prefer to use UTF8
 #+begin_src emacs-lisp
-  ;; Prefer using UTF-8
   (prefer-coding-system 'utf-8)
 #+end_src
 
+Set up fill column to be 100
 #+begin_src emacs-lisp
-  ;; Set default fill column width
   (setq-default fill-column 100)
 #+end_src
 
+Automatically revert files to disk
 #+begin_src emacs-lisp
-  ;; Auto reload files modified by external program
   (use-package autorevert
     :straight nil
     :hook (after-init . global-auto-revert-mode))
 #+end_src
 
+Set up comment DWIM (M-;) to be better than default
 #+begin_src emacs-lisp
-  ;; Better comment dwim
   (use-package comment-dwim-2
     :bind ([remap comment-dwim] . comment-dwim-2)
     :config (setq cd2/region-command 'cd2/comment-or-uncomment-region))
 #+end_src
 
+Set up auto-completing parentheses
 #+begin_src emacs-lisp
-  ;; Autocomplete parens
   (use-package elec-pair
     :straight nil
     :hook (after-init . electric-pair-mode))
 #+end_src
 
+Add functionality to surround regions in evil region mode (with S prefix)
 #+begin_src emacs-lisp
   ;; Adding in parenthesis and other brackets from visual mode
   (use-package evil-surround
     :hook (after-init . global-evil-surround-mode))
 #+end_src
 
+Split sub-words in programming modes. Allows moving between words between camelCase
 #+begin_src emacs-lisp
-  ;; Subword splitting
   (use-package subword
     :straight nil
     :hook ((prog-mode . subword-mode)
            (minibuffer-setup . subword-mode)))
 #+end_src
 
+Enable flycheck in programming modes
 #+begin_src emacs-lisp
-  ;; Flycheck
   (use-package flycheck
     :hook (prog-mode . global-flycheck-mode)
     :config
@@ -616,6 +618,7 @@ Reload the configuration file (not init.el, but just this config.org)
     (setq-default flycheck-disabled-checkers '(emacs-lisp-checkdoc)))
 #+end_src
 
+Put flycheck errors in a posframe
 #+begin_src emacs-lisp
   (use-package flycheck-posframe
     :after flycheck
@@ -626,15 +629,15 @@ Reload the configuration file (not init.el, but just this config.org)
                  #'(lambda () (bound-and-true-p company-backend))))
 #+end_src
 
+Enable spellchecking in text and outline modes
 #+begin_src emacs-lisp
-  ;; Flyspell
   (use-package flyspell
     :straight nil
     :hook ((text-mode outline-mode) . flyspell-mode))
 #+end_src
 
+Set up compile to scroll output to first error
 #+begin_src emacs-lisp
-  ;; Compilation
   (use-package compile
     :straight nil
     :commands compile
@@ -1219,7 +1222,9 @@ Don't ask to confirm running source code blocks
     (setq company-idle-delay 0.2
           company-minimum-prefix-length 1
           company-selection-wrap-around t))
+#+end_src
 
+#+begin_src emacs-lisp
   (use-package company-box
     :diminish
     :functions (my-company-box--make-line
