@@ -1432,12 +1432,21 @@ Don't ask to confirm running source code blocks
     :hook (matlab-shell-mode . (my/add-company-backend-locally 'company-matlab-shell)))
 #+end_src
 
-** Dockerfile
+** Docker
 #+begin_src emacs-lisp
-  ;; Dockerfile
-  (use-package dockerfile-mode
+  (use-package dockerfile-mode)
+#+end_src
+
+#+begin_src emacs-lisp
+  (use-package docker)
+#+end_src
+
+#+begin_src emacs-lisp
+  (use-package evil-collection
+    :after evil docker
+    :demand
     :config
-    (setq dockerfile-use-sudo t))
+    (evil-collection-init 'docker))
 #+end_src
 
 ** Systemd files
