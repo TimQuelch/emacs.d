@@ -1456,6 +1456,10 @@ Don't ask to confirm running source code blocks
 #+end_src
 
 #+begin_src emacs-lisp
+  (use-package docker-compose-mode)
+#+end_src
+
+#+begin_src emacs-lisp
   (use-package docker)
 #+end_src
 
