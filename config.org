@@ -181,12 +181,12 @@ Start scrolling in buffers before point leaves buffer
 
 Flash line containing point after navigation
 #+begin_src emacs-lisp
-    (use-package beacon
-      :hook (after-init . beacon-mode)
-      :config
-      (setq beacon-blink-when-point-moves-vertically 35)
-      (setq beacon-blink-duration 0.2)
-      (setq beacon-blink-delay 0.2))
+  (use-package beacon
+    :hook (after-init . beacon-mode)
+    :config
+    (setq beacon-blink-when-point-moves-vertically 35)
+    (setq beacon-blink-duration 0.2)
+    (setq beacon-blink-delay 0.2))
 #+end_src
 
 ** Hydra
@@ -1112,7 +1112,7 @@ Capturing reference notes
            (concat "#+TITLE: "
                    (funcall get-and-strip "title")
                    "\n#+ROAM_KEY: " key "\n\n"))))))
-(setq org-ref-notes-function 'my/org-roam-open-ref-note)
+  (setq org-ref-notes-function 'my/org-roam-open-ref-note)
 #+end_src
 
 #+begin_src emacs-lisp
