@@ -1139,6 +1139,24 @@ Don't ask to confirm running source code blocks
   (setq org-confirm-babel-evaluate nil)
 #+end_src
 
+* Email
+#+begin_src emacs-lisp
+  (use-package notmuch
+    :config
+    (setq notmuch-hello-sections '(notmuch-hello-insert-header
+                                   notmuch-hello-insert-saved-searches
+                                   notmuch-hello-insert-search
+                                   notmuch-hello-insert-recent-searches
+                                   notmuch-hello-insert-alltags))
+    (setq notmuch-show-logo nil)
+    (setq notmuch-search-oldest-first nil)
+    (setq notmuch-show-text/html-blocked-images nil)
+    (setq mm-text-html-renderer 'gnus-w3m)
+    (add-hook 'notmuch-mua-send-hook 'notmuch-mua-attachment-check))
+#+end_src
+
+** TODO configure FCC dirs
+
 * LSP
 #+begin_src emacs-lisp
   (use-package lsp-mode
