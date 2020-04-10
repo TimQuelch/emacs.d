@@ -1142,6 +1142,22 @@ Don't ask to confirm running source code blocks
 * Email
 #+begin_src emacs-lisp
   (use-package notmuch
+    :bind (
+           :map notmuch-common-keymap
+           ("J" . notmuch-jump-search)
+           :map notmuch-search-mode-map
+           ("j" . notmuch-search-next-thread)
+           ("k" . notmuch-search-previous-thread)
+           ("K" . notmuch-tag-jump)
+           :map notmuch-tree-mode-map
+           ("j" . notmuch-tree-next-matching-message)
+           ("k" . notmuch-tree-previous-matching-message)
+           ("K" . notmuch-tag-jump)
+           :map notmuch-show-mode-map
+           ("j" . notmuch-show-advance)
+           ("k" . notmuch-show-rewind)
+           ("K" . notmuch-tag-jump)
+           )
     :config
     (setq notmuch-hello-sections '(notmuch-hello-insert-header
                                    notmuch-hello-insert-saved-searches
