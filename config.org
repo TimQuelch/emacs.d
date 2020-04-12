@@ -1056,7 +1056,8 @@ Use org-roam for my notes. Currently not in MELPA so need to manually specify th
            :map org-roam-mode-map
            ("C-c n l" . org-roam)
            ("C-c n f" . org-roam-find-file)
-           ("C-c n g" . org-roam-show-graph)
+           ("C-c n g" . org-roam-graph-show)
+           ("C-c n c" . org-roam-graph-show-connected-component)
            :map org-mode-map
            ("C-c n i" . org-roam-insert)
            )
