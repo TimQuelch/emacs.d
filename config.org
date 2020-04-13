@@ -702,6 +702,12 @@ Highlight  changed lines in fringes
     (setq-default fringes-outside-margins t))
 #+end_src
 
+Integration with github
+#+begin_src emacs-lisp
+  (use-package forge
+    :after magit)
+#+end_src
+
 Also include some small major modes for editing git specific files
 #+begin_src emacs-lisp
   (use-package gitignore-mode)
