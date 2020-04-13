@@ -768,9 +768,13 @@ Additionally change the movement keys in the date-picker to have evil-like movem
 
 Unbind keys that add/remove files from agenda. I instead just use all the files in the org directory.
 #+begin_src emacs-lisp :noweb-ref org-config
-  ;; Unbind org add file and remove file
   (unbind-key "C-c [" org-mode-map)
   (unbind-key "C-c ]" org-mode-map)
+#+end_src
+
+Unbind key that comments out a header
+#+begin_src emacs-lisp :noweb-ref org-config
+  (unbind-key "C-c ;" org-mode-map)
 #+end_src
 
 *** Configuration
