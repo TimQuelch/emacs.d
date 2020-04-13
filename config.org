@@ -884,6 +884,11 @@ Use \LaTeX to preview maths
 #+end_src
 
 ** Agenda
+I use ~org-super-agenda~ to group tasks in agenda
+#+begin_src emacs-lisp
+  (use-package org-super-agenda)
+#+end_src
+
 #+begin_src emacs-lisp :noweb yes
   <<agenda-filters>>
   (use-package org-agenda
@@ -906,10 +911,30 @@ Use \LaTeX to preview maths
           org-agenda-window-setup 'only-window
           org-agenda-restore-windows-after-quit t)
 
+    (setq org-agenda-prefix-format '((agenda . " %i %?-12t% s")
+                                     (todo . " %i ")
+                                     (tags . " %i ")
+                                     (search . " %i ")))
+
     (setq org-agenda-custom-commands
-          '(("j" "Agenda"
-             ((agenda ""
-                      ((org-agenda-span 1)))
+          '(("j" "Super agenda"
+             ((agenda "" ((org-super-agenda-groups
+                           '((:name "Schedule"
+                                    :time-grid t)
+                             (:order-multi (2 (:name "Emails"
+                                                     :tag "email")
+                                              (:name "Personal"
+                                                     :tag "personal")
+                                              (:name "Housework"
+                                                     :tag "home")
+                                              (:name "To read"
+                                                     :tag "toread")
+                                              (:name "Habits"
+                                                     :habit t)))
+                             (:todo "WAITING")
+                             (:anything t :order 3)))))
+              ;; TODO Unscheduled Next tasks
+              ;; TODO Stuck projects Next projects
               (tags "REFILE"
                     ((org-agenda-overriding-header "Tasks to Refile")
                      (orgs-tag-match-list-sublevels nil)))
