@@ -884,7 +884,8 @@ Use \LaTeX to preview maths
 #+end_src
 
 ** Agenda
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :noweb yes
+  <<agenda-filters>>
   (use-package org-agenda
     :straight nil
     :bind (("C-c a" . org-agenda)
@@ -920,6 +921,27 @@ Use \LaTeX to preview maths
               ))))
 
     (unbind-key ":" org-agenda-mode-map))
+#+end_src
+
+*** Agenda filters
+Functions that I use to filter the agenda
+#+begin_src emacs-lisp
+  (defun my/is-project-p ()
+    "Is a project. i.e. A task (with a todo keyword) that has a subtask (with a todo keyword)"
+    (save-restriction
+      (widen)
+      (let ((has-subtask)
+            (subtree-end (save-excursion (org-end-of-subtree t)))
+            (is-a-task (member (nth 2 (org-heading-components)) org-todo-keywords-1)))
+        (save-excursion
+          (forward-line 1)
+          (when is-a-task
+            (while (and (not has-subtask)
+                        (< (point) subtree-end)
+                        (re-search-forward org-heading-regexp subtree-end t))
+              (when (member (org-get-todo-state) org-todo-keywords-1)
+                (setq has-subtask t)))))
+        (and is-a-task has-subtask))))
 #+end_src
 
 ** Archiving
