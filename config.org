@@ -907,7 +907,7 @@ I use ~org-super-agenda~ to group tasks in agenda
     :config
     (setq org-agenda-dim-blocked-tasks t
           org-agenda-follow-indirect t
-          org-agenda-span 'week
+          org-agenda-span 'day
           org-agenda-window-setup 'only-window
           org-agenda-restore-windows-after-quit t)
 
@@ -921,18 +921,17 @@ I use ~org-super-agenda~ to group tasks in agenda
              ((agenda "" ((org-super-agenda-groups
                            '((:name "Schedule"
                                     :time-grid t)
-                             (:order-multi (2 (:name "Emails"
-                                                     :tag "email")
-                                              (:name "Personal"
-                                                     :tag "personal")
-                                              (:name "Housework"
-                                                     :tag "home")
-                                              (:name "To read"
-                                                     :tag "toread")
-                                              (:name "Habits"
-                                                     :habit t)))
-                             (:todo "WAITING")
-                             (:anything t :order 3)))))
+                             (:name "Emails"
+                                    :tag "email")
+                             (:name "Personal"
+                                    :tag "personal")
+                             (:name "Housework"
+                                    :tag "home")
+                             (:name "To read"
+                                    :tag "toread")
+                             (:name "Habits"
+                                    :habit t)
+                             (:todo "WAITING")))))
               ;; TODO Unscheduled Next tasks
               ;; TODO Stuck projects Next projects
               (tags "REFILE"
