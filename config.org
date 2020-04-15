@@ -951,22 +951,89 @@ I use ~org-super-agenda~ to group tasks in agenda
 *** Agenda filters
 Functions that I use to filter the agenda
 #+begin_src emacs-lisp
+  (defun my/is-todo-p ()
+    (member (nth 2 (org-heading-components)) org-todo-keywords-1))
+
   (defun my/is-project-p ()
-    "Is a project. i.e. A task (with a todo keyword) that has a subtask (with a todo keyword)"
+    "Is a project. i.e. A todo (with a todo keyword) that has at least one subtodo (with a todo keyword)"
     (save-restriction
       (widen)
-      (let ((has-subtask)
+      (let ((has-subtodo)
             (subtree-end (save-excursion (org-end-of-subtree t)))
-            (is-a-task (member (nth 2 (org-heading-components)) org-todo-keywords-1)))
-        (save-excursion
-          (forward-line 1)
-          (when is-a-task
-            (while (and (not has-subtask)
+            (is-a-todo (my/is-todo-p))
+            (when is-a-todo
+              (save-excursion
+                (forward-line 1)
+                (while (and (not has-subtodo)
+                            (< (point) subtree-end)
+                            (re-search-forward org-heading-regexp subtree-end t))
+                  (when (my/is-todo-p)
+                    (setq has-subtodo t)))))
+            (and is-a-todo has-subtodo)))))
+
+  (defun my/is-task-p ()
+    "Is a task. i.e. A todo (with a todo keyword) that has no subtodos (with a todo keyword)"
+    (save-restriction
+      (widen)
+      (let ((has-subtodo)
+            (subtree-end (save-excursion (org-end-of-subtree t)))
+            (is-a-todo (my/is-todo-p)))
+        (when is-a-todo
+          (save-excursion
+            (forward-line 1)
+            (while (and (not has-subtodo)
                         (< (point) subtree-end)
                         (re-search-forward org-heading-regexp subtree-end t))
-              (when (member (org-get-todo-state) org-todo-keywords-1)
-                (setq has-subtask t)))))
-        (and is-a-task has-subtask))))
+              (when (my/is-todo-p)
+                (setq has-subtodo t)))))
+        (and is-a-todo (not has-subtodo)))))
+
+  (defun my/is-subtodo-p ()
+    "Is todo (either a task or a project) that is part of a project"
+    (save-restriction
+      (widen)
+      (let ((is-subtodo)
+            (is-a-todo (my/is-todo-p)))
+        (when is-a-todo
+          (save-excursion
+            (while (and (not is-subtodo)
+                        (org-heading-up-safe))
+              (when (my/is-todo-p)
+                (setq is-subtodo t)))))
+        (and is-a-todo is-subtodo))))
+
+  (defun my/is-subproject-p ()
+    "Is task that is part of a project"
+    (and (my/is-subtodo-p) (my/is-project-p)))
+
+  (defun my/is-subtask-p ()
+    "Is task that is part of a project"
+    (and (my/is-subtodo-p) (my/is-task-p)))
+
+  (defun my/is-standalone-project-p ()
+    "Is project that is not part of a project"
+    (and (not (my/is-subtodo-p)) (my/is-project-p)))
+
+  (defun my/is-standalone-task-p ()
+    "Is task that is not part of a project"
+    (and (not (my/is-subtodo-p)) (my/is-task-p)))
+
+  (defvar my/next-todo-keyword "NEXT"
+    "The todo keyword indicating the next task in a project. Any project without at least one subtask with this keyword is considered stuck")
+
+  (defun my/skip-non-stuck-projects ()
+    "Skip trees that are not stuck projects"
+    (save-restriction
+      (widen)
+      (let ((next-headline (save-excursion (or (outline-next-heading) (point-max)))))
+        (if (my/is-project-p)
+            (let ((subtree-end (save-excursion (org-end-of-subtree t))))
+              (if (re-search-forward
+                   (concat org-outline-regexp-bol my/next-todo-keyword " ")
+                   subtree-end t)
+                  next-headline
+                nil))
+          next-headline))))
 #+end_src
 
 ** Archiving
