@@ -10,7 +10,7 @@ Add in my lisp directory as a load path
 ** Custom
 Set the custom file to another file. I don't want this to be the default of =init.el=
 #+begin_src emacs-lisp
-  (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
+  (setq custom-file (make-temp-file "custom"))
   (load custom-file)
 #+end_src
 
