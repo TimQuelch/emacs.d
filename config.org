@@ -886,7 +886,8 @@ Use \LaTeX to preview maths
 ** Agenda
 I use ~org-super-agenda~ to group tasks in agenda
 #+begin_src emacs-lisp
-  (use-package org-super-agenda)
+  (use-package org-super-agenda
+    :hook (org-agenda-mode . org-super-agenda-mode))
 #+end_src
 
 #+begin_src emacs-lisp :noweb yes
