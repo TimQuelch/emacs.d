@@ -891,7 +891,6 @@ I use ~org-super-agenda~ to group tasks in agenda
 #+end_src
 
 #+begin_src emacs-lisp :noweb yes
-  <<agenda-filters>>
   (use-package org-agenda
     :straight nil
     :bind (("C-c a" . org-agenda)
@@ -916,6 +915,8 @@ I use ~org-super-agenda~ to group tasks in agenda
                                      (todo . " %i ")
                                      (tags . " %i ")
                                      (search . " %i ")))
+
+    <<agenda-filters>>
 
     (setq org-agenda-custom-commands
           '(("j" "Super agenda"
