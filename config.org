@@ -930,20 +930,20 @@ I use ~org-super-agenda~ to group tasks in agenda
                    :habit t
                    :order 101)
             (:name "Configuration"
-                   :tag "EMACS"
+                   :tag "config"
                    :order 102)))
 
     (setq org-agenda-custom-commands
           '(("j" "Super agenda"
              ((agenda "" ((org-super-agenda-groups
                            (cons '(:name "Schedule" :time-grid t) org-super-agenda-groups))))
+              (tags "inbox"
+                    ((org-agenda-overriding-header "Inbox")
+                     (orgs-tag-match-list-sublevels nil)))
               (todo "" ((org-agenda-overriding-header "Stuck projects")
                         (org-agenda-skip-function 'my/skip-all-but-stuck-projects)))
               (todo "" ((org-agenda-overriding-header "Unscheduled available todos")
-                        (org-agenda-skip-function 'my/skip-all-but-available-unscheduled-todos)))
-              (tags "REFILE"
-                    ((org-agenda-overriding-header "Inbox")
-                     (orgs-tag-match-list-sublevels nil)))))))
+                        (org-agenda-skip-function 'my/skip-all-but-available-unscheduled-todos)))))))
 
     (unbind-key ":" org-agenda-mode-map))
 #+end_src
@@ -1064,7 +1064,7 @@ Functions that I use to filter the agenda
     :straight nil
     :bind ("C-c c" . org-capture)
     :config
-    (setq org-default-notes-file (expand-file-name "refile.org" org-directory)
+    (setq org-default-notes-file (expand-file-name "inbox.org" org-directory)
           org-capture-bookmark nil)
 
     (setq org-capture-templates
