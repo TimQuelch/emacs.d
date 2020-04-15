@@ -896,10 +896,8 @@ I use ~org-super-agenda~ to group tasks in agenda
     :bind (("C-c a" . org-agenda)
            ("<f12>" . org-agenda)
            :map org-agenda-mode-map
-           ("j" . org-agenda-next-line)
-           ("k" . org-agenda-previous-line)
-           ("J" . org-agenda-next-item)
-           ("K" . org-agenda-previousitem)
+           ("j" . org-agenda-next-item)
+           ("k" . org-agenda-previous-item)
            ("C-d" . scroll-up-command)
            ("C-S-D" . scroll-down-command))
     :init
