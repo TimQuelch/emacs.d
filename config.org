@@ -1070,12 +1070,10 @@ Functions that I use to filter the agenda
     (setq org-capture-templates
           '(("t" "todo" entry (file org-default-notes-file)
              "* TODO %?\n%U\n" :clock-in t :clock-resume t)
-            ("n" "note" entry (file org-default-notes-file)
-             "* %?\n%U\n" :clock-in t :clock-resume t)
-            ("e" "email" entry (file org-default-notes-file)
-             "* EMAIL %?\n%U\n" :clock-in t :clock-resume t)
-            ("r" "reply" entry (file org-default-notes-file)
-             "* EMAIL Reply to %?\n%U\n" :clock-in t :clock-resume t))))
+            ("n" "note" entry (function (lambda ()
+                                          (org-journal-new-entry t)
+                                          (goto-char (point-min))))
+             "* %(format-time-string org-journal-time-format)%^{Title}\n%i%?"))))
 #+end_src
 
 ** Clocking
