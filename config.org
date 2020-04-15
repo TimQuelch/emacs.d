@@ -916,33 +916,34 @@ I use ~org-super-agenda~ to group tasks in agenda
 
     <<agenda-filters>>
 
+    (setq org-super-agenda-groups
+          '((:name "Emails"
+                   :tag "email"
+                   :order 3)
+            (:name "Housework"
+                   :tag "home"
+                   :order 100)
+            (:name "To read"
+                   :tag "toread"
+                   :order 4)
+            (:name "Habits"
+                   :habit t
+                   :order 101)
+            (:name "Configuration"
+                   :tag "EMACS"
+                   :order 102)))
+
     (setq org-agenda-custom-commands
           '(("j" "Super agenda"
              ((agenda "" ((org-super-agenda-groups
-                           '((:name "Schedule"
-                                    :time-grid t)
-                             (:name "Emails"
-                                    :tag "email")
-                             (:name "Personal"
-                                    :tag "personal")
-                             (:name "Housework"
-                                    :tag "home")
-                             (:name "To read"
-                                    :tag "toread")
-                             (:name "Habits"
-                                    :habit t)
-                             (:todo "WAITING")))))
-              ;; TODO Unscheduled Next tasks
-              ;; TODO Stuck projects Next projects
+                           (cons '(:name "Schedule" :time-grid t) org-super-agenda-groups))))
+              (todo "" ((org-agenda-overriding-header "Stuck projects")
+                        (org-agenda-skip-function 'my/skip-all-but-stuck-projects)))
+              (todo "" ((org-agenda-overriding-header "Unscheduled available todos")
+                        (org-agenda-skip-function 'my/skip-all-but-available-unscheduled-todos)))
               (tags "REFILE"
-                    ((org-agenda-overriding-header "Tasks to Refile")
-                     (orgs-tag-match-list-sublevels nil)))
-              (tags-todo "-EMACS"
-                         ((org-agenda-overriding-header "Unscheduled Tasks")
-                          (org-agenda-skip-function '(org-agenda-skip-entry-if 'scheduled))))
-              (tags-todo "EMACS"
-                         ((org-agenda-overriding-header "Emacs configuration")))
-              ))))
+                    ((org-agenda-overriding-header "Inbox")
+                     (orgs-tag-match-list-sublevels nil)))))))
 
     (unbind-key ":" org-agenda-mode-map))
 #+end_src
@@ -959,16 +960,16 @@ Functions that I use to filter the agenda
       (widen)
       (let ((has-subtodo)
             (subtree-end (save-excursion (org-end-of-subtree t)))
-            (is-a-todo (my/is-todo-p))
-            (when is-a-todo
-              (save-excursion
-                (forward-line 1)
-                (while (and (not has-subtodo)
-                            (< (point) subtree-end)
-                            (re-search-forward org-heading-regexp subtree-end t))
-                  (when (my/is-todo-p)
-                    (setq has-subtodo t)))))
-            (and is-a-todo has-subtodo)))))
+            (is-a-todo (my/is-todo-p)))
+        (when is-a-todo
+          (save-excursion
+            (forward-line 1)
+            (while (and (not has-subtodo)
+                        (< (point) subtree-end)
+                        (re-search-forward org-heading-regexp subtree-end t))
+              (when (my/is-todo-p)
+                (setq has-subtodo t)))))
+        (and is-a-todo has-subtodo))))
 
   (defun my/is-task-p ()
     "Is a task. i.e. A todo (with a todo keyword) that has no subtodos (with a todo keyword)"
@@ -996,7 +997,7 @@ Functions that I use to filter the agenda
         (when is-a-todo
           (save-excursion
             (while (and (not is-subtodo)
-                        (org-heading-up-safe))
+                        (org-up-heading-safe))
               (when (my/is-todo-p)
                 (setq is-subtodo t)))))
         (and is-a-todo is-subtodo))))
@@ -1020,19 +1021,31 @@ Functions that I use to filter the agenda
   (defvar my/next-todo-keyword "NEXT"
     "The todo keyword indicating the next task in a project. Any project without at least one subtask with this keyword is considered stuck")
 
-  (defun my/skip-non-stuck-projects ()
+  (defun my/is-stuck-project-p ()
+    "Is a project that is stuck"
+    (if (my/is-project-p)
+        (let ((subtree-end (save-excursion (org-end-of-subtree t)))
+              (next-regexp (concat org-outline-regexp-bol my/next-todo-keyword " ")))
+          (forward-line 1)
+          (not (re-search-forward next-regexp subtree-end t)))
+      nil))
+
+  (defun my/skip-all-but-stuck-projects ()
     "Skip trees that are not stuck projects"
     (save-restriction
       (widen)
-      (let ((next-headline (save-excursion (or (outline-next-heading) (point-max)))))
-        (if (my/is-project-p)
-            (let ((subtree-end (save-excursion (org-end-of-subtree t))))
-              (if (re-search-forward
-                   (concat org-outline-regexp-bol my/next-todo-keyword " ")
-                   subtree-end t)
-                  next-headline
-                nil))
-          next-headline))))
+      (if (my/is-stuck-project-p)
+          nil
+        (save-excursion (or (outline-next-heading) (point-max))))))
+
+  (defun my/skip-all-but-available-unscheduled-todos ()
+    "Skip todos that are unavailable or available but already scheduled. Available todos are standalone tasks or NEXT tasks"
+    (save-restriction
+      (widen)
+      (if (and (or (my/is-standalone-task-p) (string-equal (org-get-todo-state) my/next-todo-keyword))
+               (not (org-get-scheduled-time nil)))
+          nil
+        (save-excursion (or (outline-next-heading) (point-max))))))
 #+end_src
 
 ** Archiving
