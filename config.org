@@ -1073,7 +1073,23 @@ Functions that I use to filter the agenda
             ("n" "note" entry (function (lambda ()
                                           (org-journal-new-entry t)
                                           (goto-char (point-min))))
-             "* %(format-time-string org-journal-time-format)%^{Title}\n%i%?"))))
+             "* %(format-time-string org-journal-time-format)%^{Title}\n%i%?")
+            ("e" "email" entry (file org-default-notes-file)
+             "* TODO Reply: %a :email:" :immediate-finish t))))
+#+end_src
+
+Allow capturing of email in notmuch mode
+#+begin_src emacs-lisp
+  (use-package ol-notmuch
+    :straight org-plus-contrib
+    :after (org-capture)
+    :demand
+    :config
+    (defun my/org-capture-email ()
+      (interactive)
+      (org-capture nil "e"))
+    :bind (:map notmuch-show-mode-map
+                ("C" . my/org-capture-email)))
 #+end_src
 
 ** Clocking
