@@ -1246,28 +1246,17 @@ Use org-roam for my notes. Currently not in MELPA so need to manually specify th
 
 Capturing reference notes
 #+begin_src emacs-lisp
-  (defun my/org-roam-open-ref-note (key)
-    (let ((match (assoc key (org-roam-sql [:select [ref file] :from refs]))))
-      (if match
-          ;; notes already exists, open those notes
-          (find-file (cadr match))
-        ;; notes do not exist, create new notes
-        (let* ((bibtex-completion-bibliography (org-ref-find-bibliography))
-               (entry (bibtex-completion-get-entry key))
-               (get-and-strip (lambda (field)
-                                (let ((value (bibtex-completion-get-value field entry)))
-                                  (if value (replace-regexp-in-string
-                                             "[{}]" ""
-                                             (s-collapse-whitespace value))))))
-               (path (f-join org-roam-directory
-                             (concat (format-time-string "%Y%m%d%H%M%S" (current-time))
-                                     "-" key ".org"))))
-          (find-file path)
-          (insert
-           (concat "#+TITLE: "
-                   (funcall get-and-strip "title")
-                   "\n#+ROAM_KEY: " key "\n\n"))))))
-  (setq org-ref-notes-function 'my/org-roam-open-ref-note)
+  (use-package org-roam-bibtex
+    :straight (:host github :repo "Zaeph/org-roam-bibtex")
+    :hook (after-init . org-roam-bibtex-mode)
+    :config
+    (setq org-roam-bibtex-citekey-format "%s")
+    (setq org-roam-bibtex-template '(("r" "ref" plain
+                                      (function org-roam-capture--get-point)
+                                      ""
+                                      :file-name "%<%Y%m%d%H%M%S>-${slug}"
+                                      :head "#+TITLE: Notes on: ${title}\n#+ROAM_KEY: ${=key=}\n"
+                                      :unnarrowed t))))
 #+end_src
 
 #+begin_src emacs-lisp
