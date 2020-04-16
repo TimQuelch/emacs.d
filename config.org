@@ -1306,8 +1306,25 @@ Don't ask to confirm running source code blocks
     (setq notmuch-show-logo nil)
     (setq notmuch-search-oldest-first nil)
     (setq notmuch-show-text/html-blocked-images nil)
+    (setq notmuch-always-prompt-for-sender t)
+    (setq notmuch-show-indent-messages-width tab-width)
     (setq mm-text-html-renderer 'gnus-w3m)
     (add-hook 'notmuch-mua-send-hook 'notmuch-mua-attachment-check))
+#+end_src
+
+Ensure that from address is correct
+#+begin_src emacs-lisp
+  (setq mail-envelope-from 'header
+        mail-specify-envelope-from 'header
+        message-sendmail-envelope-from 'header)
+#+end_src
+
+Setup correct sent folders
+#+begin_src emacs-lisp
+  (setq notmuch-fcc-dirs '(("tim@tquelch.com" . "\"personal/Sent Items\" -unread -inbox +sent")
+                           ("tim@quelch.name" . "\"oldpersonal/[Gmail].All Mail\" -unread -inbox +sent")
+                           ("t.quelch@qut.edu.au" . "\"qut/Sent Items\" -unread -inbox +sent")
+                           ("timothy.quelch@connect.qut.edu.au" . "\"student/Sent Items\" -unread -inbox +sent")))
 #+end_src
 
 ** TODO configure FCC dirs
