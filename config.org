@@ -179,6 +179,11 @@ Start scrolling in buffers before point leaves buffer
         scroll-conservatively 100)
 #+end_src
 
+When scrolling screenfuls leave more context lines (default is 2)
+#+begin_src emacs-lisp
+  (setq next-screen-context-lines 8)
+#+end_src
+
 Flash line containing point after navigation
 #+begin_src emacs-lisp
   (use-package beacon
