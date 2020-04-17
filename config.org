@@ -1082,7 +1082,7 @@ Allow capturing of email in notmuch mode
 #+begin_src emacs-lisp
   (use-package ol-notmuch
     :straight org-plus-contrib
-    :after (org-capture)
+    :after (org-capture notmuch)
     :demand
     :config
     (defun my/org-capture-email ()
