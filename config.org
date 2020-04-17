@@ -1331,10 +1331,11 @@ Ensure that from address is correct
 
 Setup correct sent folders
 #+begin_src emacs-lisp
-  (setq notmuch-fcc-dirs '(("tim@tquelch.com" . "\"personal/Sent Items\" -unread -inbox +sent")
-                           ("tim@quelch.name" . "\"oldpersonal/[Gmail].All Mail\" -unread -inbox +sent")
-                           ("t.quelch@qut.edu.au" . "\"qut/Sent Items\" -unread -inbox +sent")
-                           ("timothy.quelch@connect.qut.edu.au" . "\"student/Sent Items\" -unread -inbox +sent")))
+  (setq notmuch-maildir-use-notmuch-insert nil)
+  (setq notmuch-fcc-dirs '(("tim@tquelch.com" . "personal/Sent Items")
+                           ("tim@quelch.name" . "oldpersonal/[Gmail].All Mail")
+                           ("t.quelch@qut.edu.au" . "qut/Sent Items")
+                           ("timothy.quelch@connect.qut.edu.au" . "student/Sent Items")))
 #+end_src
 
 ** TODO configure FCC dirs
