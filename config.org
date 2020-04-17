@@ -461,7 +461,7 @@ Configure projectile
     (setq evil-want-C-w-in-emacs-state t)
     (setq evil-want-Y-yank-to-eol t)
     (setq evil-want-abbrev-expand-on-insert-exit nil)
-    (setq evil-want-minibuffer t)
+    (setq evil-want-minibuffer nil)
     :config
     ;; Unbind record and use macro keys (I don't use them)
     (unbind-key "q" evil-normal-state-map)
