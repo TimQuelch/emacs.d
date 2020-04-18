@@ -1536,14 +1536,6 @@ Setup correct sent folders
           company-box-icons-alist 'company-box-icons-all-the-icons))
 #+end_src
 
-* Yasnippet
-#+begin_src emacs-lisp
-  (use-package yasnippet
-    :hook (after-init . yas-global-mode))
-
-  (use-package yasnippet-snippets)
-#+end_src
-
 * Languages
 ** C and C++
 #+begin_src emacs-lisp
