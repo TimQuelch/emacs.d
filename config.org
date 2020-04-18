@@ -140,6 +140,7 @@ Display line numbers in text and programming modes
     :straight nil
     :hook ((prog-mode text-mode) . display-line-numbers-mode)
     :config
+    (setq display-line-numbers 'visual)
     (set-face-attribute 'line-number nil :inherit '(fixed-pitch))
     (set-face-attribute 'line-number-current-line nil :inherit '(fixed-pitch hl-line)))
 #+end_src
