@@ -1,4 +1,4 @@
-#+PROPERTY: header-args :results silent
+#+PROPERTY: header-args :results silent :tangle yes
 
 * Lisp
 ** Load path
