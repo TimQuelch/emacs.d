@@ -915,6 +915,8 @@ I use ~org-super-agenda~ to group tasks in agenda
           org-agenda-window-setup 'only-window
           org-agenda-restore-windows-after-quit t)
 
+    (add-hook 'org-agenda-after-show-hook 'org-reveal)
+
     (setq org-agenda-prefix-format '((agenda . " %i %?-12t% s")
                                      (todo . " %i ")
                                      (tags . " %i ")
