@@ -899,64 +899,152 @@ I use ~org-super-agenda~ to group tasks in agenda
 #+begin_src emacs-lisp :noweb yes
   (use-package org-agenda
     :straight nil
-    :bind (("C-c a" . org-agenda)
-           ("<f12>" . org-agenda)
-           :map org-agenda-mode-map
-           ("j" . org-agenda-next-item)
-           ("k" . org-agenda-previous-item)
-           ("C-d" . scroll-up-command)
-           ("C-S-D" . scroll-down-command))
+    :bind (
+           <<agenda-bindings>>
+           )
     :init
     (setq org-agenda-files (list org-directory))
     :config
-    (setq org-agenda-dim-blocked-tasks t
-          org-agenda-follow-indirect t
-          org-agenda-span 'day
-          org-agenda-window-setup 'only-window
-          org-agenda-restore-windows-after-quit t)
-
-    (add-hook 'org-agenda-after-show-hook 'org-reveal)
-
-    (setq org-agenda-prefix-format '((agenda . " %i %?-12t% s")
-                                     (todo . " %i ")
-                                     (tags . " %i ")
-                                     (search . " %i ")))
-
+    <<agenda-config>>
     <<agenda-filters>>
+    <<agenda-views>>
+    )
+#+end_src
 
-    (setq org-super-agenda-groups
-          '((:name "Emails"
-                   :tag "email"
-                   :order 3)
-            (:name "Housework"
-                   :tag "home"
-                   :order 100)
-            (:name "To read"
-                   :tag "toread"
-                   :order 4)
-            (:name "Habits"
-                   :habit t
-                   :order 101)
-            (:name "Configuration"
-                   :tag "config"
-                   :order 102)))
+*** Bindings
+:PROPERTIES:
+:header-args: :noweb-ref agenda-bindings :tangle no
+:END:
 
-    (setq org-agenda-custom-commands
-          '(("j" "Super agenda"
-             ((agenda "" ((org-super-agenda-groups
-                           (cons '(:name "Schedule" :time-grid t) org-super-agenda-groups))))
-              (tags "inbox"
-                    ((org-agenda-overriding-header "Inbox")
-                     (orgs-tag-match-list-sublevels nil)))
-              (todo "" ((org-agenda-overriding-header "Stuck projects")
-                        (org-agenda-skip-function 'my/skip-all-but-stuck-projects)))
-              (todo "" ((org-agenda-overriding-header "Unscheduled available todos")
-                        (org-agenda-skip-function 'my/skip-all-but-available-unscheduled-todos)))))))
+Global bindings to access the agenda anywhere in emacs
+#+begin_src emacs-lisp
+  ("C-c a" . org-agenda)
+  ("<f12>" . org-agenda)
+#+end_src
 
-    (unbind-key ":" org-agenda-mode-map))
+Configure movement commands in agenda to be more vim-like
+#+begin_src emacs-lisp
+  :map org-agenda-mode-map
+  ("j" . org-agenda-next-item)
+  ("k" . org-agenda-previous-item)
+  ("C-d" . scroll-up-command)
+  ("C-S-D" . scroll-down-command)
+#+end_src
+
+#+begin_src emacs-lisp :noweb-ref agenda-config
+  (unbind-key ":" org-agenda-mode-map)
+#+end_src
+
+*** Configuration
+:PROPERTIES:
+:header-args: :noweb-ref agenda-config :tangle no
+:END:
+
+I used to dim blocked tasks, however my reconfigured agenda view should mean this doesn't matter
+#+begin_src emacs-lisp
+  (setq org-agenda-dim-blocked-tasks nil)
+#+end_src
+
+When I'm using follow mode (F) show the whole agenda filebuffer
+#+begin_src emacs-lisp
+  (setq org-agenda-follow-indirect nil)
+#+end_src
+
+Set the default span for the agenda to just be one day
+#+begin_src emacs-lisp
+  (setq org-agenda-span 'day)
+#+end_src
+
+Close all other windows when using the agenda
+#+begin_src emacs-lisp
+  (setq org-agenda-window-setup 'only-window)
+#+end_src
+
+When closing the agenda though, restore the previous window setup
+#+begin_src emacs-lisp
+  (setq org-agenda-restore-windows-after-quit t)
+#+end_src
+
+When opening an item from the agenda, ensure the whole tree (parents and siblings) is visible
+#+begin_src emacs-lisp
+  (add-hook 'org-agenda-after-show-hook 'org-reveal)
+#+end_src
+
+Remove the 'category' header from the agenda. Because I only really use one main agenda file, this was the same for all the values in the agenda. Removing it gives me some more horizontal space in the agenda view.
+#+begin_src emacs-lisp
+  (setq org-agenda-prefix-format '((agenda . " %i %?-12t% s")
+                                   (todo . " %i ")
+                                   (tags . " %i ")
+                                   (search . " %i ")))
+#+end_src
+*** Agenda views
+:PROPERTIES:
+:header-args: :noweb-ref agenda-views :tangle no
+:END:
+
+Setup the groups that appear in the agenda views.
+
+#+begin_src emacs-lisp
+  (setq org-super-agenda-groups
+        '((:name "Emails"
+                 :tag "email"
+                 :order 3)
+          (:name "Housework"
+                 :tag "home"
+                 :order 100)
+          (:name "To read"
+                 :tag "toread"
+                 :order 4)
+          (:name "Habits"
+                 :habit t
+                 :order 101)
+          (:name "Configuration"
+                 :tag "config"
+                 :order 102)))
+#+end_src
+I want to see emails high up, because usually they are pretty quick to do. Housework and habits I don't want to see until lower in the agenda, because they are usually low priority. Configuration to do in emacs or my OS is incredibly low priority so I want to see that last.
+
+Any items that do not fall in one of these filter categories goes in an automatic 'Other Items' section which has an order of 99 (so will appear before anything with an order >99)
+
+Below I'm setting up my main agenda view
+#+begin_src emacs-lisp :noweb yes
+  (setq org-agenda-custom-commands
+        '(("j" "Super agenda" (
+                               <<agenda-custom-commands>>
+                               ))))
+#+end_src
+
+The first view is today's agenda, for tasks scheduled today (or int he past) or with deadlines coming up. I include at schedule at the top
+#+begin_src emacs-lisp :noweb-ref agenda-custom-commands :tangle no
+  (agenda "" ((org-super-agenda-groups
+               (cons '(:name "Schedule" :time-grid t) org-super-agenda-groups))))
+#+end_src
+
+The next section is the Inbox. These are items that I have captured quickly and need to be refiled into my main agenda file.
+#+begin_src emacs-lisp :noweb-ref agenda-custom-commands :tangle no
+  (tags "inbox"
+        ((org-agenda-overriding-header "Inbox")
+         (orgs-tag-match-list-sublevels nil)))
+#+end_src
+
+This section shows projects which are stuck. I define projects as todo items with sub todo items. A stuck project is a project where none of the sub-todos has a NEXT keyword. These are projects where I don't have a task to go onto next. I want to see these because I need to go into these projects and evaluate what tasks I can begin next
+#+begin_src emacs-lisp :noweb-ref agenda-custom-commands :tangle no
+  (todo "" ((org-agenda-overriding-header "Stuck projects")
+            (org-agenda-skip-function 'my/skip-all-but-stuck-projects)))
+
+#+end_src
+
+This section shows tasks and projects which are available to be completed (e.g. they are standalone tasks or subtasks with a NEXT keyword) but are unscheduled. I want to see thse because I need to schedule them to complete sometime.
+#+begin_src emacs-lisp :noweb-ref agenda-custom-commands :tangle no
+  (todo "" ((org-agenda-overriding-header "Unscheduled available todos")
+            (org-agenda-skip-function 'my/skip-all-but-available-unscheduled-todos)))
 #+end_src
 
 *** Agenda filters
+:PROPERTIES:
+:header-args: :noweb-ref agenda-filters :tangle no
+:END:
+
 Functions that I use to filter the agenda
 #+begin_src emacs-lisp
   (defun my/is-todo-p ()
