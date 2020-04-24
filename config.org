@@ -266,7 +266,7 @@ Flash line containing point after navigation
     :config (add-to-list 'aw-dispatch-alist '(?w ace-window-hydra/body) t))
 #+end_src
 
-** Navigation
+** Projectile
 Bind finding definition keys to something useful
 #+begin_src emacs-lisp
   (bind-key "M-n" 'xref-find-definitions)
@@ -304,87 +304,48 @@ Configure projectile
                                       :test "ctest"))
 #+end_src
 
+** Ivy/Counsel
+
 #+begin_src emacs-lisp
-  (use-package helm
-    :bind (
-           ("C-c h" . helm-command-prefix)
-           ("M-x" . helm-M-x)
-           ("M-p" . helm-show-kill-ring)
-           ("C-x C-b" . helm-buffers-list)
-           ("C-x C-f" . helm-find-files)
-           :map helm-map
-           ("<tab>" . helm-execute-persistent-action)
-           ("C-i" . helm-execute-persistent-action)
-           ("C-z" . helm-select-action)
-           ("C-j" . helm-next-line)
-           ("C-k" . helm-previous-line)
-           )
-    :defines (helm-ff-search-library-in-sexp
-              helm-ff-file-name-history-use-recentf
-              helm-buffer-skip-remote-checking
-              helm-mode-fuzzy-match
-              helm-buffers-fuzzy-matching
-              helm-org-headings-fontify
-              helm-semantic-fuzzy-match
-              helm-M-x-fuzzy-match
-              helm-imenu-fuzzy-match
-              helm-lisp-fuzzy-completion
-              helm-locate-fuzzy-match)
+  (use-package ivy
+    :commands (completing-read completion-in-region)
+    :bind (:map ivy-minibuffer-map
+                ("C-j" . ivy-next-line)
+                ("C-k" . ivy-previous-line)
+                ("C-M-j" . ivy-next-line-and-call)
+                ("C-M-k" . ivy-previous-line-and-call)
+                ("M-j" . ivy-next-history-element)
+                ("M-k" . ivy-previous-history-element)
+                ("C-d" . ivy-scroll-up-command)
+                ("C-S-d" . ivy-scroll-down-command))
     :config
-    (require 'helm-config)
-    (require 'helm-files)
+    (ivy-mode t)
+    (setq ivy-height 20)
+    (setq ivy-count-format "(%d/%d) "))
 
-    (setq helm-split-window-inside-p            t ; open helm buffer inside current window, not occupy whole other window
-          helm-move-to-line-cycle-in-source     t ; move to end or beginning of source when reaching top or bottom of source.
-          helm-ff-search-library-in-sexp        t ; search for library in `require' and `declare-function' sexp.
-          helm-ff-file-name-history-use-recentf t
-          helm-echo-input-in-header-line        t
-          helm-scroll-amount                    4 ; scroll 4 lines other window using M-<next>/M-<prior>
-          helm-ff-search-library-in-sexp        t ; search for library in `require' and `declare-function' sexp.
+  (use-package ivy-hydra)
 
-          helm-buffer-skip-remote-checking      t
-          helm-mode-fuzzy-match                 t
-          helm-buffers-fuzzy-matching           t ; fuzzy matching buffer names when non-nil useful in helm-mini that lists buffers
-          helm-org-headings-fontify             t
-          ;; helm-find-files-sort-directories   t
-          ;; ido-use-virtual-buffers            t
-          helm-semantic-fuzzy-match             t
-          helm-M-x-fuzzy-match                  t
-          helm-imenu-fuzzy-match                t
-          helm-lisp-fuzzy-completion            t
-          ;; helm-apropos-fuzzy-match           t
-          helm-locate-fuzzy-match               t
-          helm-display-header-line              nil
+  (use-package counsel
+    :bind (("M-x" . counsel-M-x)
+           ("C-x C-f" . counsel-find-file)
+           ("C-x C-b" . counsel-switch-buffer)
+           ("C-x l" . counsel-locate)
+           ("M-y" . counsel-yank-pop)
+           ([remap find-library] . counsel-find-library)
+           ([remap imenu] . counsel-imenu)
+           ([remap pop-to-mark-command] . counsel-mark-ring)
+           ([remap bookmark-jump] . counsel-bookmark)))
 
-          ;; you can customize helm-do-grep to execute ack-grep
-          ;; helm-grep-default-command "ack-grep -Hn --smart-case --no-group --no-color %e %p %f"
-          ;; helm-grep-default-recurse-command "ack-grep -H --smart-case --no-group --no-color %e %p %f"
-          )
-
-    (defun helm-hide-minibuffer-maybe ()
-      "Hide minibuffer in Helm session if we use the header line as input field."
-      (when (with-helm-buffer helm-echo-input-in-header-line)
-        (let ((ov (make-overlay (point-min) (point-max) nil nil t)))
-          (overlay-put ov 'window (selected-window))
-          (overlay-put ov 'face
-                       (let ((bg-color (face-background 'default nil)))
-                         `(:background ,bg-color :foreground ,bg-color)))
-          (setq-local cursor-type nil))))
-
-    (add-hook 'helm-minibuffer-set-up-hook 'helm-hide-minibuffer-maybe)
-
-    (helm-mode 1))
-#+end_src
-
-#+begin_src emacs-lisp
-  (use-package helm-xref
-    :after helm
+  (use-package smex
+    :after counsel
     :demand)
-#+end_src
 
-#+begin_src emacs-lisp
-  (use-package helm-projectile
-    :bind ("C-x C-p" . helm-projectile))
+  (use-package swiper
+    :after (evil)
+    :commands (swiper swiper-isearch swiper-isearch-backward)
+    :bind (:map evil-motion-state-map
+                ([remap evil-search-forward] . swiper-isearch)
+                ([remap evil-search-backward] . swiper-isearch-backward)))
 #+end_src
 
 ** Treemacs
