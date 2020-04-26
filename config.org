@@ -335,13 +335,14 @@ Configure projectile
 #+end_src
 
 ** Ivy/Counsel
-
+I'm using Ivy as my completing read framework. I've rebound some of the keys to be more vim-like.
 #+begin_src emacs-lisp
   (use-package ivy
     :commands (completing-read completion-in-region)
     :bind (:map ivy-minibuffer-map
+                ("<return>" . ivy-alt-done)
                 ("C-j" . ivy-next-line)
-                ("C-k" . ivy-previous-line)
+                ("C-k" . ivy-previous-linev)
                 ("C-M-j" . ivy-next-line-and-call)
                 ("C-M-k" . ivy-previous-line-and-call)
                 ("M-j" . ivy-next-history-element)
@@ -350,32 +351,49 @@ Configure projectile
                 ("C-S-d" . ivy-scroll-down-command))
     :config
     (ivy-mode t)
-    (setq ivy-height 20)
+    (setq ivy-height 15)
     (setq ivy-count-format "(%d/%d) "))
+#+end_src
 
+Use the hydra menu in the ~ivy~ window (activated with ~M-o~)
+#+begin_src emacs-lisp
   (use-package ivy-hydra)
+#+end_src
 
+Use the counsel commands for common operations
+#+begin_src emacs-lisp
   (use-package counsel
     :bind (("M-x" . counsel-M-x)
            ("C-x C-f" . counsel-find-file)
            ("C-x C-b" . counsel-switch-buffer)
            ("C-x l" . counsel-locate)
            ("M-y" . counsel-yank-pop)
-           ([remap find-library] . counsel-find-library)
-           ([remap imenu] . counsel-imenu)
-           ([remap pop-to-mark-command] . counsel-mark-ring)
            ([remap bookmark-jump] . counsel-bookmark)))
+#+end_src
 
+Smex makes ~M-x~ usage a bit nicer. It remembers history and such
+#+begin_src emacs-lisp
   (use-package smex
     :after counsel
     :demand)
+#+end_src
 
+Swiper is used to replace my search forward and isearch
+#+begin_src emacs-lisp
   (use-package swiper
-    :after (evil)
     :commands (swiper swiper-isearch swiper-isearch-backward)
-    :bind (:map evil-motion-state-map
-                ([remap evil-search-forward] . swiper-isearch)
-                ([remap evil-search-backward] . swiper-isearch-backward)))
+    :bind (("C-s" . swiper-isearch)
+           :map evil-motion-state-map
+           ([remap evil-search-forward] . swiper-isearch)
+           ([remap evil-search-backward] . swiper-isearch-backward)))
+#+end_src
+
+** Avy
+
+I use ~avy~ for tree navigation of buffers
+#+begin_src emacs-lisp
+  (use-package avy
+    :bind ("C-'" . avy-goto-char))
 #+end_src
 
 ** Treemacs
