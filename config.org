@@ -1149,6 +1149,8 @@ Functions that I use to filter the agenda
                                           (org-journal-new-entry t)
                                           (goto-char (point-min))))
              "* %(format-time-string org-journal-time-format)%^{Title}\n%i%?")
+            ("a" "appointment" entry (file org-default-notes-file)
+             "* %?\n%U\n" :clock-in t :clock-resume t)
             ("e" "email" entry (file org-default-notes-file)
              "* TODO Reply: %a :email:" :immediate-finish t))))
 #+end_src
