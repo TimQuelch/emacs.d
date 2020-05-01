@@ -1254,7 +1254,8 @@ Allow capturing of email in notmuch mode
                                      ("" "pdfpages" nil)                ; Allow inclusion of pdfs
                                      ("" "subcaption" nil)              ; Allow subcaptions
                                      ("" "listings" nil)                ; Source code listings
-                                     ("" "color" nil)))                 ; Color in source code listings
+                                     ("" "color" nil)                   ; Color in source code listings
+                                     ("binary-units" "siunitx" t)))     ; SI units
 
     (setq org-latex-default-packages-alist (remove '("" "hyperref" nil) org-latex-default-packages-alist))
     (add-to-list 'org-latex-default-packages-alist '("hidelinks" "hyperref" nil))
