@@ -1358,6 +1358,12 @@ Don't ask to confirm running source code blocks
   (setq org-confirm-babel-evaluate nil)
 #+end_src
 
+Enable languages
+#+begin_src emacs-lisp
+  (org-babel-do-load-languages 'org-babel-load-languages '((emacs-lisp . t)
+                                                           (latex . t)))
+#+end_src
+
 * Email
 #+begin_src emacs-lisp
   (use-package notmuch
