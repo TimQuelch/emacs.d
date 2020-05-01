@@ -1249,7 +1249,6 @@ Allow capturing of email in notmuch mode
     (setq org-latex-default-class "a4article")
     (setq org-latex-packages-alist '(("titletoc, title" "appendix" nil) ; Setup appendices
                                      ("margin=25mm" "geometry")         ; Setup margins
-                                     ("" "biblatex")                    ; Setup margins
                                      ("" "tocbibind" nil)               ; Put bibliography in TOC
                                      ("" "pdflscape" nil)               ; Allow landscape pages
                                      ("" "pdfpages" nil)                ; Allow inclusion of pdfs
@@ -1272,9 +1271,7 @@ Allow capturing of email in notmuch mode
                                        ("keepspaces" "true")
                                        ("commentstyle" "\\color{red}")
                                        ("keywordstyle" "\\color{blue}")
-                                       ("breaklines" "true")))
-
-    (setq org-latex-pdf-process '("latexmk -shell-escape -bibtex -pdf %f")))
+                                       ("breaklines" "true"))))
 #+end_src
 
 ** Notetaking
