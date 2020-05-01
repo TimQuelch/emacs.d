@@ -1394,6 +1394,7 @@ Enable languages
     (setq notmuch-show-text/html-blocked-images nil)
     (setq notmuch-always-prompt-for-sender t)
     (setq notmuch-show-indent-messages-width tab-width)
+    (setq notmuch-mua-cite-function 'sc-cite-original)
     (setq mm-text-html-renderer 'gnus-w3m)
     (add-hook 'notmuch-mua-send-hook 'notmuch-mua-attachment-check))
 #+end_src
