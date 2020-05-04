@@ -342,7 +342,7 @@ I'm using Ivy as my completing read framework. I've rebound some of the keys to 
     :bind (:map ivy-minibuffer-map
                 ("<return>" . ivy-alt-done)
                 ("C-j" . ivy-next-line)
-                ("C-k" . ivy-previous-linev)
+                ("C-k" . ivy-previous-line)
                 ("C-M-j" . ivy-next-line-and-call)
                 ("C-M-k" . ivy-previous-line-and-call)
                 ("M-j" . ivy-next-history-element)
