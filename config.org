@@ -1324,7 +1324,6 @@ Capturing reference notes
     :straight (:host github :repo "Zaeph/org-roam-bibtex")
     :hook (after-init . org-roam-bibtex-mode)
     :config
-    (setq org-roam-bibtex-citekey-format "%s")
     (setq org-roam-bibtex-template '(("r" "ref" plain
                                       (function org-roam-capture--get-point)
                                       ""
