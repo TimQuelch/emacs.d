@@ -1325,18 +1325,19 @@ Capturing reference notes
     :straight (:host github :repo "Zaeph/org-roam-bibtex")
     :hook (after-init . org-roam-bibtex-mode)
     :config
-    (setq org-roam-bibtex-template '(("r" "ref" plain
-                                      (function org-roam-capture--get-point)
-                                      ""
-                                      :file-name "%<%Y%m%d%H%M%S>-${slug}"
-                                      :head "#+TITLE: Notes on: ${title}\n#+ROAM_KEY: ${=key=}\n"
-                                      :unnarrowed t))))
+    (setq orb-templates '(("r" "ref" plain
+                           (function org-roam-capture--get-point)
+                           ""
+                           :file-name "%<%Y%m%d%H%M%S>-${slug}"
+                           :head "#+TITLE: Notes on: ${title}\n#+ROAM_KEY: ${ref}\n"
+                           :unnarrowed t
+                           :immediate-finish t))))
 #+end_src
 
 #+begin_src emacs-lisp
   (helm-delete-action-from-source "Edit notes" helm-source-bibtex)
   (helm-add-action-to-source "Edit notes"
-                             'my/org-roam-open-ref-note helm-source-bibtex 7)
+                             'orb-notes-fn helm-source-bibtex 7)
 #+end_src
 
 ** Journal
