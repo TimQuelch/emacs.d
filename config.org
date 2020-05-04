@@ -1296,7 +1296,8 @@ Use org-roam for my notes. Currently not in MELPA so need to manually specify th
                                         :file-name "%<%Y%m%d%H%M%S>-${slug}"
                                         :head "#+TITLE: ${title}\n"
                                         :unnarrowed t
-                                        :immediate-finish t))))
+                                        :immediate-finish t)))
+    (setq org-roam-completion-system 'ivy))
 #+end_src
 
 #+begin_src emacs-lisp
