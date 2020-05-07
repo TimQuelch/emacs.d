@@ -1340,6 +1340,29 @@ Capturing reference notes
                              'orb-notes-fn helm-source-bibtex 7)
 #+end_src
 
+Set up org-noter
+#+begin_src emacs-lisp
+  (use-package org-noter)
+
+  (use-package pdf-tools
+    :magic ("%PDF" . pdf-view-mode)
+    :config
+    (pdf-tools-install :no-query))
+
+  (use-package org-pdftools
+    :hook (org-load . org-pdftools-setup-link))
+
+  (use-package nov
+    :mode ("\\.epub\\'" . nov-mode))
+
+  (use-package org-noter-pdftools
+    :after org-noter
+    :demand
+    :config
+    (with-eval-after-load 'pdf-annot
+      (add-hook 'pdf-annot-activate-handler-functions #'org-noter-pdftools-jump-to-note)))
+#+end_src
+
 ** Journal
 #+begin_src emacs-lisp
   (use-package org-journal
