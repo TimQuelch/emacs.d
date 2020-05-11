@@ -1350,11 +1350,15 @@ Set up org-noter
     :config
     (pdf-tools-install :no-query))
 
-  (use-package org-pdftools
-    :hook (org-load . org-pdftools-setup-link))
-
   (use-package nov
     :mode ("\\.epub\\'" . nov-mode))
+#+end_src
+
+
+I've disabled `org-[noter-]pdftools` for now because I'm pretty sure that it is breaking my ability to take notes in =.epub= files.
+#+begin_src emacs-lisp :tangle no
+  (use-package org-pdftools
+    :hook (org-load . org-pdftools-setup-link))
 
   (use-package org-noter-pdftools
     :after org-noter
