@@ -1342,7 +1342,8 @@ Capturing reference notes
 
 Set up org-noter
 #+begin_src emacs-lisp
-  (use-package org-noter)
+  (use-package org-noter
+    :straight (:host github :repo "weirdNox/org-noter"))
 
   (use-package pdf-tools
     :magic ("%PDF" . pdf-view-mode)
