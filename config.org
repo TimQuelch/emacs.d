@@ -607,7 +607,18 @@ Add functionality to surround regions in evil region mode (with S prefix)
 #+begin_src emacs-lisp
   ;; Adding in parenthesis and other brackets from visual mode
   (use-package evil-surround
-    :hook (after-init . global-evil-surround-mode))
+    :hook (after-init . global-evil-surround-mode)
+    :config
+    (setq evil-surround-pairs-alist '((?\( . ("(" . ")"))
+                                      (?\) . ("(" . ")"))
+                                      (?\[ . ("[" . "]"))
+                                      (?\] . ("[" . "]"))
+                                      (?\{ . ("{" . "}"))
+                                      (?\} . ("{" . "}"))
+                                      (?> . ("<" . ">"))
+                                      (?< . ("<" . ">"))
+                                      (?\" . ("\"" . "\""))
+                                      (?' . ("'" . "'")))))
 #+end_src
 
 Split sub-words in programming modes. Allows moving between words between camelCase
