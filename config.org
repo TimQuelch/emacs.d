@@ -1312,9 +1312,7 @@ Use org-roam for my notes. Currently not in MELPA so need to manually specify th
   (use-package company-org-roam
     :straight (:host github :repo "org-roam/company-org-roam")
     :after (company org-roam)
-    :demand
-    :config
-    (company-org-roam-init))
+    :hook (org-mode . (my/add-company-backend-locally-hook 'company-org-roam)))
 #+end_src
 
 #+begin_src emacs-lisp
