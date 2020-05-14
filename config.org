@@ -1280,7 +1280,8 @@ Use org-roam for my notes. Currently not in MELPA so need to manually specify th
 #+begin_src emacs-lisp
   (use-package org-roam
     :straight (:host github :repo "jethrokuan/org-roam")
-    :hook (after-init . org-roam-mode)
+    :hook ((after-init . org-roam-mode)
+           (find-file . my/org-roam-open-buffer-maybe))
     :bind (
            :map org-roam-mode-map
            ("C-c n l" . org-roam)
@@ -1297,7 +1298,14 @@ Use org-roam for my notes. Currently not in MELPA so need to manually specify th
                                         :head "#+TITLE: ${title}\n"
                                         :unnarrowed t
                                         :immediate-finish t)))
-    (setq org-roam-completion-system 'ivy))
+    (setq org-roam-completion-system 'ivy)
+
+    (defun my/org-roam-open-buffer-maybe ()
+      (and (memq 'org-roam-buffer--update-maybe post-command-hook)
+           (not (window-parameter nil 'window-side))
+           (not (eq 'visible (org-roam-buffer--visibility)))
+           (with-current-buffer (window-buffer)
+             (org-roam-buffer--get-create)))))
 #+end_src
 
 #+begin_src emacs-lisp
