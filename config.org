@@ -1279,7 +1279,7 @@ Allow capturing of email in notmuch mode
 Use org-roam for my notes. Currently not in MELPA so need to manually specify the recipe
 #+begin_src emacs-lisp
   (use-package org-roam
-    :straight (:host github :repo "jethrokuan/org-roam")
+    :straight (:host github :repo "org-roam/org-roam")
     :hook ((after-init . org-roam-mode)
            (find-file . my/org-roam-open-buffer-maybe))
     :bind (
@@ -1310,7 +1310,7 @@ Use org-roam for my notes. Currently not in MELPA so need to manually specify th
 
 #+begin_src emacs-lisp
   (use-package company-org-roam
-    :straight (:host github :repo "jethrokuan/company-org-roam")
+    :straight (:host github :repo "org-roam/company-org-roam")
     :after (company org-roam)
     :demand
     :config
@@ -1330,7 +1330,7 @@ Use org-roam for my notes. Currently not in MELPA so need to manually specify th
 Capturing reference notes
 #+begin_src emacs-lisp
   (use-package org-roam-bibtex
-    :straight (:host github :repo "Zaeph/org-roam-bibtex")
+    :straight (:host github :repo "org-roam/org-roam-bibtex")
     :hook (after-init . org-roam-bibtex-mode)
     :config
     (setq orb-templates '(("r" "ref" plain
