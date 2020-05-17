@@ -25,8 +25,9 @@
       (eval-print-last-sexp)))
   (load bootstrap-file nil 'nomessage))
 
-;; Limit clone depth to speed up installs
-(setq straight-vc-git-default-clone-depth 1)
+;; Originally I had this set to 1 to speed up installs, but this was causing issues with tags
+;; missing from repos
+(setq straight-vc-git-default-clone-depth 'full)
 
 ;; Set up use-package
 (straight-use-package 'use-package)

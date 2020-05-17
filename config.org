@@ -76,9 +76,9 @@ Ensure that ~straight~ is used for all packages
   (setq straight-use-package-by-default t)
 #+end_src
 
-Only clone the required commit. This will ensure that fresh installs are faster and take up less storage. This doesn't effect packages that are version locked by straight
+ Originally I had this set to 1 to speed up installs, but this was causing issues with tags missing from repos. Now I'm just back to cloning the whole thing. This is very slow and takes up lots of storage :(
 #+begin_src emacs-lisp
-  (setq straight-vc-git-default-clone-depth 1)
+  (setq straight-vc-git-default-clone-depth 'full)
 #+end_src
 * UI
 ** Evil
