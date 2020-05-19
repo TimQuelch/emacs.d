@@ -1460,7 +1460,8 @@ Setup correct sent folders
   (setq notmuch-fcc-dirs '(("tim@tquelch.com" . "personal/Sent Items")
                            ("tim@quelch.name" . "oldpersonal/[Gmail].All Mail")
                            ("t.quelch@qut.edu.au" . "qut/Sent Items")
-                           ("timothy.quelch@connect.qut.edu.au" . "student/Sent Items")))
+                           ("timothy.quelch@connect.qut.edu.au" . "student/Sent Items")
+                           ("tim.quelch@student.unimelb.edu.au" . "uom/[Gmail].Sent Mail")))
 #+end_src
 
 Ensure that send mail uses =/usr/bin/sendmail=
