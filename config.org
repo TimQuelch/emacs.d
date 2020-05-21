@@ -1471,17 +1471,23 @@ Ensure that send mail uses =/usr/bin/sendmail=
 * LSP
 #+begin_src emacs-lisp
   (use-package lsp-mode
-    :defines lsp-clients-clangd-args
     :commands (lsp lsp-deferred)
     :hook ((c-mode
             c++-mode
             python-mode
             dockerfile-mode
             java-mode) . lsp)
+    :hook (lsp-mode . lsp-enable-which-key-integration)
+    :init
+    (setq lsp-keymap-prefix "C-l")
     :config
-    (setq lsp-clients-clangd-args '("-j=4" "-background-index" "-log=error")
-          lsp-prefer-flymake nil
-          lsp-enable-snippet nil))
+    (setq lsp-enable-snippet nil)
+    (setq lsp-flycheck-live-reporting t))
+
+  (use-package lsp-clients
+    :straight lsp-mode
+    :config
+    (setq lsp-clients-clangd-args '("-j=4" "-background-index" "-log=error")))
 
   (use-package lsp-java)
 
@@ -1504,48 +1510,36 @@ Ensure that send mail uses =/usr/bin/sendmail=
           lsp-ui-doc-use-childframe t
           lsp-ui-doc-position 'top
           lsp-ui-doc-include-signature t
+          lsp-ui-doc-delay 1
           lsp-ui-sideline-enable nil
-          lsp-ui-flycheck-enable t
           lsp-ui-flycheck-list-position 'right
-          lsp-ui-flycheck-live-reporting t
           lsp-ui-peek-enable t
-          lsp-ui-peek-always-show t
-          lsp-ui-peek-list-width 60
-          lsp-ui-peek-peek-height 25))
+          lsp-ui-peek-always-show t))
 
-  ;; (use-package company-lsp
-  ;;   :after (company lsp-mode)
+  ;; (use-package dap-mode
+  ;;   :commands dap-mode
+  ;;   :hook lsp-mode)
+
+  ;; (use-package dap-ui
+  ;;   :straight nil
+  ;;   :after dap-mode
   ;;   :demand
-  ;;   :hook (lsp-mode . (my/add-company-backend-locally 'company-lsp))
   ;;   :config
-  ;;   (setq company-lsp-async t
-  ;;         company-lsp-cache-candidates nil
-  ;;         company-lsp-enable-recompletion t))
+  ;;   (dap-ui-mode t)
+  ;;   (dap-tooltip-mode t)
+  ;;   (tooltip-mode t))
 
-  (use-package dap-mode
-    :commands dap-mode
-    :hook lsp-mode)
+  ;; (use-package dap-lldb
+  ;;   :straight nil
+  ;;   :after dap-mode
+  ;;   :demand
+  ;;   :config
+  ;;   (setq dap-lldb-debug-program (list (executable-find "lldb-vscode"))))
 
-  (use-package dap-ui
-    :straight nil
-    :after dap-mode
-    :demand
-    :config
-    (dap-ui-mode t)
-    (dap-tooltip-mode t)
-    (tooltip-mode t))
-
-  (use-package dap-lldb
-    :straight nil
-    :after dap-mode
-    :demand
-    :config
-    (setq dap-lldb-debug-program (list (executable-find "lldb-vscode"))))
-
-  (use-package dap-python
-    :straight nil
-    :after dap-mode
-    :demand)
+  ;; (use-package dap-python
+  ;;   :straight nil
+  ;;   :after dap-mode
+  ;;   :demand)
 #+end_src
 
 * Company
