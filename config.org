@@ -1320,12 +1320,12 @@ Use org-roam for my notes. Currently not in MELPA so need to manually specify th
              (org-roam-buffer--get-create)))))
 #+end_src
 
-#+begin_src emacs-lisp :tangle no
+#+begin_src emacs-lisp
   (use-package company-org-roam
     :straight (:host github :repo "org-roam/company-org-roam")
     :after (company org-roam)
-    :hook (org-mode . my/add-company-org-roam-backend-locally)
-    :init (my/define-add-company-backend-locally-fun company-org-roam))
+    :config
+    (my/set-mode-company-backends 'org-roam 'company-org-roam))
 #+end_src
 
 #+begin_src emacs-lisp
@@ -1548,10 +1548,11 @@ Ensure that send mail uses =/usr/bin/sendmail=
     :demand)
 #+end_src
 
-* COMMENT Company
+* Company
 #+begin_src emacs-lisp
   (use-package company
-    :hook (after-init . global-company-mode)
+    :hook ((after-init . global-company-mode)
+           (after-change-major-mode . my/initialise-mode-company-backends))
     :bind (("C-<tab>" . company-complete)
            :map company-active-map
            ("C-j" . company-select-next-or-abort)
@@ -1559,17 +1560,37 @@ Ensure that send mail uses =/usr/bin/sendmail=
            ("C-<tab>" . company-complete-selection)
            ("<tab>" . company-complete-common-or-cycle))
     :config
-    (defmacro my/add-company-backend-locally (backend)
-      `(lambda () (add-to-list (make-local-variable 'company-backends) ,backend)))
-    (defmacro my/define-add-company-backend-locally-fun (backend)
-      (let ((fn-name (intern (format "my/add-%s-locally" backend))))
-        `(defun ,fn-name ()
-           ,(format "Add the company backend %s locally to company-backends." backend)
-           (make-local-variable 'company-backends)
-           (add-to-list 'company-backends ,backend))))
+    (setq company-backends '(company-capf))
     (setq company-idle-delay 0.2
           company-minimum-prefix-length 1
-          company-selection-wrap-around t))
+          company-selection-wrap-around t)
+
+    (defvar my/company-backend-alist
+      '((prog-mode . (company-capf))))
+
+    (defun my/set-mode-company-backends (mode &rest backends)
+      (setf (alist-get mode my/company-backend-alist) backends))
+
+    (defun my/get-mode-company-backends ()
+      (let ((mode major-mode)
+            (modes (list major-mode)))
+        (while (setq mode (get mode 'derived-mode-parent))
+          (push mode (cdr (last modes)))) ; Push to end of list
+        (-distinct (-mapcat (lambda (mode) (cdr (assq mode my/company-backend-alist))) modes))))
+
+    (defun my/initialise-mode-company-backends ()
+      (when (not (or (memq major-mode '(fundamental-mode special-mode))
+                     buffer-read-only))
+        (setq-local company-backends (my/get-mode-company-backends))))
+
+    (unbind-key "RET" company-active-map))
+#+end_src
+
+#+begin_src emacs-lisp
+  (use-package company-box
+    :hook (company-mode . company-box-mode)
+    :config
+    (setq company-box-icons-alist 'company-box-icons-all-the-icons))
 #+end_src
 
 * Languages
@@ -1580,14 +1601,6 @@ Ensure that send mail uses =/usr/bin/sendmail=
     :straight nil
     :mode ("\\.h\\'" . c++-mode)
     :hook (c-mode . (lambda () (c-toggle-comment-style -1))))
-#+end_src
-
-#+begin_src emacs-lisp :tangle no
-  (use-package company-c-headers
-    :after (company cc-mode)
-    :demand
-    :hook ((c-mode c++-mode) . my/add-company-c-headers-locally)
-    :init (my/define-add-company-backend-locally-fun company-c-headers))
 #+end_src
 
 #+begin_src emacs-lisp
@@ -1623,12 +1636,12 @@ Ensure that send mail uses =/usr/bin/sendmail=
     :hook (cmake-mode . cmake-font-lock-activate))
 #+end_src
 
-#+begin_src emacs-lisp :tangle no
+#+begin_src emacs-lisp
   (use-package company-cmake              ; Included in company
-    :straight nil
+    :straight company
     :after (company cmake-mode)
-    :hook (cmake-mode . my/add-company-cmake-backend)
-    :init (my/define-add-company-backend-locally-fun company-cmake))
+    :config
+    (my/set-mode-company-backends 'cmake-mode 'company-cmake))
 #+end_src
 
 ** Python
@@ -1657,13 +1670,13 @@ Ensure that send mail uses =/usr/bin/sendmail=
           matlab-shell-emacsclient-command ""))
 #+end_src
 
-#+begin_src emacs-lisp :tangle no
+#+begin_src emacs-lisp
   (use-package company-matlab-shell
-    :straight nil
+    :straight matlab-mode
     :after (company matlab)
     :demand
-    :hook (matlab-shell-mode . my/add-company-matlab-shell-backend)
-    :init (my/define-add-company-backend-locally-fun company-matlab-shell))
+    :config
+    (my/set-mode-company-backends 'matlab-shell-mode 'company-matlab-shell))
 #+end_src
 
 ** Docker
@@ -1722,19 +1735,13 @@ Ensure that send mail uses =/usr/bin/sendmail=
     :config
     (setq bibtex-dialect 'biblatex))
 
-  ;; (use-package company-auctex
-  ;;   :functions company-auctex-init
-  ;;   :after (company latex)
-  ;;   :demand
-  ;;   :hook ((plain-TeX-mode
-  ;;           LaTeX-mode
-  ;;           ams-tex-mode
-  ;;           ConTeXt-mode
-  ;;           Texinfo-mode
-  ;;           docTeX-mode) .
-  ;;           (lambda ()
-  ;;             (make-local-variable 'company-backends)
-  ;;             (company-auctex-init))))
+  (use-package company-auctex
+    :functions company-auctex-init
+    :after (company latex)
+    :demand
+    :config
+    (my/set-mode-company-backends 'latex-mode '(company-auctex-environments
+                                                company-auctex-macros)))
 #+end_src
 
 ** JSON
