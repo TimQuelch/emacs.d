@@ -49,9 +49,6 @@ Widen fringes
 ** Fonts
 #+begin_src emacs-lisp
   (push '(font . "DejaVu Sans Mono") default-frame-alist)
-  (set-face-font 'default "DejaVu Sans Mono")
-  (set-face-font 'variable-pitch "DejaVu Sans")
-  (copy-face 'default 'fixed-pitch)
 #+end_src
 
 * Personalisation
