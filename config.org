@@ -549,6 +549,15 @@ Reload the configuration file (not init.el, but just this config.org)
   (bind-key "C-c r" 'my/reload-config-file)
 #+end_src
 
+** Libraries
+Throughout this configuration I use the =dash= library when defining some of my functions
+#+begin_src emacs-lisp
+  (use-package dash
+    :demand
+    :config
+    (dash-enable-font-lock))
+#+end_src
+
 * Editing
 Setup backups. I usually will never use them but it doesn't hurt I guess
 #+begin_src emacs-lisp
