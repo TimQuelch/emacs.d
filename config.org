@@ -1333,8 +1333,9 @@ Use org-roam for my notes. Currently not in MELPA so need to manually specify th
   (use-package company-org-roam
     :straight (:host github :repo "org-roam/company-org-roam")
     :after (company org-roam)
+    :demand
     :config
-    (my/set-mode-company-backends 'org-roam 'company-org-roam))
+    (my/set-mode-company-backends 'org-mode 'company-org-roam))
 #+end_src
 
 #+begin_src emacs-lisp
@@ -1491,7 +1492,8 @@ Ensure that send mail uses =/usr/bin/sendmail=
     (setq lsp-keymap-prefix "C-l")
     :config
     (setq lsp-enable-snippet nil)
-    (setq lsp-flycheck-live-reporting t))
+    (setq lsp-flycheck-live-reporting t)
+    (my/set-mode-company-backends 'lsp-mode 'company-capf))
 
   (use-package lsp-clients
     :straight lsp-mode
@@ -1554,8 +1556,7 @@ Ensure that send mail uses =/usr/bin/sendmail=
 * Company
 #+begin_src emacs-lisp
   (use-package company
-    :hook ((after-init . global-company-mode)
-           (after-change-major-mode . my/initialise-mode-company-backends))
+    :hook (after-init . global-company-mode)
     :bind (("C-<tab>" . company-complete)
            :map company-active-map
            ("C-j" . company-select-next-or-abort)
@@ -1566,7 +1567,9 @@ Ensure that send mail uses =/usr/bin/sendmail=
     (setq company-backends '(company-capf))
     (setq company-idle-delay 0.2
           company-minimum-prefix-length 1
-          company-selection-wrap-around t)
+          company-selection-wrap-around t
+          company-tooltip-limit 15
+          company-tooltip-align-annotations t)
 
     (defvar my/company-backend-alist
       '((prog-mode . (company-capf))))
@@ -1577,22 +1580,37 @@ Ensure that send mail uses =/usr/bin/sendmail=
     (defun my/get-mode-company-backends ()
       (let ((mode major-mode)
             (modes (list major-mode)))
+        ;; Get list of all derived major modes
         (while (setq mode (get mode 'derived-mode-parent))
           (push mode (cdr (last modes)))) ; Push to end of list
-        (-distinct (-mapcat (lambda (mode) (cdr (assq mode my/company-backend-alist))) modes))))
+        (->> my/company-backend-alist     ; Traverse alist of backends
+             (--map (car it))
+             (--filter (boundp it))       ; Only keep active modes
+             (append modes)               ; Merge with list of major modes
+             (--mapcat                    ; Get the list of backends
+              (cdr (assq it my/company-backend-alist)))
+             (-distinct))))               ; Remove duplicates
 
     (defun my/initialise-mode-company-backends ()
       (when (not (or (memq major-mode '(fundamental-mode special-mode))
                      buffer-read-only))
+        (message (format "Major mode: %s, backends %s" major-mode (my/get-mode-company-backends)))
         (setq-local company-backends (my/get-mode-company-backends))))
 
-    (unbind-key "RET" company-active-map))
+    (add-hook 'after-change-major-mode-hook
+              'my/initialise-mode-company-backends 'append)
+
+    (unbind-key "RET" company-active-map)
+    (unbind-key [return] company-active-map))
 #+end_src
 
 #+begin_src emacs-lisp
   (use-package company-box
     :hook (company-mode . company-box-mode)
     :config
+    (setq company-box-show-single-candidate t)
+    (setq company-box-backends-colors nil)
+    (setq company-box-max-candidates 50)
     (setq company-box-icons-alist 'company-box-icons-all-the-icons))
 #+end_src
 
@@ -1643,6 +1661,7 @@ Ensure that send mail uses =/usr/bin/sendmail=
   (use-package company-cmake              ; Included in company
     :straight company
     :after (company cmake-mode)
+    :demand
     :config
     (my/set-mode-company-backends 'cmake-mode 'company-cmake))
 #+end_src
