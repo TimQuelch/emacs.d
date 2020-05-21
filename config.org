@@ -1598,8 +1598,7 @@ Ensure that send mail uses =/usr/bin/sendmail=
     (add-hook 'after-change-major-mode-hook
               'my/initialise-mode-company-backends 'append)
 
-    (unbind-key "RET" company-active-map)
-    (unbind-key [return] company-active-map))
+    (unbind-key "RET" company-active-map))
 #+end_src
 
 #+begin_src emacs-lisp
