@@ -332,58 +332,61 @@ Configure projectile
                                       :test "ctest"))
 #+end_src
 
-** Ivy/Counsel
-I'm using Ivy as my completing read framework. I've rebound some of the keys to be more vim-like.
+** Helm
+Setup helm mode to enable helm for =completing-read=
 #+begin_src emacs-lisp
-  (use-package ivy
-    :commands (completing-read completion-in-region)
-    :bind (:map ivy-minibuffer-map
-                ("<return>" . ivy-alt-done)
-                ("C-j" . ivy-next-line)
-                ("C-k" . ivy-previous-line)
-                ("C-M-j" . ivy-next-line-and-call)
-                ("C-M-k" . ivy-previous-line-and-call)
-                ("M-j" . ivy-next-history-element)
-                ("M-k" . ivy-previous-history-element)
-                ("C-d" . ivy-scroll-up-command)
-                ("C-S-d" . ivy-scroll-down-command))
+  (use-package helm-mode
+    :straight helm
+    :hook ((after-init . helm-mode)
+           (helm-mode . my/set-helm-completion-styles))
     :config
-    (ivy-mode t)
-    (setq ivy-height 15)
-    (setq ivy-count-format "(%d/%d) "))
+    (defun my/set-helm-completion-styles ()
+      "Set `completion-styles` to the appropriate value for helm fuzzy search."
+      (setq completion-styles
+            (cond ((assq 'helm-flex completion-styles-alist) '(helm-flex))
+                  ((assq 'flex completion-styles-alist) '(flex))))))
 #+end_src
 
-Use the hydra menu in the ~ivy~ window (activated with ~M-o~)
 #+begin_src emacs-lisp
-  (use-package ivy-hydra)
-#+end_src
+  (use-package helm
+    :bind (:map helm-map
+                ("C-j" . helm-next-line)
+                ("C-k" . helm-previous-line)
+                ("C-l" . helm-execute-persistent-action))
+    :hook (helm-minibuffer-set-up . helm-hide-minibuffer-maybe)
+    :config
+    (setq helm-candidate-number-limit 500)
+    (setq helm-allow-mouse t)
+    (setq helm-split-window-inside-p t)
+    (setq helm-echo-input-in-header-line t))
 
-Use the counsel commands for common operations
-#+begin_src emacs-lisp
-  (use-package counsel
-    :bind (("M-x" . counsel-M-x)
-           ("C-x C-f" . counsel-find-file)
-           ("C-x C-b" . counsel-switch-buffer)
-           ("C-x l" . counsel-locate)
-           ("M-y" . counsel-yank-pop)
-           ([remap bookmark-jump] . counsel-bookmark)))
-#+end_src
+  (use-package helm-command
+    :straight helm
+    :bind ("M-x" . helm-M-x))
 
-Smex makes ~M-x~ usage a bit nicer. It remembers history and such
-#+begin_src emacs-lisp
-  (use-package smex
-    :after counsel
-    :demand)
-#+end_src
+  (use-package helm-files
+    :straight helm
+    :bind ("C-x C-f" . helm-find-files)
+    :config
+    (setq helm-ff-auto-update-initial-value t))
 
-Swiper is used to replace my search forward and isearch
-#+begin_src emacs-lisp
-  (use-package swiper
-    :commands (swiper swiper-isearch swiper-isearch-backward)
-    :bind (("C-s" . swiper-isearch)
-           :map evil-motion-state-map
-           ([remap evil-search-forward] . swiper-isearch)
-           ([remap evil-search-backward] . swiper-isearch-backward)))
+  (use-package helm-buffers
+    :straight helm
+    :bind ("C-x C-b" . helm-buffers-list))
+
+  (use-package helm-locate
+    :straight helm
+    :bind ("C-x l" . helm-locate))
+
+  (use-package helm-ring
+    :straight helm
+    :bind ("M-y" . helm-show-kill-ring))
+
+  (use-package swiper-helm
+    :commands swiper-helm
+    :bind (("C-s" . swiper-helm)
+           ([remap evil-search-forward] . swiper-helm)
+           ([remap evil-search-backward] . swiper-helm)))
 #+end_src
 
 ** Avy
