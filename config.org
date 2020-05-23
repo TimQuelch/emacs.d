@@ -1321,6 +1321,7 @@ Use org-roam for my notes. Currently not in MELPA so need to manually specify th
                                         :unnarrowed t
                                         :immediate-finish t)))
     (setq org-roam-completion-system 'helm)
+    (setq org-roam-tag-sources '(prop all-directories))
 
     (defun my/org-roam-open-buffer-maybe ()
       (and (memq 'org-roam-buffer--update-maybe post-command-hook)
@@ -1355,13 +1356,14 @@ Capturing reference notes
     :straight (:host github :repo "org-roam/org-roam-bibtex")
     :hook (after-init . org-roam-bibtex-mode)
     :config
-    (setq orb-templates '(("r" "ref" plain
-                           (function org-roam-capture--get-point)
-                           ""
-                           :file-name "%<%Y%m%d%H%M%S>-${slug}"
-                           :head "#+TITLE: Notes on: ${title}\n#+ROAM_KEY: ${ref}\n"
-                           :unnarrowed t
-                           :immediate-finish t))))
+    (setq orb-templates
+          '(("r" "ref" plain
+             (function org-roam-capture--get-point)
+             ""
+             :file-name (concat (file-name-as-directory "lit") "%<%Y%m%d%H%M%S>-${slug}")
+             :head "#+TITLE: Notes on: ${title}\n#+ROAM_KEY: ${ref}\n"
+             :unnarrowed t
+             :immediate-finish t))))
 #+end_src
 
 #+begin_src emacs-lisp
@@ -1407,7 +1409,7 @@ I've disabled `org-[noter-]pdftools` for now because I'm pretty sure that it is 
     (setq org-journal-file-format "%Y-%m-%d.org")
     (setq org-journal-date-format "%Y-%m-%d")
     (setq org-journal-carryover-items nil)
-    (setq org-journal-dir org-roam-directory))
+    (setq org-journal-dir (expand-file-name "daily" org-roam-directory)))
 #+end_src
 
 ** Babel
