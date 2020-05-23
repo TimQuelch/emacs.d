@@ -25,3 +25,4 @@ elpy
 config.el
 straight/
 smex-items
+tramp
