@@ -382,6 +382,14 @@ Setup helm mode to enable helm for =completing-read=
     :straight helm
     :bind ("M-y" . helm-show-kill-ring))
 
+  (use-package helm-lib
+    :straight helm
+    :after helpful
+    :demand
+    :config
+    (setq helm-describe-function-function 'helpful-callable
+          helm-describe-variable-function 'helpful-variable))
+
   (use-package swiper-helm
     :commands swiper-helm
     :bind (("C-s" . swiper-helm)
