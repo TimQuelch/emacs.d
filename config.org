@@ -1442,7 +1442,7 @@ Capturing reference notes
 #+end_src
 
 Set up org-noter
-#+begin_src emacs-lisp :tangle no
+#+begin_src emacs-lisp
   (use-package org-noter
     :straight (:host github :repo "weirdNox/org-noter"))
 
