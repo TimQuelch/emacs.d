@@ -1134,7 +1134,7 @@ This section shows tasks and projects which are available to be completed (e.g. 
 
 *** Agenda filters
 :PROPERTIES:
-:header-args: :noweb-ref agenda-filters :tangle no
+:header-args: :noweb-ref agenda-filters :tangle no :results silent
 :END:
 
 Functions that I use to filter the agenda
@@ -1142,39 +1142,26 @@ Functions that I use to filter the agenda
   (defun my/is-todo-p ()
     (member (nth 2 (org-heading-components)) org-todo-keywords-1))
 
-  (defun my/is-project-p ()
-    "Is a project. i.e. A todo (with a todo keyword) that has at least one subtodo (with a todo keyword)"
+  (defun my/has-subtodo-p ()
     (save-restriction
       (widen)
-      (let ((has-subtodo)
-            (subtree-end (save-excursion (org-end-of-subtree t)))
-            (is-a-todo (my/is-todo-p)))
-        (when is-a-todo
-          (save-excursion
-            (forward-line 1)
-            (while (and (not has-subtodo)
-                        (< (point) subtree-end)
-                        (re-search-forward org-heading-regexp subtree-end t))
-              (when (my/is-todo-p)
-                (setq has-subtodo t)))))
-        (and is-a-todo has-subtodo))))
+      (save-excursion
+        (forward-line 1)
+        (let ((has-subtodo)
+              (subtree-end (save-excursion (org-end-of-subtree t))))
+          (while (and (not has-subtodo)
+                      (< (point) subtree-end)
+                      (re-search-forward org-heading-regexp subtree-end t))
+            (when (my/is-todo-p)
+              (setq has-subtodo t)))))))
+
+  (defun my/is-project-p ()
+    "Is a project. i.e. A todo (with a todo keyword) that has at least one subtodo (with a todo keyword)"
+    (and (my/is-todo-p) (my/has-subtodo-p)))
 
   (defun my/is-task-p ()
     "Is a task. i.e. A todo (with a todo keyword) that has no subtodos (with a todo keyword)"
-    (save-restriction
-      (widen)
-      (let ((has-subtodo)
-            (subtree-end (save-excursion (org-end-of-subtree t)))
-            (is-a-todo (my/is-todo-p)))
-        (when is-a-todo
-          (save-excursion
-            (forward-line 1)
-            (while (and (not has-subtodo)
-                        (< (point) subtree-end)
-                        (re-search-forward org-heading-regexp subtree-end t))
-              (when (my/is-todo-p)
-                (setq has-subtodo t)))))
-        (and is-a-todo (not has-subtodo)))))
+    (and (my/is-todo-p) (not (my/has-subtodo-p))))
 
   (defun my/is-subtodo-p ()
     "Is todo (either a task or a project) that is part of a project"
@@ -1211,28 +1198,26 @@ Functions that I use to filter the agenda
 
   (defun my/is-stuck-project-p ()
     "Is a project that is stuck"
-    (if (my/is-project-p)
-        (let ((subtree-end (save-excursion (org-end-of-subtree t)))
-              (next-regexp (concat org-outline-regexp-bol my/next-todo-keyword " ")))
-          (forward-line 1)
-          (not (re-search-forward next-regexp subtree-end t)))
-      nil))
+    (when (my/is-project-p)
+      (let ((subtree-end (save-excursion (org-end-of-subtree t)))
+            (next-regexp (concat org-outline-regexp-bol my/next-todo-keyword " ")))
+        (forward-line 1)
+        (not (re-search-forward next-regexp subtree-end t)))))
 
   (defun my/skip-all-but-stuck-projects ()
     "Skip trees that are not stuck projects"
     (save-restriction
       (widen)
-      (if (my/is-stuck-project-p)
-          nil
+      (unless (my/is-stuck-project-p)
         (save-excursion (or (outline-next-heading) (point-max))))))
 
   (defun my/skip-all-but-available-unscheduled-todos ()
     "Skip todos that are unavailable or available but already scheduled. Available todos are standalone tasks or NEXT tasks"
     (save-restriction
       (widen)
-      (if (and (or (my/is-standalone-task-p) (string-equal (org-get-todo-state) my/next-todo-keyword))
-               (not (org-get-scheduled-time nil)))
-          nil
+      (unless (and (or (my/is-standalone-task-p)
+                       (string-equal (org-get-todo-state) my/next-todo-keyword))
+                   (not (org-get-scheduled-time nil)))
         (save-excursion (or (outline-next-heading) (point-max))))))
 #+end_src
 
