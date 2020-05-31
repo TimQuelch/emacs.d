@@ -233,16 +233,6 @@ When scrolling screenfuls leave more context lines (default is 2)
   (setq next-screen-context-lines 8)
 #+end_src
 
-Flash line containing point after navigation
-#+begin_src emacs-lisp
-  (use-package beacon
-    :hook (after-init . beacon-mode)
-    :config
-    (setq beacon-blink-when-point-moves-vertically 35)
-    (setq beacon-blink-duration 0.2)
-    (setq beacon-blink-delay 0.2))
-#+end_src
-
 ** Hydra
 #+begin_src emacs-lisp
   (use-package hydra
