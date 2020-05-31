@@ -1591,6 +1591,7 @@ Ensure that send mail uses =/usr/bin/sendmail=
 #+begin_src emacs-lisp
   (setq send-mail-function 'sendmail-send-it)
 #+end_src
+
 * LSP
 #+begin_src emacs-lisp
   (use-package lsp-mode
