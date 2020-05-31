@@ -77,6 +77,26 @@ Originally I had this set to 1 to speed up installs, but this was causing issues
 #+begin_src emacs-lisp
   (setq straight-vc-git-default-clone-depth 'full)
 #+end_src
+* Performance
+
+Set a very high threshold for initialisation.
+#+begin_src emacs-lisp
+  (setq gc-cons-percentage 0.75)
+#+end_src
+
+I'm using ~gcmh~ is a package which changes the default garbage collection scheduler. Basically it has a very high threshold (default 1GB) when I'm typing and doing things. After a certain idle time though, the garbage collector is triggered and the threshold is set to a low value. ~gcmh~ is only enabled 5 seconds after initialisation to ensure that everything has finished initialising with the larger threshold.
+#+begin_src emacs-lisp
+  (use-package gcmh
+    :hook (after-init . my/enabled-gcmh-deferred)
+    :preface
+    (defun my/enabled-gcmh-deferred ()
+      (run-at-time 5 nil (lambda ()
+                           (setq gc-cons-percentage 0.1)
+                           (gcmh-mode))))
+    :config
+    (setq gcmh-idle-delay 5))
+#+end_src
+
 * UI
 ** Evil
 #+begin_src emacs-lisp

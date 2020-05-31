@@ -7,10 +7,6 @@
 ;;
 ;;; Code:
 
-;; Load early init if this is not done automatically
-(when (version< emacs-version "27")
-  (require 'early-init))
-
 ;; Bootstrap straight.el
 (defvar bootstrap-version)
 (let ((bootstrap-file
