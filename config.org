@@ -1347,16 +1347,22 @@ Allow capturing of email in notmuch mode
     (setq org-latex-default-class "a4article")
     (setq org-latex-packages-alist '(("titletoc, title" "appendix" nil) ; Setup appendices
                                      ("margin=25mm" "geometry")         ; Setup margins
-                                     ("" "tocbibind" nil)               ; Put bibliography in TOC
-                                     ("" "pdflscape" nil)               ; Allow landscape pages
-                                     ("" "pdfpages" nil)                ; Allow inclusion of pdfs
-                                     ("" "subcaption" nil)              ; Allow subcaptions
-                                     ("" "listings" nil)                ; Source code listings
-                                     ("" "color" nil)                   ; Color in source code listings
+                                     ("" "tocbibind" nil)  ; Put bibliography in TOC
+                                     ("" "pdflscape" nil)  ; Allow landscape pages
+                                     ("" "pdfpages" nil)   ; Allow inclusion of pdfs
+                                     ("" "svg" nil)        ; Allow SVG images (req. inkscape?)
+                                     ("" "subcaption" nil) ; Allow subcaptions
+                                     ("" "listings" nil)   ; Source code listings
+                                     ("" "color" nil)      ; Color in source code listings
                                      ("binary-units" "siunitx" t)))     ; SI units
 
     (setq org-latex-default-packages-alist (remove '("" "hyperref" nil) org-latex-default-packages-alist))
     (add-to-list 'org-latex-default-packages-alist '("hidelinks" "hyperref" nil))
+
+    (setq org-latex-pdf-process (->> org-latex-pdf-process
+                                     (--map (->> it
+                                                 (s-chop-suffix "%f")
+                                                 (s-append "-shell-escape %f")))))
 
     (setq org-latex-listings t)                                         ; Turn on source code inclusion
     (setq org-latex-listings-options '(("basicstyle" "\\linespread{0.85}\\ttfamily")
