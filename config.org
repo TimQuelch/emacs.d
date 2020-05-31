@@ -1487,10 +1487,45 @@ Don't ask to confirm running source code blocks
   (setq org-confirm-babel-evaluate nil)
 #+end_src
 
+Enable ipython/jupyter support for org src blocks
+#+begin_src emacs-lisp
+  (use-package jupyter)
+#+end_src
+
 Enable languages
 #+begin_src emacs-lisp
-  (org-babel-do-load-languages 'org-babel-load-languages '((emacs-lisp . t)
-                                                           (latex . t)))
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '((emacs-lisp . t)
+     (latex . t)
+     (python . t)
+     (jupyter . t)
+     (shell . t)))
+#+end_src
+
+Change the default configuration for jupyter-python configurations to always include the session command (to save typing). I also enable sessions for the default python interface (in-case don't want to override it with =jupyter-python= see below)
+#+begin_src emacs-lisp
+  (setq org-babel-default-header-args:jupyter-python
+        '((:session . "py")
+          (:kernel . "python3")))
+
+  (setq org-babel-default-header-args:python
+        '((:session . "py")))
+#+end_src
+
+Finally I'm overwriting the default =python= src blocks with the =jupyter-python= ones to save some typing.
+#+begin_src emacs-lisp
+  (org-babel-jupyter-override-src-block "python")
+#+end_src
+
+Refresh the display of inline images after a code block is run
+#+begin_src emacs-lisp
+  (add-hook 'org-babel-after-execute-hook 'org-redisplay-inline-images)
+#+end_src
+
+Display \LaTeX when returned by a jupyter block
+#+begin_src emacs-lisp
+  (setq jupyter-org-toggle-latex t)
 #+end_src
 
 * Email
