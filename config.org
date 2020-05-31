@@ -392,6 +392,10 @@ Setup helm mode to enable helm for =completing-read=
     :straight helm
     :bind ("M-y" . helm-show-kill-ring))
 
+  (use-package helm-elisp
+    :straight helm
+    :bind ("C-h a". helm-apropos))
+
   (use-package helm-lib
     :straight helm
     :after helpful
@@ -399,12 +403,21 @@ Setup helm mode to enable helm for =completing-read=
     :config
     (setq helm-describe-function-function 'helpful-callable
           helm-describe-variable-function 'helpful-variable))
+#+end_src
 
+Use ~swiper~ instead of the default ~isearch~
+#+begin_src emacs-lisp
   (use-package swiper-helm
     :commands swiper-helm
     :bind (("C-s" . swiper-helm)
            ([remap evil-search-forward] . swiper-helm)
            ([remap evil-search-backward] . swiper-helm)))
+#+end_src
+
+Use ~helm-rg~ for recursive searching
+#+begin_src emacs-lisp
+  (use-package helm-rg
+    :bind ("C-x c r" . helm-rg))
 #+end_src
 
 ** Avy
