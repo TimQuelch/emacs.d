@@ -1712,7 +1712,7 @@ Ensure that send mail uses =/usr/bin/sendmail=
     (my/set-mode-company-backends 'cmake-mode 'company-cmake))
 #+end_src
 
-** Python
+** COMMENT Python
 #+begin_src emacs-lisp
   ;; Python
   (use-package elpy
