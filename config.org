@@ -1145,15 +1145,16 @@ Functions that I use to filter the agenda
   (defun my/has-subtodo-p ()
     (save-restriction
       (widen)
-      (save-excursion
-        (forward-line 1)
-        (let ((has-subtodo)
-              (subtree-end (save-excursion (org-end-of-subtree t))))
+      (let ((has-subtodo)
+            (subtree-end (save-excursion (org-end-of-subtree t))))
+        (save-excursion
+          (forward-line 1)
           (while (and (not has-subtodo)
                       (< (point) subtree-end)
                       (re-search-forward org-heading-regexp subtree-end t))
             (when (my/is-todo-p)
-              (setq has-subtodo t)))))))
+              (setq has-subtodo t))))
+        has-subtodo)))
 
   (defun my/is-project-p ()
     "Is a project. i.e. A todo (with a todo keyword) that has at least one subtodo (with a todo keyword)"
