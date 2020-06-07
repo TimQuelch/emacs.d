@@ -87,9 +87,9 @@ Set a very high threshold for initialisation.
 I'm using ~gcmh~ is a package which changes the default garbage collection scheduler. Basically it has a very high threshold (default 1GB) when I'm typing and doing things. After a certain idle time though, the garbage collector is triggered and the threshold is set to a low value. ~gcmh~ is only enabled 5 seconds after initialisation to ensure that everything has finished initialising with the larger threshold.
 #+begin_src emacs-lisp
   (use-package gcmh
-    :hook (after-init . my/enabled-gcmh-deferred)
+    :hook (after-init . tq/enabled-gcmh-deferred)
     :preface
-    (defun my/enabled-gcmh-deferred ()
+    (defun tq/enabled-gcmh-deferred ()
       (run-at-time 5 nil (lambda ()
                            (setq gc-cons-percentage 0.1)
                            (gcmh-mode))))
@@ -316,23 +316,23 @@ Configure projectile
   (use-package projectile
     :hook (after-init . projectile-mode)
     :preface
-    (defun my/projectile-or-compile (func)
+    (defun tq/projectile-or-compile (func)
       (setq-local compilation-read-command nil)
       (if (projectile-project-p)
           (call-interactively func)
         (call-interactively 'compile)))
-    (defun my/configure-project ()
+    (defun tq/configure-project ()
       (interactive)
-      (my/projectile-or-compile 'projectile-configure-project))
-    (defun my/compile-project ()
+      (tq/projectile-or-compile 'projectile-configure-project))
+    (defun tq/compile-project ()
       (interactive)
-      (my/projectile-or-compile 'projectile-compile-project))
-    (defun my/test-project ()
+      (tq/projectile-or-compile 'projectile-compile-project))
+    (defun tq/test-project ()
       (interactive)
-      (my/projectile-or-compile 'projectile-test-project))
-    :bind (("<f4>" . my/configure-project)
-           ("<f5>" . my/compile-project)
-           ("<f6>" . my/test-project))
+      (tq/projectile-or-compile 'projectile-test-project))
+    :bind (("<f4>" . tq/configure-project)
+           ("<f5>" . tq/compile-project)
+           ("<f6>" . tq/test-project))
     :config
     (add-to-list 'projectile-globally-ignored-directories ".clangd")
     (projectile-register-project-type 'cmake '("CMakeLists.txt")
@@ -348,9 +348,9 @@ Setup helm mode to enable helm for =completing-read=
   (use-package helm-mode
     :straight helm
     :hook ((after-init . helm-mode)
-           (helm-mode . my/set-helm-completion-styles))
+           (helm-mode . tq/set-helm-completion-styles))
     :config
-    (defun my/set-helm-completion-styles ()
+    (defun tq/set-helm-completion-styles ()
       "Set `completion-styles` to the appropriate value for helm fuzzy search."
       (setq completion-styles
             (cond ((assq 'helm-flex completion-styles-alist) '(helm-flex))
@@ -565,20 +565,20 @@ Align trailing comments
 ** Configuration functions
 Edit this configuration file
 #+begin_src emacs-lisp
-  (defun my/edit-config-file ()
+  (defun tq/edit-config-file ()
     "Open the config.org file"
     (interactive)
     (find-file (expand-file-name "config.org" user-emacs-directory)))
-  (bind-key "C-c e" 'my/edit-config-file)
+  (bind-key "C-c e" 'tq/edit-config-file)
 #+end_src
 
 Reload the configuration file (not init.el, but just this config.org)
 #+begin_src emacs-lisp
-  (defun my/reload-config-file ()
+  (defun tq/reload-config-file ()
     "Reload the config.org file"
     (interactive)
     (org-babel-load-file (expand-file-name "config.org" user-emacs-directory)))
-  (bind-key "C-c r" 'my/reload-config-file)
+  (bind-key "C-c r" 'tq/reload-config-file)
 #+end_src
 
 ** Libraries
@@ -601,31 +601,31 @@ Throughout this configuration I use the =dash= library when defining some of my 
            ("C-<tab>" . company-complete-selection)
            ("<tab>" . company-complete-common-or-cycle))
     :preface
-    (defvar my/company-backend-alist
+    (defvar tq/company-backend-alist
       '((prog-mode . (company-capf))))
 
-    (defun my/set-mode-company-backends (mode &rest backends)
-      (setf (alist-get mode my/company-backend-alist) backends))
+    (defun tq/set-mode-company-backends (mode &rest backends)
+      (setf (alist-get mode tq/company-backend-alist) backends))
 
-    (defun my/get-mode-company-backends ()
+    (defun tq/get-mode-company-backends ()
       (let ((mode major-mode)
             (modes (list major-mode)))
         ;; Get list of all derived major modes
         (while (setq mode (get mode 'derived-mode-parent))
           (push mode (cdr (last modes)))) ; Push to end of list
-        (->> my/company-backend-alist     ; Traverse alist of backends
+        (->> tq/company-backend-alist     ; Traverse alist of backends
              (--map (car it))
              (--filter (boundp it))       ; Only keep active modes
              (append modes)               ; Merge with list of major modes
              (--mapcat                    ; Get the list of backends
-              (cdr (assq it my/company-backend-alist)))
+              (cdr (assq it tq/company-backend-alist)))
              (-distinct))))               ; Remove duplicates
 
-    (defun my/initialise-mode-company-backends ()
+    (defun tq/initialise-mode-company-backends ()
       (when (not (or (memq major-mode '(fundamental-mode special-mode))
                      buffer-read-only))
-        (message (format "Major mode: %s, backends %s" major-mode (my/get-mode-company-backends)))
-        (setq-local company-backends (my/get-mode-company-backends))))
+        (message (format "Major mode: %s, backends %s" major-mode (tq/get-mode-company-backends)))
+        (setq-local company-backends (tq/get-mode-company-backends))))
     :config
     (setq company-backends '(company-capf))
     (setq company-idle-delay 0.2
@@ -635,7 +635,7 @@ Throughout this configuration I use the =dash= library when defining some of my 
           company-tooltip-align-annotations t)
 
     (add-hook 'after-change-major-mode-hook
-              'my/initialise-mode-company-backends 'append)
+              'tq/initialise-mode-company-backends 'append)
 
     (unbind-key "RET" company-active-map))
 #+end_src
@@ -920,13 +920,13 @@ Log changed tasks into the ~LOGBOOK~ drawer
 
 Setup refile targets. Targets include the current file and all agenda files (files in the org directory) up to 9 levels deep in the hierarchy. Only in-progress tasks are allowed as refile targets
 #+begin_src emacs-lisp
-  (defun my/verify-refile-target()
+  (defun tq/verify-refile-target()
     "Exclude done todo states from refile targets"
     (not (member (nth 2 (org-heading-components)) org-done-keywords)))
   (setq org-refile-allow-creating-parent-nodes 'confirm)
   (setq org-refile-targets '((nil :maxlevel . 9)
                              (org-agenda-files :maxlevel . 9)))
-  (setq org-refile-target-verify-function 'my/verify-refile-target)
+  (setq org-refile-target-verify-function 'tq/verify-refile-target)
 #+end_src
 
 Use the outline path as the refile target. This can be completed in steps to work well with helm etc.
@@ -1122,14 +1122,14 @@ The next section is the Inbox. These are items that I have captured quickly and 
 This section shows projects which are stuck. I define projects as todo items with sub todo items. A stuck project is a project where none of the sub-todos has a NEXT keyword. These are projects where I don't have a task to go onto next. I want to see these because I need to go into these projects and evaluate what tasks I can begin next
 #+begin_src emacs-lisp :noweb-ref agenda-custom-commands :tangle no
   (todo "" ((org-agenda-overriding-header "Stuck projects")
-            (org-agenda-skip-function 'my/skip-all-but-stuck-projects)))
+            (org-agenda-skip-function 'tq/skip-all-but-stuck-projects)))
 
 #+end_src
 
 This section shows tasks and projects which are available to be completed (e.g. they are standalone tasks or subtasks with a NEXT keyword) but are unscheduled. I want to see thse because I need to schedule them to complete sometime.
 #+begin_src emacs-lisp :noweb-ref agenda-custom-commands :tangle no
   (todo "" ((org-agenda-overriding-header "Unscheduled available todos")
-            (org-agenda-skip-function 'my/skip-all-but-available-unscheduled-todos)))
+            (org-agenda-skip-function 'tq/skip-all-but-available-unscheduled-todos)))
 #+end_src
 
 *** Agenda filters
@@ -1139,10 +1139,10 @@ This section shows tasks and projects which are available to be completed (e.g. 
 
 Functions that I use to filter the agenda
 #+begin_src emacs-lisp
-  (defun my/is-todo-p ()
+  (defun tq/is-todo-p ()
     (member (nth 2 (org-heading-components)) org-todo-keywords-1))
 
-  (defun my/has-subtodo-p ()
+  (defun tq/has-subtodo-p ()
     (save-restriction
       (widen)
       (let ((has-subtodo)
@@ -1152,72 +1152,72 @@ Functions that I use to filter the agenda
           (while (and (not has-subtodo)
                       (< (point) subtree-end)
                       (re-search-forward org-heading-regexp subtree-end t))
-            (when (my/is-todo-p)
+            (when (tq/is-todo-p)
               (setq has-subtodo t))))
         has-subtodo)))
 
-  (defun my/is-project-p ()
+  (defun tq/is-project-p ()
     "Is a project. i.e. A todo (with a todo keyword) that has at least one subtodo (with a todo keyword)"
-    (and (my/is-todo-p) (my/has-subtodo-p)))
+    (and (tq/is-todo-p) (tq/has-subtodo-p)))
 
-  (defun my/is-task-p ()
+  (defun tq/is-task-p ()
     "Is a task. i.e. A todo (with a todo keyword) that has no subtodos (with a todo keyword)"
-    (and (my/is-todo-p) (not (my/has-subtodo-p))))
+    (and (tq/is-todo-p) (not (tq/has-subtodo-p))))
 
-  (defun my/is-subtodo-p ()
+  (defun tq/is-subtodo-p ()
     "Is todo (either a task or a project) that is part of a project"
     (save-restriction
       (widen)
       (let ((is-subtodo)
-            (is-a-todo (my/is-todo-p)))
+            (is-a-todo (tq/is-todo-p)))
         (when is-a-todo
           (save-excursion
             (while (and (not is-subtodo)
                         (org-up-heading-safe))
-              (when (my/is-todo-p)
+              (when (tq/is-todo-p)
                 (setq is-subtodo t)))))
         (and is-a-todo is-subtodo))))
 
-  (defun my/is-subproject-p ()
+  (defun tq/is-subproject-p ()
     "Is task that is part of a project"
-    (and (my/is-subtodo-p) (my/is-project-p)))
+    (and (tq/is-subtodo-p) (tq/is-project-p)))
 
-  (defun my/is-subtask-p ()
+  (defun tq/is-subtask-p ()
     "Is task that is part of a project"
-    (and (my/is-subtodo-p) (my/is-task-p)))
+    (and (tq/is-subtodo-p) (tq/is-task-p)))
 
-  (defun my/is-standalone-project-p ()
+  (defun tq/is-standalone-project-p ()
     "Is project that is not part of a project"
-    (and (not (my/is-subtodo-p)) (my/is-project-p)))
+    (and (not (tq/is-subtodo-p)) (tq/is-project-p)))
 
-  (defun my/is-standalone-task-p ()
+  (defun tq/is-standalone-task-p ()
     "Is task that is not part of a project"
-    (and (not (my/is-subtodo-p)) (my/is-task-p)))
+    (and (not (tq/is-subtodo-p)) (tq/is-task-p)))
 
-  (defvar my/next-todo-keyword "NEXT"
+  (defvar tq/next-todo-keyword "NEXT"
     "The todo keyword indicating the next task in a project. Any project without at least one subtask with this keyword is considered stuck")
 
-  (defun my/is-stuck-project-p ()
+  (defun tq/is-stuck-project-p ()
     "Is a project that is stuck"
-    (when (my/is-project-p)
+    (when (tq/is-project-p)
       (let ((subtree-end (save-excursion (org-end-of-subtree t)))
-            (next-regexp (concat org-outline-regexp-bol my/next-todo-keyword " ")))
+            (next-regexp (concat org-outline-regexp-bol tq/next-todo-keyword " ")))
         (forward-line 1)
         (not (re-search-forward next-regexp subtree-end t)))))
 
-  (defun my/skip-all-but-stuck-projects ()
+  (defun tq/skip-all-but-stuck-projects ()
     "Skip trees that are not stuck projects"
     (save-restriction
       (widen)
-      (unless (my/is-stuck-project-p)
+      (unless (tq/is-stuck-project-p)
         (save-excursion (or (outline-next-heading) (point-max))))))
 
-  (defun my/skip-all-but-available-unscheduled-todos ()
+  (defun tq/skip-all-but-available-unscheduled-todos ()
     "Skip todos that are unavailable or available but already scheduled. Available todos are standalone tasks or NEXT tasks"
     (save-restriction
       (widen)
-      (unless (and (or (my/is-standalone-task-p)
-                       (string-equal (org-get-todo-state) my/next-todo-keyword))
+      (unless (and (or (tq/is-standalone-task-p)
+                       (string-equal (org-get-todo-state) tq/next-todo-keyword))
                    (not (org-get-scheduled-time nil)))
         (save-excursion (or (outline-next-heading) (point-max))))))
 #+end_src
@@ -1261,11 +1261,11 @@ Allow capturing of email in notmuch mode
     :after (org-capture notmuch)
     :demand
     :config
-    (defun my/org-capture-email ()
+    (defun tq/org-capture-email ()
       (interactive)
       (org-capture nil "e"))
     :bind (:map notmuch-show-mode-map
-                ("C" . my/org-capture-email)))
+                ("C" . tq/org-capture-email)))
 #+end_src
 
 ** Clocking
@@ -1413,7 +1413,7 @@ Use org-roam for my notes. Currently not in MELPA so need to manually specify th
     :after (company org-roam)
     :demand
     :config
-    (my/set-mode-company-backends 'org-mode 'company-org-roam))
+    (tq/set-mode-company-backends 'org-mode 'company-org-roam))
 #+end_src
 
 #+begin_src emacs-lisp
@@ -1608,7 +1608,7 @@ Ensure that send mail uses =/usr/bin/sendmail=
     :config
     (setq lsp-enable-snippet nil)
     (setq lsp-flycheck-live-reporting t)
-    (my/set-mode-company-backends 'lsp-mode 'company-capf))
+    (tq/set-mode-company-backends 'lsp-mode 'company-capf))
 
   (use-package lsp-clients
     :straight lsp-mode
@@ -1717,16 +1717,16 @@ Ensure that send mail uses =/usr/bin/sendmail=
     :after (company cmake-mode)
     :demand
     :config
-    (my/set-mode-company-backends 'cmake-mode 'company-cmake))
+    (tq/set-mode-company-backends 'cmake-mode 'company-cmake))
 #+end_src
 
 ** COMMENT Python
 #+begin_src emacs-lisp
   ;; Python
   (use-package elpy
-    ;; :hook (elpy-mode . my/add-elpy-company-backend)
+    ;; :hook (elpy-mode . tq/add-elpy-company-backend)
     :init
-    ;; (my/define-add-company-backend-locally-fun elpy-company-backend)
+    ;; (tq/define-add-company-backend-locally-fun elpy-company-backend)
     ;; (remove-hook 'elpy-modules 'elpy-module-company)
     (advice-add 'python-mode :before 'elpy-enable))
 #+end_src
@@ -1752,7 +1752,7 @@ Ensure that send mail uses =/usr/bin/sendmail=
     :after (company matlab)
     :demand
     :config
-    (my/set-mode-company-backends 'matlab-shell-mode 'company-matlab-shell))
+    (tq/set-mode-company-backends 'matlab-shell-mode 'company-matlab-shell))
 #+end_src
 
 ** Docker
@@ -1816,7 +1816,7 @@ Ensure that send mail uses =/usr/bin/sendmail=
     :after (company latex)
     :demand
     :config
-    (my/set-mode-company-backends 'latex-mode '(company-auctex-environments
+    (tq/set-mode-company-backends 'latex-mode '(company-auctex-environments
                                                 company-auctex-macros)))
 #+end_src
 
