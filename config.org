@@ -1593,6 +1593,14 @@ Ensure that send mail uses =/usr/bin/sendmail=
   (setq send-mail-function 'sendmail-send-it)
 #+end_src
 
+Use =org-mime= to send HTML email
+#+begin_src emacs-lisp
+  (use-package org-mime
+      :commands (org-mime-htmlize
+                 org-mime-edit-mail-in-org-mode
+                 org-mime-revert-to-plain-text-mail))
+#+end_src
+
 * LSP
 #+begin_src emacs-lisp
   (use-package lsp-mode
