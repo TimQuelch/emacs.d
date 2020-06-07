@@ -1565,10 +1565,10 @@ Display \LaTeX when returned by a jupyter block
     (setq notmuch-show-text/html-blocked-images nil)
     (setq notmuch-always-prompt-for-sender t)
     (setq notmuch-show-indent-messages-width tab-width)
-    (setq notmuch-mua-cite-function 'sc-cite-original)
-    (setq sc-nested-citation-p t)
     (setq mm-text-html-renderer 'gnus-w3m)
-    (add-hook 'notmuch-mua-send-hook 'notmuch-mua-attachment-check))
+    (add-hook 'notmuch-mua-send-hook 'notmuch-mua-attachment-check)
+
+    (tq/set-mode-company-backends 'notmuch-message-mode 'notmuch-company))
 #+end_src
 
 Ensure that from address is correct
