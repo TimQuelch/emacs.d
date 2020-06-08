@@ -638,7 +638,6 @@ Throughout this configuration I use the =dash= library when defining some of my 
     (defun tq/initialise-mode-company-backends ()
       (when (not (or (memq major-mode '(fundamental-mode special-mode))
                      buffer-read-only))
-        (message (format "Major mode: %s, backends %s" major-mode (tq/get-mode-company-backends)))
         (setq-local company-backends (tq/get-mode-company-backends))))
     :config
     (setq company-backends '(company-capf))
