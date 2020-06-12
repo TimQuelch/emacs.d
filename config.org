@@ -1494,7 +1494,23 @@ Set up org-noter
     (pdf-tools-install :no-query))
 
   (use-package nov
-    :mode ("\\.epub\\'" . nov-mode))
+    :mode ("\\.epub\\'" . nov-mode)
+    :bind (:map nov-mode-map
+                ("SPC" . nov-scroll-up)
+                ("S-SPC" . nov-scroll-down)
+                ("j" . next-line)
+                ("k" . previous-line)
+                ("C-d" . nov-scroll-up)
+                ("C-S-d" . nov-scroll-down)
+                ("[" . nov-previous-document)
+                ("]" . nov-next-document)
+                ("J" . nov-previous-document)
+                ("K" . nov-next-document)
+                ("g" . nov-render-document)
+                ("t" . nov-goto-toc))
+    :init
+    (with-eval-after-load 'evil
+      (evil-set-initial-state 'nov-mode 'emacs)))
 #+end_src
 
 
