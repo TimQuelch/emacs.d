@@ -428,6 +428,16 @@ Use ~swiper~ instead of the default ~isearch~
            ([remap evil-search-backward] . swiper-helm)))
 #+end_src
 
+Except in =org-mode= where I want to use ~org-rifle~ instead of ~swiper~
+#+begin_src emacs-lisp
+  (use-package helm-org-rifle
+    :commands (helm-org-rifle helm-org-rifle-files helm-org-rifle-agenda)
+    :bind (:map org-mode-map
+           ("C-s" . helm-org-rifle)
+           ([remap evil-search-forward] . helm-org-rifle)
+           ([remap evil-search-backward] . helm-org-rifle)))
+#+end_src
+
 Use ~helm-rg~ for recursive searching
 #+begin_src emacs-lisp
   (use-package helm-rg
@@ -579,10 +589,18 @@ Align trailing comments
 ** Configuration functions
 Edit this configuration file
 #+begin_src emacs-lisp
-  (defun tq/edit-config-file ()
+  (defvar tq/config-file (expand-file-name "config.org" user-emacs-directory)
+    "Main configuration file")
+
+  (defun tq/edit-config-file (&optional rifle)
     "Open the config.org file"
-    (interactive)
-    (find-file (expand-file-name "config.org" user-emacs-directory)))
+    (interactive "P")
+    (if (and rifle
+             (fboundp 'helm-org-rifle-files))
+        (let ((current-prefix-arg))
+          (helm-org-rifle-files (list tq/config-file)))
+      (find-file tq/config-file)))
+
   (bind-key "C-c e" 'tq/edit-config-file)
 #+end_src
 
