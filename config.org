@@ -392,7 +392,7 @@ Setup helm mode to enable helm for =completing-read=
     :straight helm
     :bind ("C-x C-f" . helm-find-files)
     :config
-    (setq helm-ff-auto-update-initial-value t))
+    (setq helm-ff-auto-update-initial-value nil))
 
   (use-package helm-buffers
     :straight helm
