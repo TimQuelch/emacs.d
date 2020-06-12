@@ -1118,6 +1118,9 @@ Setup the groups that appear in the agenda views.
           (:name "To read"
                  :tag "toread"
                  :order 4)
+          (:name "Work"
+                 :tag "work"
+                 :order 5)
           (:name "Habits"
                  :habit t
                  :order 101)
