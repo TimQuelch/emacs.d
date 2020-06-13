@@ -1498,8 +1498,12 @@ Set up org-noter
 
   (use-package pdf-tools
     :magic ("%PDF" . pdf-view-mode)
+    :bind (:map pdf-view-mode-map
+                ("j" . pdf-view-scroll-up-or-next-page)
+                ("k" . pdf-view-scroll-down-or-previous-page))
     :config
-    (pdf-tools-install :no-query))
+    (pdf-tools-install :no-query)
+    (setq-default pdf-view-display-size 'fit-page))
 
   (use-package nov
     :mode ("\\.epub\\'" . nov-mode)
