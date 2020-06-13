@@ -92,9 +92,7 @@ I'm using ~gcmh~ is a package which changes the default garbage collection sched
     (defun tq/enabled-gcmh-deferred ()
       (run-at-time 5 nil (lambda ()
                            (setq gc-cons-percentage 0.1)
-                           (gcmh-mode))))
-    :config
-    (setq gcmh-idle-delay 5))
+                           (gcmh-mode)))))
 #+end_src
 
 * UI
