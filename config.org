@@ -515,6 +515,14 @@ I use ~avy~ for tree navigation of buffers
     :demand)
 #+end_src
 
+** Dired
+#+begin_src emacs-lisp
+  (use-package dired
+    :straight nil
+    :config
+    (setq dired-listing-switches "-alh"))  ; Use human readable filesizes
+#+end_src
+
 * Util functions
 ** Formatting functions
 Indent the current buffer
