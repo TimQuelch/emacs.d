@@ -61,8 +61,33 @@ Setup name and email
 ** TODO Read these from 'secrets' file
 
 * Packages
-I'm using =use-package=  to manage all my modules. It was initially loaded early in the =init.el= bootstrap, but I'll do more configuration of it here
+
+I'm using =straight= as my package manager. I prefer it because it allows me to be more up to date with the upstream repos when I'm tinkering with packages. I also really like how the config file is the authority on what pacakges are enabled/installed unlike =package.el=
+
+First we bootstrap =straight=
 #+begin_src emacs-lisp
+  (let ((bootstrap-file
+         (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
+        (bootstrap-version 5))
+    (unless (file-exists-p bootstrap-file)
+      (with-current-buffer
+          (url-retrieve-synchronously
+           "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
+           'silent 'inhibit-cookies)
+        (goto-char (point-max))
+        (eval-print-last-sexp)))
+    (load bootstrap-file nil 'nomessage))
+
+  (setq straight-vc-git-default-clone-depth 'full) ; Clone full repos
+#+end_src
+
+I'm using =use-package=  to manage all my modules. It itself must be bootstrapped directly with straight.
+#+begin_src emacs-lisp
+  (straight-use-package 'use-package)
+
+  (eval-when-compile
+    (require 'use-package))
+
   (setq use-package-always-defer t        ; Defer loading until package is required
         use-package-expand-minimally t    ; Expand macros as small as possible
         use-package-compute-statistics t ); Generate timing reports
@@ -595,8 +620,6 @@ Align trailing comments
 ** Configuration functions
 Edit this configuration file
 #+begin_src emacs-lisp
-  (defvar tq/config-file (expand-file-name "config.org" user-emacs-directory)
-    "Main configuration file")
 
   (defun tq/edit-config-file (&optional rifle)
     "Open the config.org file"
@@ -858,6 +881,8 @@ Also include some small major modes for editing git specific files
     :bind (
            <<org-bindings>>
            )
+    :init
+    <<org-init>>
     :config
     <<org-config>>
     )
@@ -924,8 +949,8 @@ Unbind key that comments out a header
 :header-args: :noweb-ref org-config :tangle no
 :END:
 
-Setting the org directory based on the user's home directory (this might not be portable?)
-#+begin_src emacs-lisp
+Setting the org directory based on the user's home directory (this might not be portable?). This is in the init section of the use-package form so it is available for use by other configuration components.
+#+begin_src emacs-lisp :noweb-ref org-init :tangle no
   (setq org-directory (expand-file-name "documents/org" (getenv "HOME")))
 #+end_src
 
@@ -1955,3 +1980,16 @@ Use =org-mime= to send HTML email
           (t (ansi-term default-shell))))
   ;; (bind-key "C-c C-t" 'open-shell)
 #+end_src
+
+* Meta
+I want to automatically tangle and compile this config file on save. ~tq/tangle-and-compile-config~ is provided in =init.el= and is added as a ~after-save-hook~ in the file local variables of this org file.
+
+Finally, we provide ~config~ so that the require in =init.el= can find this.
+#+begin_src emacs-lisp
+  (provide 'config)
+#+end_src
+
+
+# Local Variables:
+# eval: (add-hook 'after-save-hook 'tq/tangle-and-compile-config nil t)
+# End:

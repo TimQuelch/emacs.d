@@ -3,38 +3,25 @@
 ;; Author: Tim Quelch
 ;;
 ;;; Commentary:
-;; 
+;;
 ;;
 ;;; Code:
 
-;; Bootstrap straight.el
-(defvar bootstrap-version)
-(let ((bootstrap-file
-       (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
-      (bootstrap-version 5))
-  (unless (file-exists-p bootstrap-file)
-    (with-current-buffer
-        (url-retrieve-synchronously
-         "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
-         'silent 'inhibit-cookies)
-      (goto-char (point-max))
-      (eval-print-last-sexp)))
-  (load bootstrap-file nil 'nomessage))
+(defvar tq/config-file (expand-file-name "config.org" user-emacs-directory)
+  "Main configuration file")
 
-;; Originally I had this set to 1 to speed up installs, but this was causing issues with tags
-;; missing from repos
-(setq straight-vc-git-default-clone-depth 'full)
+(defun tq/tangle-and-compile-config ()
+  (let* ((org-file tq/config-file)
+         (el-file (concat (file-name-sans-extension org-file) ".el")))
+    (when (or (not (file-exists-p el-file))
+              (file-newer-than-file-p org-file el-file))
+      (require 'ob-tangle)
+      (org-babel-tangle-file org-file el-file)
+      (byte-compile-file el-file))))
 
-;; Set up use-package
-(straight-use-package 'use-package)
+(tq/tangle-and-compile-config)
 
-(eval-when-compile
-  (require 'use-package))
-
-;; Load org mode config file
-(use-package org
-  :straight org-plus-contrib)
-(org-babel-load-file (expand-file-name "config.org" user-emacs-directory))
+(load-file (concat (file-name-sans-extension tq/config-file) ".el"))
 
 (provide 'init)
 ;;; init.el ends here
