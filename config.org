@@ -37,18 +37,30 @@ Set up frame to be transparent
   (push '(alpha . 90) default-frame-alist)
 #+end_src
 
-** Fringes
-Widen fringes
+** Fonts
+Define the fonts that I want to use
 #+begin_src emacs-lisp
-  (push '(left-fringe . 11) default-frame-alist)
-  (push '(right-fringe . 11) default-frame-alist)
+  (defvar tq/font (font-spec :family "Iosevka" :size 18))
+  (defvar tq/variable-width-font (font-spec :family "DejaVu Sans"))
 #+end_src
 
-*** TODO Check if I really need the fringes
-
-** Fonts
+Define function to initialise the main font
 #+begin_src emacs-lisp
-  (push '(font . "DejaVu Sans Mono") default-frame-alist)
+  (defun tq/init-main-font ()
+    "Load the main monospace font"
+    (cond (tq/font (cl-pushnew (cons 'font (font-xlfd-name tq/font))
+                               default-frame-alist :key #'car :test #'eq))))
+
+  (add-hook 'after-init-hook 'tq/init-main-font)
+#+end_src
+
+The below function enables both the fixed-pitch and variable pitch font faces. This should be called after the theme is loaded (?)
+#+begin_src emacs-lisp
+  (defun tq/init-other-fonts (&optional frame)
+    "Set faces for other fonts"
+    (with-selected-frame (or frame (selected-frame))
+      (set-face-attribute 'fixed-pitch nil :font tq/font)
+      (set-face-attribute 'variable-pitch nil :font tq/variable-width-font)))
 #+end_src
 
 * Personalisation
@@ -166,24 +178,52 @@ Disable some unwanted UI elements
 Display dividers between split windows
 #+begin_src emacs-lisp
   (setq window-divider-default-places t
-        window-divider-default-bottom-width 4
-        window-divider-default-right-width 4)
+        window-divider-default-bottom-width 1
+        window-divider-default-right-width 1)
   (add-hook 'window-setup-hook #'window-divider-mode)
+#+end_src
+
+Don't split windows vertically
+#+begin_src emacs-lisp
+(setq split-height-threshold nil)
+#+end_src
+
+** Minibuffer
+Enable recursive minibuffers
+#+begin_src emacs-lisp
+(setq enable-recursive-minibuffers t)
+#+end_src
+
+Echo keystrokes in the echo area (faster than default)
+#+begin_src emacs-lisp
+(setq echo-keystrokes 0.02)
+#+end_src
+
+Only prompt for y/n rather than full yes/no
+#+begin_src emacs-lisp
+(advice-add 'yes-or-no-p :override 'y-or-n-p)
 #+end_src
 
 ** Theme
 #+begin_src emacs-lisp
-  (use-package doom-themes
-    :defines (doom-one-brighter-comments doom-one-comment-bg)
-    :init
-    (setq doom-one-brighter-comments t
-          doom-one-comment-bg nil)
-    (load-theme 'doom-one t))
+    (use-package doom-themes
+      :defines (doom-one-brighter-comments doom-one-comment-bg)
+      :init
+      (setq doom-one-brighter-comments t
+            doom-one-comment-bg nil)
+      (load-theme 'doom-one t)
+      (tq/init-other-fonts))
 #+end_src
 
 Ensure that all the icons are installed. On new installs this will require ~(all-the-icons-install-fonts)~ to be run
 #+begin_src emacs-lisp
-  (use-package all-the-icons)
+  (use-package all-the-icons
+    :commands (all-the-icons-octicon
+               all-the-icons-faicon
+               all-the-icons-fileicon
+               all-the-icons-wicon
+               all-the-icons-material
+               all-the-icons-alltheicon))
 #+end_src
 
 Configure the doom modeline
@@ -220,7 +260,11 @@ Highlight the current line slightly darker
 #+begin_src emacs-lisp
   (use-package hl-line
     :straight nil
-    :hook (after-init . global-hl-line-mode))
+    :hook (after-init . global-hl-line-mode)
+    :config
+    ;; Don't render hl-line in multiple buffers (more performance)
+    (setq hl-line-sticky-flag nil
+          global-hl-line-sticky-flag nil))
 #+end_src
 
 Highlight the matching delimiter. This only happens in programming modes
@@ -228,7 +272,7 @@ Highlight the matching delimiter. This only happens in programming modes
   (use-package paren
     :straight nil
     :hook (prog-mode . show-paren-mode)
-    :config (setq show-paren-delay 0
+    :config (setq show-paren-delay 0.1
                   show-paren-when-point-inside-paren t
                   show-paren-when-point-in-periphery t))
 #+end_src
@@ -248,7 +292,9 @@ Use variable pitch fonts for text modes (except when there is inline code)
 Start scrolling in buffers before point leaves buffer
 #+begin_src emacs-lisp
   (setq scroll-margin 10
-        scroll-conservatively 100)
+        scroll-conservatively 101
+        scroll-preserve-screen-position t
+        auto-window-vscroll nil)
 #+end_src
 
 When scrolling screenfuls leave more context lines (default is 2)
@@ -688,8 +734,8 @@ Throughout this configuration I use the =dash= library when defining some of my 
         (setq-local company-backends (tq/get-mode-company-backends))))
     :config
     (setq company-backends '(company-capf))
-    (setq company-idle-delay 0.2
-          company-minimum-prefix-length 1
+    (setq company-idle-delay 0.3
+          company-minimum-prefix-length 2
           company-selection-wrap-around t
           company-tooltip-limit 15
           company-tooltip-align-annotations t)
