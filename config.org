@@ -648,10 +648,10 @@ Enable ~org-roam-bibtex~ and setup capture template
   :hook (org-roam-mode . org-roam-bibtex-mode)
   :config
   (setq orb-templates
-        '(("r" "ref" plain
+        `(("r" "ref" plain
            (function org-roam-capture--get-point)
            ""
-           :file-name (concat (file-name-as-directory "lit") "%<%Y%m%d%H%M%S>-${slug}")
+           :file-name ,(concat (file-name-as-directory "lit") "%<%Y%m%d%H%M%S>-${slug}")
            :head "#+title: Notes on: ${title}\n#+roam_key: ${ref}\n"
            :unnarrowed t
            :immediate-finish t))))
