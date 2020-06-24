@@ -152,6 +152,13 @@ Use heading of helm as input line
 #+end_src
 
 * Editing
+Enable the use of =C-u= as the universal argument again
+#+begin_src emacs-lisp
+(after! evil
+  (setq! evil-want-C-u-delete nil
+         evil-want-C-u-scroll nil))
+#+end_src
+
 Use better comment dwim
 #+begin_src emacs-lisp :tangle packages.el
 (package! comment-dwim-2)
