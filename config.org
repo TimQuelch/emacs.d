@@ -822,8 +822,7 @@ Use ~helm-notmuch~ for searching email from helm.
 #+begin_src emacs-lisp
 (use-package! helm-notmuch
   :commands helm-notmuch
-  :after notmuch
-  :config
-  (map! :leader :prefix "s"
-        "n" 'helm-notmuch))
+  :after notmuch)
+(map! :leader :prefix "s"
+        "n" 'helm-notmuch)
 #+end_src
