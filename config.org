@@ -567,6 +567,7 @@ Setup ~org-roam~, ~org-roam-bibtex~, and ~org-roam-server~ to track source
 (package! org-roam :recipe (:host github :repo "org-roam/org-roam"))
 (package! org-roam-bibtex :recipe (:host github :repo "org-roam/org-roam-bibtex"))
 (package! org-roam-server :recipe (:host github :repo "org-roam/org-roam-server"))
+(unpin! org-roam org-roam-bibtex org-roam-server)
 #+end_src
 
 Set directory for my ~org-roam~ notes
