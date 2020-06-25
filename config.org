@@ -65,6 +65,7 @@ spell
 #+begin_src emacs-lisp
 :tools
 (eval +overlay)
+docker
 lookup
 (lsp +peek)
 (magit +forge)
@@ -76,6 +77,7 @@ pdf
 :lang
 (cc +lsp)
 emacs-lisp
+data
 json
 latex
 markdown
