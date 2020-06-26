@@ -669,7 +669,10 @@ I don't like the configuration in Doom's ~org-noter~ module so I do it myself
 #+end_src
 #+begin_src emacs-lisp
 (use-package org-noter
-  :defer t)
+  :defer t
+  :config
+  (map! :map org-noter-doc-mode-map
+        :leader :n "i" #'org-noter-insert-note))
 #+end_src
 
 Disable ~org-pdftools~ because it breaks ~org-noter~ in ~nov~ mode
