@@ -585,6 +585,7 @@ Use ~helm-bibtex~ as the main way of dealing with bibliographies
                                      ("breaklines" "true"))))
 #+end_src
 ** Notetaking
+*** Roam
 Setup ~org-roam~, ~org-roam-bibtex~, and ~org-roam-server~ to track source
 #+begin_src emacs-lisp :tangle packages.el
 (package! org-roam :recipe (:host github :repo "org-roam/org-roam"))
@@ -647,6 +648,19 @@ Exclude daily notes from the graph
 (setq org-roam-graph-exclude-matcher '("daily/"))
 #+end_src
 
+Set up an agenda view for nearby notes
+#+begin_src emacs-lisp
+(defun tq/org-agenda-nearby-notes (&optional distance)
+  (interactive "P")
+  (let ((org-agenda-files (org-roam-db--links-with-max-distance
+                           buffer-file-name (or distance 3)))
+        (org-agenda-custom-commands '(("e" "" ((alltodo ""))))))
+    (org-agenda nil "e")))
+
+(map! :leader :prefix "n" :desc "Agenda nearby" "a" #'tq/org-agenda-nearby-notes)
+#+end_src
+
+*** Bibtex
 Enable ~org-roam-bibtex~ and setup capture template
 #+begin_src emacs-lisp
 (use-package org-roam-bibtex
@@ -669,6 +683,7 @@ Enable ~org-server~
   :hook (org-roam-mode . org-roam-server-mode))
 #+end_src
 
+*** Noter
 I don't like the configuration in Doom's ~org-noter~ module so I do it myself
 #+begin_src emacs-lisp :tangle packages.el
 (package! org-noter)
