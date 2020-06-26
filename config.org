@@ -170,6 +170,11 @@ Use better comment dwim
   :bind ([remap comment-dwim] . comment-dwim-2)
   :config (setq cd2/region-command 'cd2/comment-or-uncomment-region))
 #+end_src
+
+Disable some extra packages that I don't really use
+#+begin_src emacs-lisp :tangle packages.el
+(disable-packages! evil-snipe evil-lion)
+#+end_src
 * Org and friends
 ** Agenda
 
