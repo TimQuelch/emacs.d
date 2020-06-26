@@ -155,6 +155,15 @@ Only enable ~pretty-symbols~ in some reasonable modes
 (setq +pretty-code-enabled-modes '(org-mode))
 #+end_src
 
+Set up ~mixed-pitch-mode~ in text modes. Proportional fonts are much nicer to read, but I still want fixed pitch in code blocks
+#+begin_src emacs-lisp :tangle packages.el
+(package! mixed-pitch)
+#+end_src
+#+begin_src emacs-lisp
+(use-package mixed-pitch
+  :hook (text-mode . mixed-pitch-mode))
+#+end_src
+
 * Helm
 Use heading of helm as input line
 #+begin_src emacs-lisp
