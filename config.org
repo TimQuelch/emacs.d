@@ -5,6 +5,7 @@
 :header-args: :tangle no :results silent :noweb-ref doom-modules
 :END:
 
+All my doom modules appear in the following sections
 #+begin_src emacs-lisp :tangle init.el :noweb yes :noweb-ref no
 (doom!
  <<doom-modules>>
@@ -12,6 +13,7 @@
 #+end_src
 
 ** Completion
+I'm using company as my inline completion framework, and helm as my navigation/completion/ui completion framework
 #+begin_src emacs-lisp
 :completion
 (company +childframe)
@@ -19,6 +21,7 @@
 #+end_src
 
 ** UI
+I enable various UI improvements and such here
 #+begin_src emacs-lisp
 :ui
 doom
@@ -34,6 +37,7 @@ window-select
 #+end_src
 
 ** Editor
+I use evil keybindings everywhere. I also want to format buffers when I save them
 #+begin_src emacs-lisp
 :editor
 (evil +everywhere)
@@ -41,6 +45,7 @@ window-select
 #+end_src
 
 ** Emacs
+Improve dired, version-control, and parenthesis behaviour
 #+begin_src emacs-lisp
 :emacs
 (dired +icons)
@@ -49,12 +54,14 @@ vc
 #+end_src
 
 ** Terminal
+Vterm is the best term
 #+begin_src emacs-lisp
 :term
 vterm
 #+end_src
 
 ** Checkers
+Enable syntax and spell checkers
 #+begin_src emacs-lisp
 :checkers
 syntax
@@ -62,17 +69,19 @@ spell
 #+end_src
 
 ** Tools
+Set up a bunch of extra functionality in emacs
 #+begin_src emacs-lisp
 :tools
-(eval +overlay)
-docker
-lookup
-(lsp +peek)
-(magit +forge)
-pdf
+(eval +overlay)                         ; evaluation
+docker                                  ; docker
+lookup                                  ; lookup of definitions/docs
+(lsp +peek)                             ; enable language server
+(magit +forge)                          ; git wizardry
+pdf                                     ; pdf viewing and annotation
 #+end_src
 
 ** Languages
+Enable lots of programming language integrations
 #+begin_src emacs-lisp
 :lang
 (cc +lsp)
@@ -81,12 +90,13 @@ data
 json
 latex
 markdown
-(org +jupyter +journal +noter +roam)
+(org +jupyter +noter +roam)
 (python +lsp)
 (sh +fish)
 #+end_src
 
 ** Config
+Enable bindings and also tell Doom that I'm using a literate config
 #+begin_src emacs-lisp
 :config
 literate
