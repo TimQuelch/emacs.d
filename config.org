@@ -90,7 +90,7 @@ data
 json
 latex
 markdown
-(org +jupyter +noter +roam)
+(org +jupyter +noter +roam +journal)
 (python +lsp)
 (sh +fish)
 #+end_src
@@ -530,8 +530,8 @@ Configure my capture templates. ~e~ is not intended to be used interactively, an
            "* TODO %?\n%U\n" :clock-in t :clock-resume t)
           ("n" "note" entry (function (lambda ()
                                         (org-journal-new-entry t)
-                                        (goto-char (point-min))))
-           "* %(format-time-string org-journal-time-format)%^{Title}\n%i%?")
+                                        (outline-up-heading most-positive-fixnum t)))
+           "* %(format-time-string org-journal-time-format)%?\n%i")
           ("a" "appointment" entry (file org-default-notes-file)
            "* %?\n%U\n" :clock-in t :clock-resume t))))
 #+end_src
@@ -695,6 +695,39 @@ Set up an agenda view for nearby notes
     (org-agenda nil "e")))
 
 (map! :leader :prefix "n" :desc "Agenda nearby" "a" #'tq/org-agenda-nearby-notes)
+#+end_src
+
+*** Journal
+I want to use ~org-journal~ as the way to capture and navigate my daily and fleeting notes
+#+begin_src emacs-lisp
+(after! org-journal
+  <<org-journal-configuration>>
+  )
+#+end_src
+
+Set the journal directory to be inside my roam directory
+#+begin_src emacs-lisp :tangle no :noweb-ref org-journal-configuration
+(setq org-journal-dir (expand-file-name "daily/" org-roam-directory))
+#+end_src
+
+I want to use a weekly journal file. This should make weekly reviews somewhat easier and will result in fewer overall files
+#+begin_src emacs-lisp :tangle no :noweb-ref org-journal-configuration
+(setq org-journal-file-type 'weekly)
+#+end_src
+
+Setup file header. This will likely put the date on the first one that I actually create the entry, and not only Monday. This is ok though.
+#+begin_src emacs-lisp :tangle no :noweb-ref org-journal-configuration
+(setq org-journal-file-header "#+title: Weekly journal for %F")
+#+end_src
+
+Set file format to use a .org extension. No idea why this isn't the default
+#+begin_src emacs-lisp :tangle no :noweb-ref org-journal-configuration
+(setq org-journal-file-format "%Y-%m-%d.org")
+#+end_src
+
+Don't carryover any items
+#+begin_src emacs-lisp :tangle no :noweb-ref org-journal-configuration
+(setq org-journal-carryover-items nil)
 #+end_src
 
 *** Bibtex
