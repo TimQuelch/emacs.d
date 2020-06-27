@@ -234,6 +234,11 @@ When opening an item from the agenda, ensure the whole tree (parents and sibling
 (add-hook 'org-agenda-after-show-hook 'org-reveal)
 #+end_src
 
+Don't dim blocked tasks (i.e. projects)
+#+begin_src emacs-lisp :tangle no :noweb-ref org-agenda-configuration
+(setq org-agenda-dim-blocked-tasks nil)
+#+end_src
+
 Remove the 'category' header from the agenda. Because I only really use one main agenda file, this was the same for all the values in the agenda. Removing it gives me some more horizontal space in the agenda view.
 #+begin_src emacs-lisp :tangle no :noweb-ref org-agenda-configuration
 (setq org-agenda-prefix-format '((agenda . " %i %?-12t% s")
@@ -289,16 +294,23 @@ I want to see emails high up, because usually they are pretty quick to do. House
 
 Any items that do not fall in one of these filter categories goes in an automatic 'Other Items' section which has an order of 99 (so will appear before anything with an order >99)
 
-Below I'm setting up my main agenda view
+Below I'm setting up my main agenda view as well as a projects view
 #+begin_src emacs-lisp :noweb yes
 (setq org-agenda-custom-commands
       '(("j" "Super agenda" (
                              <<agenda-custom-commands>>
-                             ))))
+                             ))
+        ("p" "Projects" (
+                         <<agenda-projects-custom-commands>>
+                         ))))
 #+end_src
 
+**** Super agenda
+:PROPERTIES:
+:header-args: :noweb-ref agenda-custom-commands :tangle no :results silent
+:END:
 The first view is today's agenda, for tasks scheduled today (or in the past) or with deadlines coming up. I include at schedule at the top
-#+begin_src emacs-lisp :noweb-ref agenda-custom-commands :tangle no
+#+begin_src emacs-lisp
 (agenda "" ((org-super-agenda-groups
              (cons '(:name "Schedule" :time-grid t) org-super-agenda-groups))
             (org-agenda-span 'day)
@@ -306,23 +318,32 @@ The first view is today's agenda, for tasks scheduled today (or in the past) or 
 #+end_src
 
 The next section is the Inbox. These are items that I have captured quickly and need to be refiled into my main agenda file.
-#+begin_src emacs-lisp :noweb-ref agenda-custom-commands :tangle no
+#+begin_src emacs-lisp
 (tags "inbox"
       ((org-agenda-overriding-header "Inbox")
        (orgs-tag-match-list-sublevels nil)))
 #+end_src
 
 This section shows projects which are stuck. I define projects as todo items with sub todo items. A stuck project is a project where none of the sub-todos has a NEXT keyword. These are projects where I don't have a task to go onto next. I want to see these because I need to go into these projects and evaluate what tasks I can begin next
-#+begin_src emacs-lisp :noweb-ref agenda-custom-commands :tangle no
+#+begin_src emacs-lisp
 (todo "" ((org-agenda-overriding-header "Stuck projects")
           (org-agenda-skip-function 'tq/skip-all-but-stuck-projects)))
 
 #+end_src
 
 This section shows tasks and projects which are available to be completed (e.g. they are standalone tasks or sub-tasks with a NEXT keyword) but are unscheduled. I want to see these because I need to schedule them to complete sometime.
-#+begin_src emacs-lisp :noweb-ref agenda-custom-commands :tangle no
+#+begin_src emacs-lisp
 (todo "" ((org-agenda-overriding-header "Unscheduled available todos")
           (org-agenda-skip-function 'tq/skip-all-but-available-unscheduled-todos)))
+#+end_src
+
+**** Projects view
+:PROPERTIES:
+:header-args: :noweb-ref agenda-projects-custom-commands :tangle no :results silent
+:END:
+The project view is for viewing all of my current projects (including subprojects for now)
+#+begin_src emacs-lisp
+(todo "" ((org-agenda-skip-function #'tq/skip-all-but-projects)))
 #+end_src
 
 *** Agenda filters
@@ -412,6 +433,13 @@ Functions that I use to filter the agenda
     (unless (and (or (tq/is-standalone-task-p)
                      (string-equal (org-get-todo-state) tq/next-todo-keyword))
                  (not (org-get-scheduled-time nil)))
+      (save-excursion (or (outline-next-heading) (point-max))))))
+
+(defun tq/skip-all-but-projects ()
+  "Skip trees that are not projects"
+  (save-restriction
+    (widen)
+    (unless (tq/is-project-p)
       (save-excursion (or (outline-next-heading) (point-max))))))
 #+end_src
 ** Base
