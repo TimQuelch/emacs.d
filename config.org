@@ -697,6 +697,15 @@ Set up an agenda view for nearby notes
 (map! :leader :prefix "n" :desc "Agenda nearby" "a" #'tq/org-agenda-nearby-notes)
 #+end_src
 
+Set up a graph view where citation links are excluded
+#+begin_src emacs-lisp
+(defun tq/org-roam-graph-without-cites (&optional arg)
+  (interactive "P")
+  (let ((org-roam-graph-exclude-matcher (cons "lit/" org-roam-graph-exclude-matcher)))
+    (org-roam-graph-show arg)))
+
+(map! :leader :prefix "n" "G" #'tq/org-roam-graph-without-cites)
+#+end_src
 *** Journal
 I want to use ~org-journal~ as the way to capture and navigate my daily and fleeting notes
 #+begin_src emacs-lisp
