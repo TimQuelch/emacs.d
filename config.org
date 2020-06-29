@@ -991,7 +991,7 @@ Use ~helm-notmuch~ for searching email from helm.
   :commands helm-notmuch
   :after notmuch)
 (map! :leader :prefix "s"
-        "n" 'helm-notmuch)
+      "n" 'helm-notmuch)
 #+end_src
 
 * Languages
@@ -999,18 +999,18 @@ Some extra packages and languages that are not included by doom modules by defau
 
 ** Systemd unit files
 #+begin_src emacs-lisp :tangle packages.el
-  (package! systemd)
+(package! systemd)
 #+end_src
 #+begin_src emacs-lisp
-  (use-package systemd
-    :defer t)
+(use-package systemd
+  :defer t)
 #+end_src
 
 ** Docker compose
 #+begin_src emacs-lisp :tangle packages.el
-  (package! docker-compose-mode)
+(package! docker-compose-mode)
 #+end_src
 #+begin_src emacs-lisp
-  (use-package docker-compose-mode
-    :defer t)
+(use-package docker-compose-mode
+  :defer t)
 #+end_src
