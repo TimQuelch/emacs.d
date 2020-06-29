@@ -553,7 +553,7 @@ Configure my capture templates. ~e~ is not intended to be used interactively, an
            "* TODO %?\n%U\n" :clock-in t :clock-resume t)
           ("n" "note" entry (function (lambda ()
                                         (org-journal-new-entry t)
-                                        (outline-up-heading most-positive-fixnum t)))
+                                        (while (org-up-heading-safe))))
            "* %(format-time-string org-journal-time-format)%?\n%i")
           ("a" "appointment" entry (file org-default-notes-file)
            "* %?\n%U\n" :clock-in t :clock-resume t))))
