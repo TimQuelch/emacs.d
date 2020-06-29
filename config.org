@@ -523,7 +523,7 @@ Archive to subdirectory and use datetree
 #+end_src
 
 Highlight LaTeX within ~org~
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no :noweb-ref org-configuration
 (setq org-highlight-latex-and-related '(native script entities))
 #+end_src
 
