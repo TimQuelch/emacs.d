@@ -161,7 +161,25 @@ Set up ~mixed-pitch-mode~ in text modes. Proportional fonts are much nicer to re
 #+end_src
 #+begin_src emacs-lisp
 (use-package mixed-pitch
-  :hook (text-mode . mixed-pitch-mode))
+  :hook (text-mode . mixed-pitch-mode)
+  :config
+  (pushnew! mixed-pitch-fixed-pitch-faces
+            'org-date
+            'org-special-keyword
+            'org-property-value
+            'org-ref-cite-face
+            'org-tag
+            'org-todo-keyword-todo
+            'org-todo-keyword-habt
+            'org-todo-keyword-done
+            'org-todo-keyword-wait
+            'org-todo-keyword-kill
+            'org-todo-keyword-outd
+            'org-todo
+            'org-done
+            'font-lock-comment-face
+            'line-number
+            'line-number-current-line))
 #+end_src
 
 * Helm
