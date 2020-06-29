@@ -475,7 +475,8 @@ Setting up ~TODO~ states. ~WAITING~ and ~CANCELLED~ require messages when enteri
 #+begin_src emacs-lisp  :tangle no :noweb-ref org-configuration
 (setq org-todo-keywords '((sequence "TODO(t)" "NEXT(n)" "WAITING(w@/!)" "|" "DONE(d)")
                           (sequence "EMAIL(e)" "|" "SENT(s)")
-                          (sequence "|" "CANCELLED(c@/!)")))
+                          (sequence "|" "CANCELLED(c@/!)")
+                          (sequence "|" "MOVED(m)")))
 #+end_src
 
 Ensure that sub-tasks must be completed before the parent task can be marked done
@@ -760,6 +761,19 @@ Set file format to use a .org extension. No idea why this isn't the default
 Don't carryover any items
 #+begin_src emacs-lisp :tangle no :noweb-ref org-journal-configuration
 (setq org-journal-carryover-items nil)
+#+end_src
+
+#+begin_src emacs-lisp
+(defun tq/refile-to-inbox ()
+  (interactive)
+  (let ((id (org-id-get-create)))
+    (org-refile 3 nil (list org-default-notes-file org-default-notes-file nil nil))
+    (org-edit-headline (concat "[[id:" id "][HERE]] " (nth 4 (org-heading-components))))
+    (let ((new-id (org-id-get-create t)))
+      (save-window-excursion
+        (org-id-goto id)
+        (org-set-property "ORIGIN" (concat "[[id:" new-id "]]")))))
+  (org-todo "MOVED"))
 #+end_src
 
 *** Bibtex
