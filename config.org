@@ -527,6 +527,11 @@ Highlight LaTeX within ~org~
 (setq org-highlight-latex-and-related '(native script entities))
 #+end_src
 
+Enable the use of org-ids for links to headlines. ~org-id-track-globally~ is on by default in doom, however this only updates the org id file when emacs exits, so IDK if it will work very well for me using a daemoned emacs.
+#+begin_src emacs-lisp :tangle no :noweb-ref org-configuration
+(setq org-id-link-to-org-use-id 'create-if-interactive)
+#+end_src
+
 Disable some of the extra things that Doom enables
 #+begin_src emacs-lisp :tangle packages.el
 (disable-packages! org-superstar)
