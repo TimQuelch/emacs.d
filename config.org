@@ -773,6 +773,13 @@ Don't carryover any items
 (setq org-journal-carryover-items nil)
 #+end_src
 
+Add more convenient mappings for journal access
+#+begin_src emacs-lisp
+(map! :leader :prefix "n"
+      :desc "Journal entry"   "n" #'org-journal-new-entry
+      :desc "Today's journal" "t" (cmd!! #'org-journal-new-entry t))
+#+end_src
+
 #+begin_src emacs-lisp
 (defun tq/refile-to-inbox ()
   (interactive)
