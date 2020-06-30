@@ -942,9 +942,9 @@ Ensure that send mail goes into the correct folder.
 #+begin_src emacs-lisp :tangle no :noweb-ref notmuch-config
 (setq notmuch-maildir-use-notmuch-insert nil)
 (setq notmuch-fcc-dirs '(("tim@tquelch.com" . "personal/Sent Items")
-                         ("tim@quelch.name" . "oldpersonal/[Gmail].All Mail")
-                         ("t.quelch@qut.edu.au" . "qut/Sent Items")
-                         ("timothy.quelch@connect.qut.edu.au" . "student/Sent Items")
+                         ("tim@quelch.name" . "oldpersonal/[Gmail].Sent Mail")
+                         ("t.quelch@qut.edu.au" . "qutstaff/Sent Items")
+                         ("timothy.quelch@connect.qut.edu.au" . "qutstudent/Sent Items")
                          ("tim.quelch@student.unimelb.edu.au" . "uom/[Gmail].Sent Mail")))
 #+end_src
 
