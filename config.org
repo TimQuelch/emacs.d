@@ -219,6 +219,89 @@ Disable some extra packages that I don't really use
 (disable-packages! evil-snipe evil-lion)
 #+end_src
 * Org and friends
+** Base
+#+begin_src emacs-lisp
+(setq org-directory "~/documents/org/")
+#+end_src
+
+#+begin_src emacs-lisp
+(after! org
+  <<org-configuration>>
+  )
+#+end_src
+
+Setting up ~TODO~ states. ~WAITING~ and ~CANCELLED~ require messages when entering these states. I'm trying not to use the ~EMAIL~ state, but keeping it here for archive purposes.
+#+begin_src emacs-lisp  :tangle no :noweb-ref org-configuration
+(setq org-todo-keywords '((sequence "TODO(t)" "NEXT(n)" "WAITING(w@/!)" "|" "DONE(d)")
+                          (sequence "EMAIL(e)" "|" "SENT(s)")
+                          (sequence "|" "CANCELLED(c@/!)")
+                          (sequence "|" "MOVED(m)")))
+#+end_src
+
+Ensure that sub-tasks must be completed before the parent task can be marked done
+#+begin_src emacs-lisp :tangle no :noweb-ref org-configuration
+(setq org-enforce-todo-dependencies t)
+#+end_src
+
+Log the time when tasks are completed
+#+begin_src emacs-lisp :tangle no :noweb-ref org-configuration
+(setq org-log-done 'time)
+#+end_src
+
+Setup refile targets. Targets include the current file and all agenda files (files in the org directory) up to 9 levels deep in the hierarchy. Only in-progress tasks are allowed as refile targets
+#+begin_src emacs-lisp :tangle no :noweb-ref org-configuration
+(setq org-refile-allow-creating-parent-nodes 'confirm)
+(setq org-refile-targets '((nil :maxlevel . 9)
+                           (org-agenda-files :maxlevel . 9)))
+
+(defun tq/verify-refile-target ()
+  "Exclude done todo states from refile targets"
+  (not (member (nth 2 (org-heading-components)) org-done-keywords)))
+(setq org-refile-target-verify-function 'tq/verify-refile-target)
+#+end_src
+
+Use the outline path as the refile target. This can be completed in steps to work well with helm etc.
+#+begin_src emacs-lisp :tangle no :noweb-ref org-configuration
+(setq org-refile-use-outline-path t)
+(setq org-outline-path-complete-in-steps nil)
+#+end_src
+
+Don't log when changing state with shift-arrows
+#+begin_src emacs-lisp :tangle no :noweb-ref org-configuration
+(setq org-treat-S-cursor-todo-selection-as-state-change nil)
+#+end_src
+
+Log state changes into drawers rather than under the items istelf. This is also important for habits
+#+begin_src emacs-lisp :tangle no :noweb-ref org-configuration
+(setq org-log-into-drawer t)
+#+end_src
+
+Pressing return over links will follow the link
+#+begin_src emacs-lisp :tangle no :noweb-ref org-configuration
+(setq org-return-follows-link t)
+#+end_src
+
+Archive to subdirectory and use datetree
+#+begin_src emacs-lisp
+(after! org-archive
+  (setq org-archive-location "archive/%s_archive::datetree/"))
+#+end_src
+
+Highlight LaTeX within ~org~
+#+begin_src emacs-lisp :tangle no :noweb-ref org-configuration
+(setq org-highlight-latex-and-related '(native script entities))
+#+end_src
+
+Enable the use of org-ids for links to headlines. ~org-id-track-globally~ is on by default in doom, however this only updates the org id file when emacs exits, so IDK if it will work very well for me using a daemoned emacs.
+#+begin_src emacs-lisp :tangle no :noweb-ref org-configuration
+(setq org-id-link-to-org-use-id 'create-if-interactive)
+#+end_src
+
+Disable some of the extra things that Doom enables
+#+begin_src emacs-lisp :tangle packages.el
+(disable-packages! org-superstar)
+#+end_src
+
 ** Agenda
 
 I use ~org-super-agenda~ to group tasks in agenda
@@ -465,89 +548,6 @@ Functions that I use to filter the agenda
     (unless (tq/is-project-p)
       (save-excursion (or (outline-next-heading) (point-max))))))
 #+end_src
-** Base
-#+begin_src emacs-lisp
-(setq org-directory "~/documents/org/")
-#+end_src
-
-#+begin_src emacs-lisp
-(after! org
-  <<org-configuration>>
-  )
-#+end_src
-
-Setting up ~TODO~ states. ~WAITING~ and ~CANCELLED~ require messages when entering these states. I'm trying not to use the ~EMAIL~ state, but keeping it here for archive purposes.
-#+begin_src emacs-lisp  :tangle no :noweb-ref org-configuration
-(setq org-todo-keywords '((sequence "TODO(t)" "NEXT(n)" "WAITING(w@/!)" "|" "DONE(d)")
-                          (sequence "EMAIL(e)" "|" "SENT(s)")
-                          (sequence "|" "CANCELLED(c@/!)")
-                          (sequence "|" "MOVED(m)")))
-#+end_src
-
-Ensure that sub-tasks must be completed before the parent task can be marked done
-#+begin_src emacs-lisp :tangle no :noweb-ref org-configuration
-(setq org-enforce-todo-dependencies t)
-#+end_src
-
-Log the time when tasks are completed
-#+begin_src emacs-lisp :tangle no :noweb-ref org-configuration
-(setq org-log-done 'time)
-#+end_src
-
-Setup refile targets. Targets include the current file and all agenda files (files in the org directory) up to 9 levels deep in the hierarchy. Only in-progress tasks are allowed as refile targets
-#+begin_src emacs-lisp :tangle no :noweb-ref org-configuration
-(setq org-refile-allow-creating-parent-nodes 'confirm)
-(setq org-refile-targets '((nil :maxlevel . 9)
-                           (org-agenda-files :maxlevel . 9)))
-
-(defun tq/verify-refile-target ()
-  "Exclude done todo states from refile targets"
-  (not (member (nth 2 (org-heading-components)) org-done-keywords)))
-(setq org-refile-target-verify-function 'tq/verify-refile-target)
-#+end_src
-
-Use the outline path as the refile target. This can be completed in steps to work well with helm etc.
-#+begin_src emacs-lisp :tangle no :noweb-ref org-configuration
-(setq org-refile-use-outline-path t)
-(setq org-outline-path-complete-in-steps nil)
-#+end_src
-
-Don't log when changing state with shift-arrows
-#+begin_src emacs-lisp :tangle no :noweb-ref org-configuration
-(setq org-treat-S-cursor-todo-selection-as-state-change nil)
-#+end_src
-
-Log state changes into drawers rather than under the items istelf. This is also important for habits
-#+begin_src emacs-lisp :tangle no :noweb-ref org-configuration
-(setq org-log-into-drawer t)
-#+end_src
-
-Pressing return over links will follow the link
-#+begin_src emacs-lisp :tangle no :noweb-ref org-configuration
-(setq org-return-follows-link t)
-#+end_src
-
-Archive to subdirectory and use datetree
-#+begin_src emacs-lisp
-(after! org-archive
-  (setq org-archive-location "archive/%s_archive::datetree/"))
-#+end_src
-
-Highlight LaTeX within ~org~
-#+begin_src emacs-lisp :tangle no :noweb-ref org-configuration
-(setq org-highlight-latex-and-related '(native script entities))
-#+end_src
-
-Enable the use of org-ids for links to headlines. ~org-id-track-globally~ is on by default in doom, however this only updates the org id file when emacs exits, so IDK if it will work very well for me using a daemoned emacs.
-#+begin_src emacs-lisp :tangle no :noweb-ref org-configuration
-(setq org-id-link-to-org-use-id 'create-if-interactive)
-#+end_src
-
-Disable some of the extra things that Doom enables
-#+begin_src emacs-lisp :tangle packages.el
-(disable-packages! org-superstar)
-#+end_src
-
 ** Capture
 Bind capture to something more convenient
 #+begin_src emacs-lisp
