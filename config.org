@@ -955,6 +955,11 @@ Ensure that sent mail is sent from the correct address. i.e. the one in the head
       message-sendmail-envelope-from 'header)
 #+end_src
 
+Change the viewer for HTML email to GNUS w3m. It seems to be the best, but idk
+#+begin_src emacs-lisp :tangle no :noweb-ref notmuch-config
+(setq mm-text-html-renderer 'gnus-w3m)
+#+end_src
+
 Allow capturing of email in ~notmuch~
 #+begin_src emacs-lisp :tangle no :noweb-ref notmuch-config
 (defun tq/org-capture-email ()
