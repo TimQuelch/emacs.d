@@ -167,6 +167,7 @@ Set up ~mixed-pitch-mode~ in text modes. Proportional fonts are much nicer to re
             'org-date
             'org-special-keyword
             'org-property-value
+            'org-drawer
             'org-ref-cite-face
             'org-tag
             'org-todo-keyword-todo
