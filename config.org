@@ -377,7 +377,10 @@ Setup the groups that appear in the agenda views.
 
 #+begin_src emacs-lisp
 (setq org-super-agenda-groups
-      '((:name "Emails"
+      '((:name "Waiting"
+         :todo "WAITING"
+         :order 103)
+        (:name "Emails"
          :tag "email"
          :order 3)
         (:name "Housework"
