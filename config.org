@@ -304,6 +304,17 @@ Remove empty clock lines, they achieve nothing.
   (setq org-clock-out-remove-zero-time-clocks t))
 #+end_src
 
+Fix org return bindings to default. I don't like the doom bindings
+#+begin_src emacs-lisp :tangle no :noweb-ref org-configuration
+(map! :map org-mode-map
+      "C-RET" #'org-insert-heading-respect-content
+      "C-S-RET" #'org-insert-todo-heading-respect-content
+      "M-RET" #'org-meta-return
+      "M-S-RET" #'org-insert-todo-heading
+      "C-M-RET" #'org-insert-subheading
+      "C-M-S-RET" #'org-insert-todo-subheading)
+#+end_src
+
 Disable some of the extra things that Doom enables
 #+begin_src emacs-lisp :tangle packages.el
 (disable-packages! org-superstar)
