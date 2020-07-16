@@ -857,7 +857,6 @@ Use ~nov.el~ for reading ebooks
   :mode ("\\.epub\\'" . nov-mode))
 #+end_src
 * Email
-
 I don't like the inbuilt ~notmuch~ Doom module, so I'm effectively implementing it myself
 #+begin_src emacs-lisp :tangle packages.el
 (package! notmuch)
@@ -884,9 +883,12 @@ Enable the completion backend in message mode so that email addresses are auto-c
   '(notmuch-company :with company-ispell company-yasnippet))
 #+end_src
 
-Make the hello window a popup
+Ensure that notmuch buffers are treated as real buffers
 #+begin_src emacs-lisp :tangle no :noweb-ref notmuch-config
-(set-popup-rule! "^\\*notmuch" :ignore t)
+(defun tq/notmuch-buffer-p (buffer)
+  (string-match-p "^\\*" (buffer-name buffer)))
+
+(add-to-list 'doom-real-buffer-functions #'tq/notmuch-buffer-p)
 #+end_src
 
 Hide the notmuch logo
