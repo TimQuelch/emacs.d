@@ -564,7 +564,7 @@ Bind capture to something more convenient
 (map! :leader "j" #'org-capture)
 #+end_src
 
-Configure my capture templates. ~e~ is not intended to be used interactively, and is only used from ~notmuch~ (maybe I could let bind this??)
+Configure my capture templates.
 #+begin_src emacs-lisp
 (after! org-capture
   (setq org-default-notes-file (expand-file-name "inbox.org" org-directory))
