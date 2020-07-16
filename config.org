@@ -298,6 +298,12 @@ Enable the use of org-ids for links to headlines. ~org-id-track-globally~ is on 
 (setq org-id-link-to-org-use-id 'create-if-interactive)
 #+end_src
 
+Remove empty clock lines, they achieve nothing.
+#+begin_src emacs-lisp
+(after! org-clock
+  (setq org-clock-out-remove-zero-time-clocks t))
+#+end_src
+
 Disable some of the extra things that Doom enables
 #+begin_src emacs-lisp :tangle packages.el
 (disable-packages! org-superstar)
