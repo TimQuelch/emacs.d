@@ -1018,6 +1018,14 @@ Use ~helm-notmuch~ for searching email from helm.
       "n" 'helm-notmuch)
 #+end_src
 
+Disable ~visual-line-mode~ s from message modes
+#+begin_src emacs-lisp
+(after! message
+  (add-hook! 'message-mode-hook
+    (visual-line-mode -1)
+    (visual-fill-column-mode -1)))
+#+end_src
+
 * Languages
 Some extra packages and languages that are not included by doom modules by default
 
