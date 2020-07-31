@@ -725,7 +725,7 @@ Set up capture template
       '(("d" "default" plain (function org-roam-capture--get-point)
          "%?"
          :file-name "%<%Y%m%d%H%M%S>-${slug}"
-         :head "#+title: ${title}\n"
+         :head "#+title: ${title}\n\n\n* TODO Write about '${title}'"
          :unnarrowed t
          :immediate-finish t)))
 #+end_src
