@@ -272,7 +272,7 @@ Don't log when changing state with shift-arrows
 (setq org-treat-S-cursor-todo-selection-as-state-change nil)
 #+end_src
 
-Log state changes into drawers rather than under the items istelf. This is also important for habits
+Log state changes into drawers rather than under the items itself. This is also important for habits
 #+begin_src emacs-lisp :tangle no :noweb-ref org-configuration
 (setq org-log-into-drawer t)
 #+end_src
