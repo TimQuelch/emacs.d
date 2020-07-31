@@ -811,7 +811,8 @@ Add more convenient mappings for journal access
       (save-window-excursion
         (org-id-goto id)
         (org-set-property "ORIGIN" (concat "[[id:" new-id "]]")))))
-  (org-todo "MOVED"))
+  (let ((org-enforce-todo-dependencies nil))
+   (org-map-entries (lambda () (org-todo "MOVED")) nil 'tree)))
 #+end_src
 
 *** Bibtex
