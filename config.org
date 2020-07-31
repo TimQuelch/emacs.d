@@ -306,13 +306,13 @@ Remove empty clock lines, they achieve nothing.
 
 Fix org return bindings to default. I don't like the doom bindings
 #+begin_src emacs-lisp :tangle no :noweb-ref org-configuration
-(map! :map org-mode-map
-      "C-RET" #'org-insert-heading-respect-content
-      "C-S-RET" #'org-insert-todo-heading-respect-content
-      "M-RET" #'org-meta-return
-      "M-S-RET" #'org-insert-todo-heading
-      "C-M-RET" #'org-insert-subheading
-      "C-M-S-RET" #'org-insert-todo-subheading)
+(map! :map (org-mode-map evil-org-mode-map)
+      :ni [C-return] #'org-insert-heading-respect-content
+      :ni [C-S-return] #'org-insert-todo-heading-respect-content
+      :ni [M-return] #'org-meta-return
+      :ni [M-S-return] #'org-insert-todo-heading
+      :ni [C-M-return] #'org-insert-subheading
+      :ni [C-M-S-return] #'org-insert-todo-subheading)
 #+end_src
 
 Disable some of the extra things that Doom enables
