@@ -882,6 +882,7 @@ I don't like the inbuilt ~notmuch~ Doom module, so I'm effectively implementing 
 #+begin_src emacs-lisp
 (use-package! notmuch
   :defer t
+  :commands (notmuch notmuch-mua-new-mail)
   :init
   <<notmuch-init>>
   :config
@@ -893,6 +894,15 @@ Ensure that linking to ~notmuch~ emails is enabled in ~org~
 #+begin_src emacs-lisp :tangle no :noweb-ref notmuch-init
 (after! org
   (add-to-list 'org-modules 'ol-notmuch))
+#+end_src
+
+Add a nice keymap for accessing email
+#+begin_src emacs-lisp :tangle no :noweb-ref notmuch-init
+(map! :leader
+      (:prefix-map ("e" . "email")
+       :desc "Browse"        "e" #'notmuch
+       :desc "New email"     "n" #'notmuch-mua-new-mail
+       :desc "Search"        "s" #'helm-notmuch))
 #+end_src
 
 Enable the completion backend in message mode so that email addresses are auto-completed
