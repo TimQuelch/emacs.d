@@ -985,6 +985,15 @@ Ensure that sent mail is sent from the correct address. i.e. the one in the head
       message-sendmail-envelope-from 'header)
 #+end_src
 
+I want to use helm to choose which email to send email from. The notmuch default uses ido which I do not like. I also want to promprt for a sender whenever I create an email from scratch
+#+begin_src emacs-lisp :tangle no :noweb-ref notmuch-config
+(defadvice! tq/notmuch-prompt-for-sender ()
+  :override #'notmuch-mua-prompt-for-sender
+  (completing-read "From: " (notmuch-user-emails)))
+
+(setq notmuch-always-prompt-for-sender t)
+#+end_src
+
 Change the viewer for HTML email to GNUS w3m. It seems to be the best, but idk
 #+begin_src emacs-lisp :tangle no :noweb-ref notmuch-config
 (setq mm-text-html-renderer 'gnus-w3m)
