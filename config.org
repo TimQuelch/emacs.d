@@ -51,6 +51,7 @@ Improve dired, version-control, and parenthesis behaviour
 (dired +icons)
 electric
 vc
+undo
 #+end_src
 
 ** Terminal
