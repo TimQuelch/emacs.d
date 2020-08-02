@@ -1038,17 +1038,24 @@ Allow capturing of email in ~notmuch~
       :nv "C" #'tq/org-capture-email)
 #+end_src
 
-Use =org-mime= to send HTML email
 #+begin_src emacs-lisp :tangle packages.el
-(package! org-mime)
+(package! org-msg)
 #+end_src
 #+begin_src emacs-lisp
-(use-package! org-mime
-  :commands (org-mime-htmlize
-             org-mime-edit-mail-in-org-mode
-             org-mime-revert-to-plain-text-mail)
+(use-package! org-msg
+  :after notmuch
   :config
-  (setq org-mime-library 'mml))
+  (org-msg-mode)
+
+  (setq org-msg-text-plain-alternative t)
+
+  (setq org-msg-signature "
+
+Thanks,
+
+#+begin_signature
+Tim Quelch
+#+end_signature"))
 #+end_src
 
 Use ~helm-notmuch~ for searching email from helm.
