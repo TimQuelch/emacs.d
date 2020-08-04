@@ -206,6 +206,11 @@ Enable the use of =C-u= as the universal argument again
          evil-want-C-u-scroll nil))
 #+end_src
 
+Enable easy use of avy
+#+begin_src emacs-lisp
+(map! "C-'" #'avy-goto-char)
+#+end_src
+
 Use better comment dwim
 #+begin_src emacs-lisp :tangle packages.el
 (package! comment-dwim-2)
