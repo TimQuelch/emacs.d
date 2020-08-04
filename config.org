@@ -638,7 +638,11 @@ Use ~helm-bibtex~ as the main way of dealing with bibliographies
   :after org-ref
   :config
   (setq! bibtex-completion-pdf-field "file"
-         helm-bibtex-full-frame nil))
+         bibtex-completion-bibliography tq/bibliography-file
+         helm-bibtex-full-frame nil)
+
+  (map! :leader :prefix "s"
+        "c" #'helm-bibtex))
 #+end_src
 
 ** Exporting
