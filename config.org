@@ -13,7 +13,7 @@ All my doom modules appear in the following sections
 #+end_src
 
 ** Completion
-I'm using company as my inline completion framework, and helm as my navigation/completion/ui completion framework
+I'm using company as my inline completion framework, and helm as my navigation/completion/UI completion framework
 #+begin_src emacs-lisp
 :completion
 (company +childframe)
@@ -45,7 +45,7 @@ I use evil keybindings everywhere. I also want to format buffers when I save the
 #+end_src
 
 ** Emacs
-Improve dired, version-control, and parenthesis behaviour
+Improve ~dired~, version-control, and parenthesis behaviour
 #+begin_src emacs-lisp
 :emacs
 (dired +icons)
@@ -55,7 +55,7 @@ undo
 #+end_src
 
 ** Terminal
-Vterm is the best term
+~vterm~ is the best term
 #+begin_src emacs-lisp
 :term
 vterm
@@ -134,7 +134,7 @@ Set up ~fill-column~ to be wider by default
 (setq-default fill-column 100)
 #+end_src
 
-Increase the amount of context lines when scrolling full screenfuls (default is 2)
+Increase the amount of context lines when scrolling full screen-fulls (default is 2)
 #+begin_src emacs-lisp
 (setq next-screen-context-lines 8)
 #+end_src
@@ -206,12 +206,12 @@ Enable the use of =C-u= as the universal argument again
          evil-want-C-u-scroll nil))
 #+end_src
 
-Enable easy use of avy
+Enable easy use of ~avy~
 #+begin_src emacs-lisp
 (map! "C-'" #'avy-goto-char)
 #+end_src
 
-Use better comment dwim
+Use better ~comment-diwm~
 #+begin_src emacs-lisp :tangle packages.el
 (package! comment-dwim-2)
 #+end_src
@@ -301,7 +301,7 @@ Archive to subdirectory and use datetree
   (setq org-archive-location "archive/%s_archive::datetree/"))
 #+end_src
 
-Highlight LaTeX within ~org~
+Highlight \LaTeX within ~org~
 #+begin_src emacs-lisp :tangle no :noweb-ref org-configuration
 (setq org-highlight-latex-and-related '(native script entities))
 #+end_src
@@ -312,7 +312,7 @@ Ensure that latex snippets and images are displayed when files are first opened
       org-startup-with-inline-images t)
 #+end_src
 
-Enable the use of org-ids for links to headlines. ~org-id-track-globally~ is on by default in doom, however this only updates the org id file when emacs exits, so IDK if it will work very well for me using a daemoned emacs.
+Enable the use of org-ids for links to headlines. ~org-id-track-globally~ is on by default in doom, however this only updates the org id file when emacs exits, so I'm not sure if it will work very well for me using a daemoned emacs.
 #+begin_src emacs-lisp :tangle no :noweb-ref org-configuration
 (setq org-id-link-to-org-use-id 'create-if-interactive)
 #+end_src
@@ -487,7 +487,7 @@ This section shows tasks and projects which are available to be completed (e.g. 
 :PROPERTIES:
 :header-args: :noweb-ref agenda-projects-custom-commands :tangle no :results silent
 :END:
-The project view is for viewing all of my current projects (including subprojects for now)
+The project view is for viewing all of my current projects (including sub-projects for now)
 #+begin_src emacs-lisp
 (todo "" ((org-agenda-skip-function #'tq/skip-all-but-projects)))
 #+end_src
@@ -879,7 +879,7 @@ Disable ~org-pdftools~ because it breaks ~org-noter~ in ~nov~ mode
 (disable-packages! org-pdftools)
 #+end_src
 ** Babel
-I'm mostly happy with doom's configuration for jupyter
+I'm mostly happy with doom's configuration for ~jupyter~
 #+begin_src emacs-lisp
 (after! jupyter
   (setq org-babel-default-header-args:jupyter-python
@@ -934,7 +934,7 @@ Enable the completion backend in message mode so that email addresses are auto-c
   '(notmuch-company :with company-ispell company-yasnippet))
 #+end_src
 
-Ensure that notmuch buffers are treated as real buffers
+Ensure that ~notmuch~ buffers are treated as real buffers
 #+begin_src emacs-lisp :tangle no :noweb-ref notmuch-config
 (defun tq/notmuch-buffer-p (buffer)
   (string-match-p "^\\*" (buffer-name buffer)))
@@ -942,7 +942,7 @@ Ensure that notmuch buffers are treated as real buffers
 (add-to-list 'doom-real-buffer-functions #'tq/notmuch-buffer-p)
 #+end_src
 
-Hide the notmuch logo
+Hide the ~notmuch~ logo
 #+begin_src emacs-lisp :tangle no :noweb-ref notmuch-config
 (setq notmuch-show-logo nil)
 #+end_src
@@ -984,7 +984,7 @@ Make unread emails specially
       '(("unread" (propertize tag 'face 'notmuch-tag-unread))))
 #+end_src
 
-Set up the sections in the main hellow window
+Set up the sections in the main hello window
 #+begin_src emacs-lisp :tangle no :noweb-ref notmuch-config
 (setq notmuch-hello-sections
       '(notmuch-hello-insert-header
@@ -1019,7 +1019,7 @@ Ensure that sent mail is sent from the correct address. i.e. the one in the head
       message-sendmail-envelope-from 'header)
 #+end_src
 
-I want to use helm to choose which email to send email from. The notmuch default uses ido which I do not like. I also want to promprt for a sender whenever I create an email from scratch
+I want to use helm to choose which email to send email from. The ~notmuch~ default uses ~ido~ which I do not like. I also want to prompt for a sender whenever I create an email from scratch
 #+begin_src emacs-lisp :tangle no :noweb-ref notmuch-config
 (defadvice! tq/notmuch-prompt-for-sender ()
   :override #'notmuch-mua-prompt-for-sender
