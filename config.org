@@ -1047,8 +1047,10 @@ Allow capturing of email in ~notmuch~
       :nv "C" #'tq/org-capture-email)
 #+end_src
 
+Use ~org-msg~ to write HTML email in a sane way. My fork currently has a fix to ensure that notmuch FCC is handled correctly.
 #+begin_src emacs-lisp :tangle packages.el
-(package! org-msg)
+(package! org-msg
+  :recipe (:host github :repo "TimQuelch/org-msg"))
 #+end_src
 #+begin_src emacs-lisp
 (use-package! org-msg
