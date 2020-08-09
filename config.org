@@ -519,7 +519,8 @@ This view is the one that I look at during my 'work' day. The first view is the 
 
 Next It will include the agenda for the current day, discarding any 'home' tasks.
 #+begin_src emacs-lisp
-(agenda "" ((org-super-agenda-groups tq/phd-org-super-agenda-groups)
+(agenda "" ((org-super-agenda-groups (cons '(:discard (:time-grid t))
+                                           tq/phd-org-super-agenda-groups ))
             (org-agenda-span 'day)
             (org-agenda-start-day)))
 #+end_src
