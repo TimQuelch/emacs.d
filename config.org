@@ -871,6 +871,7 @@ Add more convenient mappings for journal access
       :desc "Today's journal" "t" (cmd!! #'org-journal-new-entry t))
 #+end_src
 
+I often want to refile ~TODO~ items from journal or other org files into my inbox. This function copies the headline into my inbox, and creates bi-directional links on both headlines. It also marks the original headlines as the ~MOVED~ todo keyword.
 #+begin_src emacs-lisp
 (defun tq/refile-to-inbox ()
   (interactive)
@@ -883,6 +884,9 @@ Add more convenient mappings for journal access
         (org-set-property "ORIGIN" (concat "[[id:" new-id "]]")))))
   (let ((org-enforce-todo-dependencies nil))
    (org-map-entries (lambda () (org-todo "MOVED")) nil 'tree)))
+
+(after! org
+  (map! :map org-mode-map :localleader :prefix "r" "i" #'tq/refile-to-inbox))
 #+end_src
 
 *** Bibtex
