@@ -340,7 +340,6 @@ Disable some of the extra things that Doom enables
 #+end_src
 
 ** Agenda
-
 I use ~org-super-agenda~ to group tasks in agenda
 #+begin_src emacs-lisp emacs-lisp :tangle packages.el
 (package! org-super-agenda)
@@ -440,6 +439,13 @@ I want to see emails high up, because usually they are pretty quick to do. House
 
 Any items that do not fall in one of these filter categories goes in an automatic 'Other Items' section which has an order of 99 (so will appear before anything with an order >99)
 
+
+In my PhD view, I want do discard anything hobby or housework related. I strip out these items in the super agenda groups.
+#+begin_src emacs-lisp
+(defvar tq/phd-org-super-agenda-groups
+  (cons '(:discard (:tag ("home" "hobby"))) org-super-agenda-groups))
+#+end_src
+
 Below I'm setting up my main agenda view as well as a projects view
 #+begin_src emacs-lisp :noweb yes
 (setq org-agenda-custom-commands
@@ -448,7 +454,10 @@ Below I'm setting up my main agenda view as well as a projects view
                              ))
         ("p" "Projects" (
                          <<agenda-projects-custom-commands>>
-                         ))))
+                         ))
+        ("w" "PhD" (
+                    <<agenda-phd-custom-commands>>
+                    ))))
 #+end_src
 
 **** Super agenda
@@ -491,7 +500,45 @@ The project view is for viewing all of my current projects (including sub-projec
 #+begin_src emacs-lisp
 (todo "" ((org-agenda-skip-function #'tq/skip-all-but-projects)))
 #+end_src
+**** PhD view
+:PROPERTIES:
+:header-args: :noweb-ref agenda-phd-custom-commands :tangle no :results silent
+:END:
+This view is the one that I look at during my 'work' day. The first view is the time grid which includes everything scheduled for a specific time during the day. I need this to include everything as I might sometimes have a personal or home task scheduled during the day.
+#+begin_src emacs-lisp
+(agenda "" ((org-super-agenda-groups '((:name "Schedule" :time-grid t)
+                                       (:discard (:anything t))))
+            (org-agenda-span 'day)
+            (org-agenda-start-day)))
+#+end_src
 
+Next It will include the agenda for the current day, discarding any 'home' tasks.
+#+begin_src emacs-lisp
+(agenda "" ((org-super-agenda-groups tq/phd-org-super-agenda-groups)
+            (org-agenda-span 'day)
+            (org-agenda-start-day)))
+#+end_src
+
+The following sections are pretty much the same as the super agenda, but again ignoring the home tasks
+#+begin_src emacs-lisp
+(tags "inbox"
+      ((org-super-agenda-groups tq/phd-org-super-agenda-groups)
+       (org-agenda-overriding-header "Inbox")
+       (orgs-tag-match-list-sublevels nil)))
+#+end_src
+
+#+begin_src emacs-lisp
+(todo "" ((org-super-agenda-groups tq/phd-org-super-agenda-groups)
+          (org-agenda-overriding-header "Stuck projects")
+          (org-agenda-skip-function 'tq/skip-all-but-stuck-projects)))
+
+#+end_src
+
+#+begin_src emacs-lisp
+(todo "" ((org-super-agenda-groups tq/phd-org-super-agenda-groups)
+          (org-agenda-overriding-header "Unscheduled available todos")
+          (org-agenda-skip-function 'tq/skip-all-but-available-unscheduled-todos)))
+#+end_src
 *** Agenda filters
 :PROPERTIES:
 :header-args: :noweb-ref org-agenda-filters :tangle no :results silent
