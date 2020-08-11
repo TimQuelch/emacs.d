@@ -339,6 +339,11 @@ Turn on auto-revert mode in org mode files so that they automatically update whe
 (add-hook 'org-mode-hook 'auto-revert-mode)
 #+end_src
 
+Unmap keybind that I use for avy
+#+begin_src emacs-lisp :tangle no :noweb-ref org-configuration
+(map! :map org-mode-map "C-'" nil)
+#+end_src
+
 Disable some of the extra things that Doom enables
 #+begin_src emacs-lisp :tangle packages.el
 (disable-packages! org-superstar)
