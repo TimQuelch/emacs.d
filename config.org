@@ -845,6 +845,14 @@ Set up a graph view where citation links are excluded
 
 (map! :leader :prefix "n" "G" #'tq/org-roam-graph-without-cites)
 #+end_src
+
+Org roam fuzzy links use capf now instead of a dedicated company backend
+#+begin_src emacs-lisp :tangle no :noweb-ref org-roam-config
+(set-company-backend! '(org-mode org-journal-mode) '(company-capf))
+#+end_src
+#+begin_src emacs-lisp :tangle packages.el
+(disable-packages! company-org-roam)
+#+end_src
 *** Journal
 I want to use ~org-journal~ as the way to capture and navigate my daily and fleeting notes
 #+begin_src emacs-lisp
