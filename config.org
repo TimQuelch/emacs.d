@@ -1012,9 +1012,9 @@ Hide the ~notmuch~ logo
 (setq notmuch-show-logo nil)
 #+end_src
 
-Hide headers by default
+Show headers by default
 #+begin_src emacs-lisp :tangle no :noweb-ref notmuch-config
-(setq notmuch-message-headers-visible nil)
+(setq notmuch-message-headers-visible t)
 #+end_src
 
 Kill message buffers when sent
