@@ -662,13 +662,13 @@ Configure my capture templates.
 
   (setq org-capture-templates
         '(("t" "todo" entry (file org-default-notes-file)
-           "* TODO %?\n%U\n" :clock-in t :clock-resume t)
+           "* TODO %?")
           ("n" "note" entry (function (lambda ()
                                         (org-journal-new-entry t)
                                         (while (org-up-heading-safe))))
            "* %(format-time-string org-journal-time-format)%?\n%i")
           ("a" "appointment" entry (file org-default-notes-file)
-           "* %?\n%U\n" :clock-in t :clock-resume t))))
+           "* %?"))))
 #+end_src
 ** Referencing
 
