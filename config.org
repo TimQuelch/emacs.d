@@ -1096,7 +1096,9 @@ I want to use helm to choose which email to send email from. The ~notmuch~ defau
 #+begin_src emacs-lisp :tangle no :noweb-ref notmuch-config
 (defadvice! tq/notmuch-prompt-for-sender ()
   :override #'notmuch-mua-prompt-for-sender
-  (completing-read "From: " (notmuch-user-emails)))
+  (let ((name (notmuch-user-name))
+        (address (completing-read "From: " (notmuch-user-emails))))
+    (message-make-from name address)))
 
 (setq notmuch-always-prompt-for-sender t)
 #+end_src
