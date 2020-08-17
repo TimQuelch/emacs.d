@@ -996,7 +996,7 @@ Add a nice keymap for accessing email
 #+begin_src emacs-lisp :tangle no :noweb-ref notmuch-init
 (map! :leader
       (:prefix-map ("e" . "email")
-       :desc "Browse"        "e" #'notmuch
+       :desc "Browse"        "e" (cmd! (notmuch) (widget-forward 4))
        :desc "New email"     "n" #'notmuch-mua-new-mail
        :desc "Search"        "s" #'helm-notmuch))
 #+end_src
