@@ -1164,6 +1164,11 @@ Disable ~visual-line-mode~ s from message modes
     (visual-fill-column-mode -1)))
 #+end_src
 
+Fix hooks for ~notmuch~ see https://github.com/jeremy-compostella/org-msg/issues/58.
+#+begin_src emacs-lisp :tangle no :noweb-ref notmuch-config
+(remove-hook 'notmuch-mua-send-hook #'notmuch-mua-message-send-hook)
+#+end_src
+
 * Languages
 Some extra packages and languages that are not included by doom modules by default
 
