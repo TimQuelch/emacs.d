@@ -95,6 +95,11 @@ markdown
 (python +lsp)
 (sh +fish)
 #+end_src
+** App
+#+begin_src emacs-lisp
+:app
+calendar
+#+end_src
 
 ** Config
 Enable bindings and also tell Doom that I'm using a literate config
@@ -108,6 +113,11 @@ Setup name and email
 #+begin_src emacs-lisp
 (setq user-full-name "Tim Quelch"
       user-mail-address "tim@quelch.name")
+#+end_src
+
+Load my secrets (API keys etc.)
+#+begin_src emacs-lisp
+(load-file (concat doom-private-dir "my-secrets.el"))
 #+end_src
 
 * UI
@@ -236,6 +246,11 @@ Disable some extra packages that I don't really use
 ** Base
 #+begin_src emacs-lisp
 (setq org-directory "~/documents/org/")
+#+end_src
+
+Set the org-agenda files to be the org directory. This includes all the files in the base directory, but no sub-directories.
+#+begin_src emacs-lisp
+(add-to-list 'org-agenda-files org-directory)
 #+end_src
 
 #+begin_src emacs-lisp
@@ -969,6 +984,28 @@ I'm mostly happy with doom's configuration for ~jupyter~
         '((:session . "py")
           (:kernel . "python3")
           (:async . "no"))))
+#+end_src
+* Calendar
+
+Define directory for calendars to go in
+#+begin_src emacs-lisp
+(defvar tq/cal-dir (concat org-directory "calendars/"))
+#+end_src
+
+I also want to add this to the list of org-agenda files that are used
+#+begin_src emacs-lisp
+(add-to-list 'org-agenda-files tq/cal-dir)
+#+end_src
+
+Configure calendars. These use some secret values that I do not commit to git (for obvious reasons). ~gcal-file-alist~ is an alist of the form ~'(("calendar-id" . "filename") ("id2" . "file2"))~. This will then put calendar entries in to =calendar/filename.org= and =calendar/file2.org=.
+#+begin_src emacs-lisp
+(after! org-gcal
+  (setq org-gcal-client-id secret/gcal-client-id
+        org-gcal-client-secret secret/gcal-client-secret
+        org-gcal-fetch-file-alist
+        (-map (lambda (entry)
+                (cons (car entry) (concat tq/cal-dir (cdr entry) ".org")))
+              secret/gcal-file-alist)))
 #+end_src
 
 * Documents
