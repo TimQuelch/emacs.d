@@ -687,7 +687,8 @@ I'm using ~org-ref~ to manage citations within org-mode. This might soon be repl
   :defer-incrementally t
   :init
   (setq! org-ref-default-bibliography (list tq/bibliography-file)
-         org-ref-default-citation-link "autocite"))
+         org-ref-default-citation-link "autocite"
+         org-ref-get-pdf-filename-function (lambda (key) (car (bibtex-completion-find-pdf key)))))
 #+end_src
 
 Use ~helm-bibtex~ as the main way of dealing with bibliographies
