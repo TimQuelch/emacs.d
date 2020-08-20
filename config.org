@@ -208,6 +208,12 @@ Increase size of helm buffers
   (set-popup-rule! "^\\*helm" :size 0.3))
 #+end_src
 
+Increase width of buffer name field in buffer list
+#+begin_src emacs-lisp
+(after! helm
+  (setq helm-buffer-max-length nil))
+#+end_src
+
 * Editing
 Enable the use of =C-u= as the universal argument again
 #+begin_src emacs-lisp
