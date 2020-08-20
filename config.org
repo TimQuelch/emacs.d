@@ -365,6 +365,7 @@ Disable some of the extra things that Doom enables
 #+end_src
 
 ** Agenda
+
 I use ~org-super-agenda~ to group tasks in agenda
 #+begin_src emacs-lisp emacs-lisp :tangle packages.el
 (package! org-super-agenda)
@@ -1009,7 +1010,8 @@ Configure calendars. These use some secret values that I do not commit to git (f
 #+end_src
 
 * Documents
-Use ~nov.el~ for reading ebooks
+
+Use ~nov.el~ for reading ebooks.
 #+begin_src emacs-lisp :tangle packages.el
 (package! nov)
 #+end_src
@@ -1017,6 +1019,7 @@ Use ~nov.el~ for reading ebooks
 (use-package nov
   :mode ("\\.epub\\'" . nov-mode))
 #+end_src
+
 * Email
 I don't like the inbuilt ~notmuch~ Doom module, so I'm effectively implementing it myself
 #+begin_src emacs-lisp :tangle packages.el
