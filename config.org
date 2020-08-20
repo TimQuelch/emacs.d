@@ -774,10 +774,7 @@ Use ~helm-bibtex~ as the main way of dealing with bibliographies
   (add-to-list 'org-latex-default-packages-alist '("hidelinks" "hyperref" nil))
   (add-to-list 'org-latex-default-packages-alist "\\PassOptionsToPackage{hyphens}{url}")
 
-  (setq org-latex-pdf-process (->> org-latex-pdf-process
-                                   (--map (->> it
-                                               (s-chop-suffix "%f")
-                                               (s-append "-shell-escape %f")))))
+  (setq org-latex-pdf-process (list "latexmk -shell-escape -bibtex -f -pdf %f"))
 
   (setq org-latex-listings t)                                         ; Turn on source code inclusion
   (setq org-latex-listings-options '(("basicstyle" "\\linespread{0.85}\\ttfamily")
