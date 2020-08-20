@@ -825,9 +825,9 @@ Put the database in the doom cache directory, rather than stored with the notes
 (setq org-roam-db-location (concat doom-cache-dir "org-roam.db"))
 #+end_src
 
-Turn back on verbosity. I like the messages
+Turn off verbosity. I don't like the messages
 #+begin_src emacs-lisp :tangle no :noweb-ref org-roam-config
-(setq org-roam-verbose t)
+(setq org-roam-verbose nil)
 #+end_src
 
 Set up capture template
