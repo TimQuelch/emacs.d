@@ -879,6 +879,14 @@ Set up a graph view where citation links are excluded
 (map! :leader :prefix "n" "G" #'tq/org-roam-graph-without-cites)
 #+end_src
 
+Change org-roam buffer names to be named after the title
+#+begin_src emacs-lisp :tangle no :noweb-ref org-roam-config
+(add-hook! 'find-file-hook (when (org-roam--org-roam-file-p)
+                             (when-let ((title (org-roam-db--get-titles (buffer-file-name))))
+                               (rename-buffer title))))
+#+end_src
+
+
 Org roam fuzzy links use capf now instead of a dedicated company backend
 #+begin_src emacs-lisp :tangle no :noweb-ref org-roam-config
 (set-company-backend! '(org-mode org-journal-mode) '(company-capf))
