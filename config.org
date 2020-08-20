@@ -250,6 +250,7 @@ Disable some extra packages that I don't really use
 
 Set the org-agenda files to be the org directory. This includes all the files in the base directory, but no sub-directories.
 #+begin_src emacs-lisp
+(defvar org-agenda-files nil)
 (add-to-list 'org-agenda-files org-directory)
 #+end_src
 
