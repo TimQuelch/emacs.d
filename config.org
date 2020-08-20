@@ -703,6 +703,15 @@ Use ~helm-bibtex~ as the main way of dealing with bibliographies
          bibtex-completion-bibliography tq/bibliography-file
          helm-bibtex-full-frame nil)
 
+  (setq! bibtex-completion-display-formats
+         '((t . "${author:36} ${title:*} ${year:4} ${=has-pdf=:1}${=has-note=:1} ${=type=:20}")))
+
+  (defadvice! tq/helm-bibtex-window-width ()
+    "Override the window width getter to manually reduce the width"
+    :override
+    #'helm-bibtex-window-width
+    (- (window-body-width) 8))
+
   (map! :leader :prefix "s"
         "c" #'helm-bibtex))
 #+end_src
