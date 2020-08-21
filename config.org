@@ -29,7 +29,6 @@ modeline
 nav-flash
 ophints
 (popup +all +defaults)
-pretty-code
 treemacs
 vc-gutter
 vi-tilde-fringe
@@ -159,11 +158,6 @@ Wrap lines at fill column when using ~visual-line-mode~
   :config
   (setq-default split-window-preferred-function
                 'visual-fill-column-split-window-sensibly))
-#+end_src
-
-Only enable ~pretty-symbols~ in some reasonable modes
-#+begin_src emacs-lisp
-(setq +pretty-code-enabled-modes '(org-mode))
 #+end_src
 
 Set up ~mixed-pitch-mode~ in text modes. Proportional fonts are much nicer to read, but I still want fixed pitch in code blocks
