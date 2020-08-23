@@ -208,6 +208,14 @@ Increase width of buffer name field in buffer list
   (setq helm-buffer-max-length nil))
 #+end_src
 
+* Company
+Reduce prefix length and delay. I want completion /fast/. THis may cause performance issues
+#+begin_src emacs-lisp
+(after! company
+  (setq company-idle-delay 0
+        company-minimum-prefix-length 0))
+#+end_src
+
 * Editing
 Enable the use of =C-u= as the universal argument again
 #+begin_src emacs-lisp
