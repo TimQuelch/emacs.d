@@ -699,9 +699,10 @@ Bind capture to something more convenient
 (map! :leader "j" #'org-capture)
 #+end_src
 
-Configure my capture templates.
+Configure my capture templates. These need to go in this advice because doom loads these on a hook.
 #+begin_src emacs-lisp
-(after! org-capture
+(defadvice! tq/setup-capture-templates ()
+  :after #'+org-init-capture-defaults-h
   (setq org-default-notes-file (expand-file-name "inbox.org" org-directory))
 
   (setq org-capture-templates
