@@ -94,6 +94,7 @@ markdown
 (python +lsp)
 (sh +fish)
 #+end_src
+
 ** App
 #+begin_src emacs-lisp
 :app
@@ -107,6 +108,7 @@ Enable bindings and also tell Doom that I'm using a literate config
 literate
 (default +bindings +smartparens)
 #+end_src
+
 * Personalisation
 Setup name and email
 #+begin_src emacs-lisp
@@ -256,7 +258,9 @@ Disable some extra packages that I don't really use
 #+begin_src emacs-lisp :tangle packages.el
 (disable-packages! evil-snipe evil-lion)
 #+end_src
+
 * Org and friends
+
 ** Base
 #+begin_src emacs-lisp
 (setq org-directory "~/documents/org/")
@@ -549,6 +553,7 @@ The project view is for viewing all of my current projects (including sub-projec
 #+begin_src emacs-lisp
 (todo "" ((org-agenda-skip-function #'tq/skip-all-but-projects)))
 #+end_src
+
 **** PhD view
 :PROPERTIES:
 :header-args: :noweb-ref agenda-phd-custom-commands :tangle no :results silent
@@ -589,6 +594,7 @@ The following sections are pretty much the same as the super agenda, but again i
           (org-agenda-overriding-header "Unscheduled available todos")
           (org-agenda-skip-function 'tq/skip-all-but-available-unscheduled-todos)))
 #+end_src
+
 *** Agenda filters
 :PROPERTIES:
 :header-args: :noweb-ref org-agenda-filters :tangle no :results silent
@@ -685,7 +691,9 @@ Functions that I use to filter the agenda
     (unless (tq/is-project-p)
       (save-excursion (or (outline-next-heading) (point-max))))))
 #+end_src
+
 ** Capture
+
 Bind capture to something more convenient
 #+begin_src emacs-lisp
 (map! :leader "j" #'org-capture)
@@ -706,6 +714,7 @@ Configure my capture templates.
           ("a" "appointment" entry (file org-default-notes-file)
            "* %?"))))
 #+end_src
+
 ** Referencing
 
 Define my default bibliography file (generated and maintained by Zotero/BBL)
@@ -803,7 +812,9 @@ Use ~helm-bibtex~ as the main way of dealing with bibliographies
                                      ("keywordstyle" "\\color{blue}")
                                      ("breaklines" "true"))))
 #+end_src
+
 ** Notetaking
+
 *** Roam
 
 Setup ~org-roam~, ~org-roam-bibtex~, and ~org-roam-server~ to track source
@@ -1011,6 +1022,7 @@ Disable ~org-pdftools~ because it breaks ~org-noter~ in ~nov~ mode
 #+begin_src emacs-lisp :tangle packages.el
 (disable-packages! org-pdftools)
 #+end_src
+
 ** Babel
 I'm mostly happy with doom's configuration for ~jupyter~
 #+begin_src emacs-lisp
@@ -1020,6 +1032,7 @@ I'm mostly happy with doom's configuration for ~jupyter~
           (:kernel . "python3")
           (:async . "no"))))
 #+end_src
+
 * Calendar
 
 Define directory for calendars to go in
