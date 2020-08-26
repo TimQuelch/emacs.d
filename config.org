@@ -28,7 +28,7 @@ doom
 modeline
 nav-flash
 ophints
-(popup +all +defaults)
+(popup +defaults)
 treemacs
 vc-gutter
 vi-tilde-fringe
@@ -1074,7 +1074,9 @@ Enable the completion backend in message mode so that email addresses are auto-c
 Ensure that ~notmuch~ buffers are treated as real buffers
 #+begin_src emacs-lisp :tangle no :noweb-ref notmuch-config
 (defun tq/notmuch-buffer-p (buffer)
-  (string-match-p "^\\*" (buffer-name buffer)))
+  (or (string-match-p "^\\*notmuch" (buffer-name buffer))
+      (with-current-buffer buffer
+        (equal major-mode 'notmuch-show-mode))))
 
 (add-to-list 'doom-real-buffer-functions #'tq/notmuch-buffer-p)
 #+end_src
