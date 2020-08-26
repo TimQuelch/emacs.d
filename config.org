@@ -90,7 +90,7 @@ data
 json
 latex
 markdown
-(org +jupyter +noter +roam +journal)
+(org +jupyter +noter +journal)
 (python +lsp)
 (sh +fish)
 #+end_src
@@ -805,17 +805,13 @@ Use ~helm-bibtex~ as the main way of dealing with bibliographies
 #+end_src
 ** Notetaking
 *** Roam
+
 Setup ~org-roam~, ~org-roam-bibtex~, and ~org-roam-server~ to track source
 #+begin_src emacs-lisp :tangle packages.el
 (package! org-roam :recipe (:host github :repo "org-roam/org-roam"))
 (package! org-roam-bibtex :recipe (:host github :repo "org-roam/org-roam-bibtex"))
 ;; (package! org-roam-server :recipe (:host github :repo "org-roam/org-roam-server"))
 (unpin! org-roam org-roam-bibtex org-roam-server)
-#+end_src
-
-Set directory for my ~org-roam~ notes
-#+begin_src emacs-lisp
-(setq org-roam-directory (concat (file-name-as-directory org-directory) "notes"))
 #+end_src
 
 Set up more useful keybindings to use and access ~org-roam~
@@ -829,15 +825,25 @@ Set up more useful keybindings to use and access ~org-roam~
       "r" #'org-roam)
 #+end_src
 
-Do remaining configuration after ~org-roam~ is loaded
+I want to roll my own ~org-roam~ config rather than use doom's module.
 #+begin_src emacs-lisp
-(after! org-roam
+(use-package! org-roam
+  :hook (org-load . org-roam-mode)
+  :hook (org-roam-backlinks-mode . turn-on-visual-line-mode)
+  :init
+  <<org-roam-init>>
+  :config
   <<org-roam-config>>
   )
 #+end_src
 
+Set directory for my ~org-roam~ notes
+#+begin_src emacs-lisp :tangle no :noweb-ref org-roam-init
+(setq org-roam-directory (concat (file-name-as-directory org-directory) "notes"))
+#+end_src
+
 Put the database in the doom cache directory, rather than stored with the notes
-#+begin_src emacs-lisp :tangle no :noweb-ref org-roam-config
+#+begin_src emacs-lisp :tangle no :noweb-ref org-roam-init
 (setq org-roam-db-location (concat doom-cache-dir "org-roam.db"))
 #+end_src
 
@@ -846,7 +852,7 @@ Turn off verbosity. I don't like the messages
 (setq org-roam-verbose nil)
 #+end_src
 
-Set up capture template
+Set up capture template. It includes a TODO item to write about the note. I have it set to finish immediately, as I don't really like editing them instantly.
 #+begin_src emacs-lisp :tangle no :noweb-ref org-roam-config
 (setq org-roam-capture-templates
       '(("d" "default" plain (function org-roam-capture--get-point)
@@ -891,19 +897,22 @@ Set up a graph view where citation links are excluded
 
 Change org-roam buffer names to be named after the title
 #+begin_src emacs-lisp :tangle no :noweb-ref org-roam-config
-(add-hook! 'find-file-hook (when (org-roam--org-roam-file-p)
-                             (when-let ((title (org-roam-db--get-titles (buffer-file-name))))
-                               (rename-buffer title))))
+(add-hook! 'org-roam-file-setup-hook
+  (when-let ((title (org-roam-db--get-titles (buffer-file-name))))
+    (rename-buffer title)))
 #+end_src
 
-
-Org roam fuzzy links use capf now instead of a dedicated company backend
+Setup case-insensitive completion in ~org-roam~ files
 #+begin_src emacs-lisp :tangle no :noweb-ref org-roam-config
-(set-company-backend! '(org-mode org-journal-mode) '(company-capf))
+(add-hook! 'org-roam-file-setup-hook
+  (setq-local completion-ignore-case t))
 #+end_src
-#+begin_src emacs-lisp :tangle packages.el
-(disable-packages! company-org-roam)
+
+Also set up completion to trigger everywhere, not just on link start.
+#+begin_src emacs-lisp :tangle no :noweb-ref org-roam-config
+(setq org-roam-completion-everywhere t)
 #+end_src
+
 *** Journal
 I want to use ~org-journal~ as the way to capture and navigate my daily and fleeting notes
 #+begin_src emacs-lisp
