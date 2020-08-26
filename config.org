@@ -1219,16 +1219,40 @@ Use ~org-msg~ to write HTML email in a sane way. I've pinned it to a commit that
   :after notmuch
   :config
   (org-msg-mode)
+  <<org-msg-config>>
 
-  (setq org-msg-text-plain-alternative t)
 
-  (setq org-msg-signature "
+  )
+#+end_src
 
-Thanks,
+Send email with both HTML and plain text (like a good well adjusted human)
+#+begin_src emacs-lisp :tangle no :noweb-ref org-msg-config
+(setq org-msg-text-plain-alternative t)
+#+end_src
+
+Set up email signature
+#+begin_src emacs-lisp :tangle no :noweb-ref org-msg-config
+(setq org-msg-signature "
+\n\n\nThanks,
 
 #+begin_signature
 Tim Quelch
-#+end_signature"))
+#+end_signature")
+#+end_src
+
+Hack ~notmuch-company~ to allow it to work with ~org-msg-edit-mode~ and enable it.
+#+begin_src emacs-lisp :tangle no :noweb-ref org-msg-config
+(defadvice! tq/org-msg-notmuch-company (orig-fn &rest args)
+  :around #'notmuch-company
+  (letf! (((symbol-function 'derived-mode-p) (lambda (mode)
+                                               (if (eq mode 'message-mode)
+                                                   t
+                                                 (derived-mode-p mode)))))
+    (apply orig-fn args)))
+
+(set-company-backend!
+  '(org-msg-edit-mode notmuch-message-mode)
+  '(notmuch-company :with company-ispell))
 #+end_src
 
 Use ~helm-notmuch~ for searching email from helm.
