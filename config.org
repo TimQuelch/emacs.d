@@ -216,6 +216,12 @@ Reduce prefix length and delay. I want completion /fast/. THis may cause perform
         company-minimum-prefix-length 0))
 #+end_src
 
+Setup the default backends. By default doom includes ~company-dabbrev~ and ~company-yasnippet~. Dabbrev adds so much noise, I don't use yasnippet.
+
+#+begin_src emacs-lisp
+(set-company-backend! '(text-mode prog-mode conf-mode) 'company-capf)
+#+end_src
+
 * Editing
 Enable the use of =C-u= as the universal argument again
 #+begin_src emacs-lisp
@@ -361,6 +367,11 @@ Fix org return bindings to default. I don't like the doom bindings
 Turn on auto-revert mode in org mode files so that they automatically update when changed (e.g. by syncthing, dropbox etc.). Doom does not do this automatically, instead only auto-reverting the current buffers, which is fine for most cases except background buffers used for agendas and capture.
 #+begin_src emacs-lisp :tangle no :noweb-ref org-configuration
 (add-hook 'org-mode-hook 'auto-revert-mode)
+#+end_src
+
+Only use ~company-capf~ for org mode. Again: I hate ~dabbrev~
+#+begin_src emacs-lisp :tangle no :noweb-ref org-configuration
+(set-company-backend! 'org-mode 'company-capf)
 #+end_src
 
 Unmap keybind that I use for avy
