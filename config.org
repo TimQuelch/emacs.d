@@ -92,7 +92,7 @@ json
 latex
 markdown
 (org +jupyter +noter +journal)
-(python +lsp)
+(python +lsp +pyenv)
 (sh +fish)
 #+end_src
 
@@ -1314,4 +1314,10 @@ Some extra packages and languages that are not included by doom modules by defau
 #+begin_src emacs-lisp
 (use-package docker-compose-mode
   :defer t)
+#+end_src
+** Python
+Set up LSP to turn off some python warnings
+#+begin_src emacs-lisp
+(after! lsp-pyls
+  (setq! lsp-pyls-plugins-pycodestyle-enabled nil))
 #+end_src
