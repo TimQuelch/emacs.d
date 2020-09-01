@@ -921,9 +921,9 @@ Setup case-insensitive completion in ~org-roam~ files
   (setq-local completion-ignore-case t))
 #+end_src
 
-Also set up completion to trigger everywhere, not just on link start.
++Also set up completion to trigger everywhere, not just on link start.+ Disable completion anywhere, it isn't working as I would like right now.
 #+begin_src emacs-lisp :tangle no :noweb-ref org-roam-config
-(setq org-roam-completion-everywhere t)
+(setq org-roam-completion-everywhere nil)
 #+end_src
 
 *** Journal
