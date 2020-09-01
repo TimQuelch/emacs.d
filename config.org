@@ -215,12 +215,11 @@ Increase width of buffer name field in buffer list
 Reduce prefix length and delay. I want completion /fast/. THis may cause performance issues
 #+begin_src emacs-lisp
 (after! company
-  (setq company-idle-delay 0
+  (setq company-idle-delay 0.3
         company-minimum-prefix-length 0))
 #+end_src
 
-Setup the default backends. By default doom includes ~company-dabbrev~ and ~company-yasnippet~. Dabbrev adds so much noise, I don't use yasnippet.
-
+Setup the default backends. By default doom includes ~company-dabbrev~ which adds too much noise.
 #+begin_src emacs-lisp
 (set-company-backend! '(text-mode prog-mode conf-mode) 'company-capf 'company-yasnippet)
 #+end_src
