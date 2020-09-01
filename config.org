@@ -36,11 +36,12 @@ window-select
 #+end_src
 
 ** Editor
-I use evil keybindings everywhere. I also want to format buffers when I save them
+I use evil keybindings everywhere. I also want to enable snippets and code formatting
 #+begin_src emacs-lisp
 :editor
 (evil +everywhere)
 (format +onsave)
+snippets
 #+end_src
 
 ** Emacs
@@ -221,7 +222,7 @@ Reduce prefix length and delay. I want completion /fast/. THis may cause perform
 Setup the default backends. By default doom includes ~company-dabbrev~ and ~company-yasnippet~. Dabbrev adds so much noise, I don't use yasnippet.
 
 #+begin_src emacs-lisp
-(set-company-backend! '(text-mode prog-mode conf-mode) 'company-capf)
+(set-company-backend! '(text-mode prog-mode conf-mode) 'company-capf 'company-yasnippet)
 #+end_src
 
 * Editing
@@ -375,7 +376,7 @@ Turn on auto-revert mode in org mode files so that they automatically update whe
 
 Only use ~company-capf~ for org mode. Again: I hate ~dabbrev~
 #+begin_src emacs-lisp :tangle no :noweb-ref org-configuration
-(set-company-backend! 'org-mode 'company-capf)
+(set-company-backend! 'org-mode 'company-capf 'company-yasnippet)
 #+end_src
 
 Unmap keybind that I use for avy
@@ -1266,7 +1267,7 @@ Hack ~notmuch-company~ to allow it to work with ~org-msg-edit-mode~ and enable i
 
 (set-company-backend!
   '(org-msg-edit-mode notmuch-message-mode)
-  '(notmuch-company :with company-ispell))
+  '(notmuch-company :with company-ispell company-yasnippet))
 #+end_src
 
 Use ~helm-notmuch~ for searching email from helm.
