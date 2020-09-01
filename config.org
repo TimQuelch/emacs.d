@@ -191,6 +191,12 @@ Set up ~mixed-pitch-mode~ in text modes. Proportional fonts are much nicer to re
             'line-number-current-line))
 #+end_src
 
+Ensure ~dired-omit-mode~ is not started with dired. It hides some files transparently and has caused lots of confusion on my part.
+#+begin_src emacs-lisp
+(after! dired
+  (remove-hook 'dired-mode-hook 'dired-omit-mode))
+#+end_src
+
 * Helm
 Use heading of helm as input line
 #+begin_src emacs-lisp
