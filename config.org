@@ -871,7 +871,7 @@ Set up capture template. It includes a TODO item to write about the note. I have
       '(("d" "default" plain (function org-roam-capture--get-point)
          "%?"
          :file-name "%<%Y%m%d%H%M%S>-${slug}"
-         :head "#+title: ${title}\n\n\n* TODO Write about '${title}' :towrite:"
+         :head "#+title: ${title}\n:preamble:\n#+setupfile: setup.org\n:end:\n\n\n\n* TODO Write about '${title}' :towrite:"
          :unnarrowed t
          :immediate-finish t)))
 #+end_src
@@ -996,7 +996,7 @@ Enable ~org-roam-bibtex~ and setup capture template
            (function org-roam-capture--get-point)
            ""
            :file-name ,(concat (file-name-as-directory "lit") "%<%Y%m%d%H%M%S>-${slug}")
-           :head "#+title: Notes on: ${title}\n#+roam_key: ${ref}\n"
+           :head "#+title: Notes on: ${title}\n#+roam_key: ${ref}\n:preamble:\n#+setupfie: setup.org\n:end:\n\n"
            :unnarrowed t
            :immediate-finish t))))
 #+end_src
