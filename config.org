@@ -40,7 +40,7 @@ I use evil keybindings everywhere. I also want to enable snippets and code forma
 #+begin_src emacs-lisp
 :editor
 (evil +everywhere)
-(format +onsave)
+format
 snippets
 #+end_src
 
