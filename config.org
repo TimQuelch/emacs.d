@@ -91,7 +91,7 @@ data
 json
 latex
 markdown
-(org +jupyter +noter +journal)
+(org +jupyter +noter +journal +present)
 (python +lsp +pyenv)
 (sh +fish)
 #+end_src
