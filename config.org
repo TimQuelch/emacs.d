@@ -381,7 +381,7 @@ Turn on auto-revert mode in org mode files so that they automatically update whe
 
 Only use ~company-capf~ for org mode. Again: I hate ~dabbrev~
 #+begin_src emacs-lisp :tangle no :noweb-ref org-configuration
-(set-company-backend! 'org-mode 'company-capf 'company-yasnippet)
+(set-company-backend! 'org-mode 'company-capf)
 #+end_src
 
 Unmap keybind that I use for avy
