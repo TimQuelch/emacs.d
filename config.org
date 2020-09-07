@@ -799,10 +799,6 @@ Use ~helm-bibtex~ as the main way of dealing with bibliographies
                                    ("" "color" nil)      ; Color in source code listings
                                    ("binary-units" "siunitx" t)))     ; SI units
 
-  (setq org-latex-default-packages-alist (remove '("" "hyperref" nil) org-latex-default-packages-alist))
-  (add-to-list 'org-latex-default-packages-alist '("hidelinks" "hyperref" nil))
-  (add-to-list 'org-latex-default-packages-alist "\\PassOptionsToPackage{hyphens}{url}")
-
   (setq org-latex-pdf-process (list "latexmk -shell-escape -bibtex -f -pdf %f"))
 
   (setq org-latex-listings t)                                         ; Turn on source code inclusion
