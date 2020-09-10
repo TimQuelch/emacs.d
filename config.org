@@ -391,7 +391,7 @@ Unmap keybind that I use for avy
 
 Disable some of the extra things that Doom enables
 #+begin_src emacs-lisp :tangle packages.el
-(disable-packages! org-superstar)
+(disable-packages! org-superstar org-tree-slide)
 #+end_src
 
 ** Agenda
