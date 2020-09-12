@@ -1250,10 +1250,7 @@ Set up email signature
 #+begin_src emacs-lisp :tangle no :noweb-ref org-msg-config
 (setq org-msg-signature "
 \n\n\nThanks,
-
-#+begin_signature
-Tim Quelch
-#+end_signature")
+\n#+begin_signature\nTim Quelch\n#+end_signature")
 #+end_src
 
 Hack ~notmuch-company~ to allow it to work with ~org-msg-edit-mode~ and enable it.
