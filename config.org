@@ -225,9 +225,9 @@ Reduce prefix length and delay. I want completion /fast/. THis may cause perform
         company-minimum-prefix-length 0))
 #+end_src
 
-Setup the default backends. By default doom includes ~company-dabbrev~ which adds too much noise.
+Setup the default backends. By default doom includes ~company-dabbrev~ which adds too much noise. Yasnippet backed is also annoying and not included
 #+begin_src emacs-lisp
-(set-company-backend! '(text-mode prog-mode conf-mode) 'company-capf 'company-yasnippet)
+(set-company-backend! '(text-mode prog-mode conf-mode) 'company-capf)
 #+end_src
 
 * Editing
@@ -1101,12 +1101,6 @@ Add a nice keymap for accessing email
        :desc "Search"        "s" #'helm-notmuch))
 #+end_src
 
-Enable the completion backend in message mode so that email addresses are auto-completed
-#+begin_src emacs-lisp :tangle no :noweb-ref notmuch-config
-(set-company-backend! 'notmuch-message-mode
-  '(notmuch-company :with company-ispell company-yasnippet))
-#+end_src
-
 Ensure that ~notmuch~ buffers are treated as real buffers
 #+begin_src emacs-lisp :tangle no :noweb-ref notmuch-config
 (defun tq/notmuch-buffer-p (buffer)
@@ -1268,7 +1262,7 @@ Hack ~notmuch-company~ to allow it to work with ~org-msg-edit-mode~ and enable i
 
 (set-company-backend!
   '(org-msg-edit-mode notmuch-message-mode)
-  '(notmuch-company :with company-ispell company-yasnippet))
+  '(notmuch-company :with company-ispell))
 #+end_src
 
 Use ~helm-notmuch~ for searching email from helm.
