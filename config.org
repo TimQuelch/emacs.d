@@ -1265,7 +1265,7 @@ Hack ~notmuch-company~ to allow it to work with ~org-msg-edit-mode~ and enable i
 
 (set-company-backend!
   '(org-msg-edit-mode notmuch-message-mode)
-  '(notmuch-company :with company-ispell))
+  'notmuch-company)
 #+end_src
 
 Use ~helm-notmuch~ for searching email from helm.
