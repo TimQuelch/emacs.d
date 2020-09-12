@@ -927,6 +927,12 @@ Setup case-insensitive completion in ~org-roam~ files
 (setq org-roam-completion-everywhere nil)
 #+end_src
 
+Do not update links in other files when changing titles. Links are often context dependant and it doesn't make sense to change the it in other files.
+#+begin_src emacs-lisp :tangle no :noweb-ref org-roam-config
+(remove-hook 'org-roam-title-change-hook
+             'org-roam--update-links-on-title-change)
+#+end_src
+
 *** Journal
 I want to use ~org-journal~ as the way to capture and navigate my daily and fleeting notes
 #+begin_src emacs-lisp
