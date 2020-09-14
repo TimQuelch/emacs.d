@@ -1010,7 +1010,7 @@ Enable ~org-roam-bibtex~ and setup capture template
            (function org-roam-capture--get-point)
            ""
            :file-name ,(concat (file-name-as-directory "lit") "%<%Y%m%d%H%M%S>-${slug}")
-           :head "#+title: Notes on: ${title}\n#+roam_key: ${ref}\n:preamble:\n#+setupfie: setup.org\n:end:\n\n"
+           :head "#+title: Notes on: ${title}\n#+roam_key: ${ref}\n:preamble:\n#+setupfile: setup.org\n:end:\n\n"
            :unnarrowed t
            :immediate-finish t))))
 #+end_src
