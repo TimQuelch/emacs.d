@@ -1298,72 +1298,73 @@ Fix hooks for ~notmuch~ see https://github.com/jeremy-compostella/org-msg/issues
 
 Sometimes I want to send email in both text/HTML or just text. Below are some functions to switch between the two.
 #+begin_src emacs-lisp
-(defun tq/org-msg-to-message ()
-  "Transform the current `org-msg' buffer to a `notmuch-message' buffer."
-  (interactive)
-  (unless (eq major-mode 'notmuch-message-mode)
-    (let ((inhibit-read-only t))
-      (delete-matching-lines org-keyword-regexp
-                             (save-excursion (message-goto-body))
-                             (org-msg-end))
-      (save-excursion
-        (message-goto-body)
-        (while (and (< (point) (org-msg-end))
-                    (re-search-forward org-property-drawer-re (org-msg-end) t))
-          (replace-match "")))
-
-      (let ((text (delete-and-extract-region (point) (org-msg-end))))
-        (notmuch-message-mode)
+(after! (:and notmuch org-msg)
+  (defun tq/org-msg-to-message ()
+    "Transform the current `org-msg' buffer to a `notmuch-message' buffer."
+    (interactive)
+    (unless (eq major-mode 'notmuch-message-mode)
+      (let ((inhibit-read-only t))
+        (delete-matching-lines org-keyword-regexp
+                               (save-excursion (message-goto-body))
+                               (org-msg-end))
         (save-excursion
           (message-goto-body)
-          (insert text))))))
+          (while (and (< (point) (org-msg-end))
+                      (re-search-forward org-property-drawer-re (org-msg-end) t))
+            (replace-match "")))
 
-(defun tq/message-to-org-msg ()
-  "Transform the current `notmuch-message' buffer to a `org-msg' buffer."
-  (interactive)
-  (unless (eq major-mode 'org-msg-edit-mode)
-    (let ((inhibit-read-only t)
-          (text (delete-and-extract-region
-                 (save-excursion (message-goto-body))
-                 (org-msg-end)))
-          (org-msg-signature nil))
-      (delete-matching-lines org-msg-separator
-                             (save-excursion (message-goto-body))
-                             (org-msg-end))
-      (org-msg-post-setup)
-      (save-excursion
-        (goto-char (1- (org-msg-end)))
-        (insert text)))))
+        (let ((text (delete-and-extract-region (point) (org-msg-end))))
+          (notmuch-message-mode)
+          (save-excursion
+            (message-goto-body)
+            (insert text))))))
 
-(defun tq/trim-org-msg-citation-from-message ()
-  "Remove the `org-msg' from the current `notmuch-message' buffer."
-  (let ((inhibit-read-only t))
-    (unless (= (org-msg-end) (point-max))
-      (delete-region (org-msg-end) (point-max)))))
+  (defun tq/message-to-org-msg ()
+    "Transform the current `notmuch-message' buffer to a `org-msg' buffer."
+    (interactive)
+    (unless (eq major-mode 'org-msg-edit-mode)
+      (let ((inhibit-read-only t)
+            (text (delete-and-extract-region
+                   (save-excursion (message-goto-body))
+                   (org-msg-end)))
+            (org-msg-signature nil))
+        (delete-matching-lines org-msg-separator
+                               (save-excursion (message-goto-body))
+                               (org-msg-end))
+        (org-msg-post-setup)
+        (save-excursion
+          (goto-char (1- (org-msg-end)))
+          (insert text)))))
 
-(add-hook 'message-send-hook #'tq/trim-org-msg-citation-from-message)
-(font-lock-add-keywords 'notmuch-message-mode
-                        `((,(regexp-quote org-msg-separator) . 'message-separator))
-                        t)
+  (defun tq/trim-org-msg-citation-from-message ()
+    "Remove the `org-msg' from the current `notmuch-message' buffer."
+    (let ((inhibit-read-only t))
+      (unless (= (org-msg-end) (point-max))
+        (delete-region (org-msg-end) (point-max)))))
 
-(defun tq/toggle-message-org-msg ()
-  "Toggle between `org-msg' and `notmuch-message' buffers"
-  (interactive)
-  (cond ((eq major-mode 'org-msg-edit-mode) (tq/org-msg-to-message))
-        ((eq major-mode 'notmuch-message-mode) (tq/message-to-org-msg))
-        (t (error "Not in an email mode")))
+  (add-hook 'message-send-hook #'tq/trim-org-msg-citation-from-message)
+  (font-lock-add-keywords 'notmuch-message-mode
+                          `((,(regexp-quote org-msg-separator) . 'message-separator))
+                          t)
 
-  (message-goto-body)
+  (defun tq/toggle-message-org-msg ()
+    "Toggle between `org-msg' and `notmuch-message' buffers"
+    (interactive)
+    (cond ((eq major-mode 'org-msg-edit-mode) (tq/org-msg-to-message))
+          ((eq major-mode 'notmuch-message-mode) (tq/message-to-org-msg))
+          (t (error "Not in an email mode")))
 
-  ;; Remove extra newlines
-  (save-excursion
     (message-goto-body)
-    (while (and (< (point) (org-msg-end))
-                (re-search-forward "\n\n\n*" (org-msg-end) t))
-      (replace-match "\n\n"))))
 
-(map! :leader :prefix "e"
-      :desc "Toggle text/html" "t" #'tq/toggle-message-org-msg)
+    ;; Remove extra newlines
+    (save-excursion
+      (message-goto-body)
+      (while (and (< (point) (org-msg-end))
+                  (re-search-forward "\n\n\n*" (org-msg-end) t))
+        (replace-match "\n\n"))))
+
+  (map! :leader :prefix "e"
+        :desc "Toggle text/html" "t" #'tq/toggle-message-org-msg))
 #+end_src
 
 * Languages
