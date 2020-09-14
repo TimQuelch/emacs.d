@@ -1072,17 +1072,6 @@ Configure calendars. These use some secret values that I do not commit to git (f
               secret/gcal-file-alist)))
 #+end_src
 
-* Documents
-
-Use ~nov.el~ for reading ebooks.
-#+begin_src emacs-lisp :tangle packages.el
-(package! nov)
-#+end_src
-#+begin_src emacs-lisp
-(use-package nov
-  :mode ("\\.epub\\'" . nov-mode))
-#+end_src
-
 * Email
 I don't like the inbuilt ~notmuch~ Doom module, so I'm effectively implementing it myself
 #+begin_src emacs-lisp :tangle packages.el
@@ -1387,9 +1376,20 @@ Some extra packages and languages that are not included by doom modules by defau
 (use-package docker-compose-mode
   :defer t)
 #+end_src
+
 ** Python
 Set up LSP to turn off some python warnings
 #+begin_src emacs-lisp
 (after! lsp-pyls
   (setq! lsp-pyls-plugins-pycodestyle-enabled nil))
+#+end_src
+
+** Documents
+Use ~nov.el~ for reading ebooks.
+#+begin_src emacs-lisp :tangle packages.el
+(package! nov)
+#+end_src
+#+begin_src emacs-lisp
+(use-package nov
+  :mode ("\\.epub\\'" . nov-mode))
 #+end_src
