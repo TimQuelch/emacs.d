@@ -370,17 +370,6 @@ Remove empty clock lines, they achieve nothing.
   (setq org-clock-out-remove-zero-time-clocks t))
 #+end_src
 
-Fix org return bindings to default. I don't like the doom bindings
-#+begin_src emacs-lisp :tangle no :noweb-ref org-configuration
-(map! :map (org-mode-map evil-org-mode-map)
-      :ni [C-return] #'org-insert-heading-respect-content
-      :ni [C-S-return] #'org-insert-todo-heading-respect-content
-      :ni [M-return] #'org-meta-return
-      :ni [M-S-return] #'org-insert-todo-heading
-      :ni [C-M-return] #'org-insert-subheading
-      :ni [C-M-S-return] #'org-insert-todo-subheading)
-#+end_src
-
 Turn on auto-revert mode in org mode files so that they automatically update when changed (e.g. by syncthing, dropbox etc.). Doom does not do this automatically, instead only auto-reverting the current buffers, which is fine for most cases except background buffers used for agendas and capture.
 #+begin_src emacs-lisp :tangle no :noweb-ref org-configuration
 (add-hook 'org-mode-hook 'auto-revert-mode)
