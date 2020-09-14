@@ -385,6 +385,27 @@ Unmap keybind that I use for avy
 (map! :map org-mode-map "C-'" nil)
 #+end_src
 
+Editing around links is a real pain. Often you are typing thinking you are outsid ethe link but it ends up adding to the description. Below are some simple functions to quickly exit the link
+#+begin_src emacs-lisp :tangle no :noweb-ref org-configuration
+(defun tq/org-exit-link-forward ()
+  "Jump just outside a link forward"
+  (interactive)
+  (when (org-in-regexp org-link-any-re)
+    (goto-char (match-end 0))
+    (insert " ")))
+
+(defun tq/org-exit-link-backward ()
+  "Jump just outside a link backward"
+  (interactive)
+  (when (org-in-regexp org-link-any-re)
+    (goto-char (match-beginning 0))
+    (save-excursion (insert " "))))
+
+(map! :map (evil-org-mode-map org-mode-map)
+      :ni "C-k" #'tq/org-exit-link-forward
+      :ni "C-j" #'tq/org-exit-link-backward)
+#+end_src
+
 Disable some of the extra things that Doom enables
 #+begin_src emacs-lisp :tangle packages.el
 (disable-packages! org-superstar org-tree-slide)
