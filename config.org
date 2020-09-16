@@ -406,6 +406,12 @@ Editing around links is a real pain. Often you are typing thinking you are outsi
       :ni "C-j" #'tq/org-exit-link-backward)
 #+end_src
 
+Add simple keybinding to toggle latex fragments in org mode
+#+begin_src emacs-lisp :tangle no :noweb-ref org-configuration
+(map! :map evil-org-mode-map
+      :n "zf" #'org-toggle-latex-fragment)
+#+end_src
+
 Disable some of the extra things that Doom enables
 #+begin_src emacs-lisp :tangle packages.el
 (disable-packages! org-superstar org-tree-slide)
