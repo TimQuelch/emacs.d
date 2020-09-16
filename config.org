@@ -1193,8 +1193,8 @@ Set up the sections in the main hello window
 (setq notmuch-hello-sections
       '(notmuch-hello-insert-header
         notmuch-hello-insert-saved-searches
-        notmuch-hello-insert-recent-searches
         notmuch-hello-insert-alltags))
+(setq notmuch-show-all-tags-list t)
 #+end_src
 
 Setup saved searches. I remove the unread search because it is irrelevant for me (and broken)
