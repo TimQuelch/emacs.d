@@ -1021,20 +1021,37 @@ Enable ~org-roam-bibtex~ and setup capture template
   :commands (org-roam-bibtex-insert-non-ref org-roam-bibtex-find-non-ref)
   :hook (org-roam-mode . org-roam-bibtex-mode)
   :config
-  (setq orb-templates
-        `(("r" "ref" plain
-           (function org-roam-capture--get-point)
-           ""
-           :file-name ,(concat (file-name-as-directory "lit") "%<%Y%m%d%H%M%S>-${slug}")
-           :head "#+title: Notes on: ${title}\n#+roam_key: ${ref}\n:preamble:\n#+setupfile: ../setup.org\n:end:\n\n"
-           :unnarrowed t
-           :immediate-finish t))))
+  <<orb-configuration>>
+  )
 #+end_src
 
-Enable ~org-server~
-#+begin_src emacs-lisp :tangle no
-(use-package org-roam-server
-  :hook (org-roam-mode . org-roam-server-mode))
+Set up literature notes template
+#+begin_src emacs-lisp :tangle no :noweb-ref orb-configuration
+(setq orb-templates
+      `(("r" "ref" plain
+         (function org-roam-capture--get-point)
+         ""
+         :file-name ,(concat (file-name-as-directory "lit") "%<%Y%m%d%H%M%S>-${slug}")
+         :head "#+title: Notes on: ${title}\n#+roam_key: ${ref}\n:preamble:\n#+setupfile: ../setup.org\n:end:\n\n"
+         :unnarrowed t
+         :immediate-finish t)))
+#+end_src
+
+Set up orb note actions. I remove some of the options that I don't use or want here.
+#+begin_src emacs-lisp :tangle no :noweb-ref orb-configuration
+  (setq orb-note-actions-frontend 'helm)
+  (setq orb-note-actions-default (--remove
+                                  (eq (cdr it) #'bibtex-completion-add-pdf-to-library)
+                                  orb-note-actions-default))
+  (setq orb-note-actions-extra (--remove
+                                  (eq (cdr it) #'orb-note-actions-scrap-pdf)
+                                  orb-note-actions-extra))
+#+end_src
+
+Add convenient keybinding for accessing note actions
+#+begin_src emacs-lisp
+(map! :leader :prefix "n"
+      "b" #'orb-note-actions)
 #+end_src
 
 *** Noter
