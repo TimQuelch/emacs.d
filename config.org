@@ -1339,7 +1339,9 @@ Sometimes I want to send email in both text/HTML or just text. Below are some fu
                       (re-search-forward org-property-drawer-re (org-msg-end) t))
             (replace-match "")))
 
-        (let ((text (delete-and-extract-region (point) (org-msg-end))))
+        (let ((text (delete-and-extract-region
+                     (save-excursion (message-goto-body))
+                     (org-msg-end))))
           (notmuch-message-mode)
           (save-excursion
             (message-goto-body)
