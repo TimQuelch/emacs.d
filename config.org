@@ -124,9 +124,10 @@ Setup name and email
       user-mail-address "tim@quelch.name")
 #+end_src
 
-Load my secrets (API keys etc.)
+Load my secrets (API keys, email configs etc.)
 #+begin_src emacs-lisp
-(load-file (concat doom-private-dir "my-secrets.el"))
+(defvar tq/secrets-loaded (load (concat doom-private-dir "my-secrets") t))
+(defvar tq/notmuch-config-loaded (load (concat doom-private-dir "notmuch-config") t))
 #+end_src
 
 * UI
@@ -1097,12 +1098,13 @@ I also want to add this to the list of org-agenda files that are used
 Configure calendars. These use some secret values that I do not commit to git (for obvious reasons). ~gcal-file-alist~ is an alist of the form ~'(("calendar-id" . "filename") ("id2" . "file2"))~. This will then put calendar entries in to =calendar/filename.org= and =calendar/file2.org=.
 #+begin_src emacs-lisp
 (after! org-gcal
-  (setq org-gcal-client-id secret/gcal-client-id
-        org-gcal-client-secret secret/gcal-client-secret
-        org-gcal-fetch-file-alist
-        (-map (lambda (entry)
-                (cons (car entry) (concat tq/cal-dir (cdr entry) ".org")))
-              secret/gcal-file-alist)))
+  (when tq/secrets-loaded
+    (setq org-gcal-client-id secret/gcal-client-id
+          org-gcal-client-secret secret/gcal-client-secret
+          org-gcal-fetch-file-alist
+          (-map (lambda (entry)
+                  (cons (car entry) (concat tq/cal-dir (cdr entry) ".org")))
+                secret/gcal-file-alist))))
 #+end_src
 
 * Email
@@ -1197,23 +1199,21 @@ Set up the sections in the main hello window
 (setq notmuch-show-all-tags-list t)
 #+end_src
 
-Setup saved searches. I remove the unread search because it is irrelevant for me (and broken)
+Setup saved searches. I have a bunch of saved searches in my secret files. If for some reason they aren't loaded I specify some sane defaults. I generally don't use the unread search because it is irrelevant for me (and broken).
 #+begin_src emacs-lisp :tangle no :noweb-ref notmuch-config
 (setq notmuch-saved-searches
-      '((:name "inbox"   :query "tag:inbox not tag:trash" :key "i")
-        (:name "sent"    :query "tag:sent"                :key "s")
-        (:name "drafts"  :query "tag:draft"               :key "d")
-        (:name "all"     :query "*"                       :key "a")))
+      (if tq/notmuch-config-loaded
+          secret/notmuch-saved-searches
+        '((:name "inbox"   :query "tag:inbox" :key "i")
+          (:name "sent"    :query "tag:sent"  :key "s")
+          (:name "drafts"  :query "tag:draft" :key "d")
+          (:name "all"     :query "*"         :key "a"))))
 #+end_src
 
 Ensure that send mail goes into the correct folder.
 #+begin_src emacs-lisp :tangle no :noweb-ref notmuch-config
 (setq notmuch-maildir-use-notmuch-insert nil)
-(setq notmuch-fcc-dirs '(("tim@tquelch.com" . "personal/Sent Items")
-                         ("tim@quelch.name" . "oldpersonal/[Gmail].Sent Mail")
-                         ("t.quelch@qut.edu.au" . "qutstaff/Sent Items")
-                         ("timothy.quelch@connect.qut.edu.au" . "qutstudent/Sent Items")
-                         ("tim.quelch@student.unimelb.edu.au" . "uom/[Gmail].Sent Mail")))
+(setq notmuch-fcc-dirs (when tq/notmuch-config-loaded secret/notmuch-fcc-dirs))
 #+end_src
 
 Ensure that sent mail is sent from the correct address. i.e. the one in the header of the message
