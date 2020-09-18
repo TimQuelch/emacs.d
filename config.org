@@ -1039,14 +1039,16 @@ Set up literature notes template
 #+end_src
 
 Set up orb note actions. I remove some of the options that I don't use or want here.
-#+begin_src emacs-lisp :tangle no :noweb-ref orb-configuration
+#+begin_src emacs-lisp
+(use-package orb-note-actions
+  :config
   (setq orb-note-actions-frontend 'helm)
   (setq orb-note-actions-default (--remove
                                   (eq (cdr it) #'bibtex-completion-add-pdf-to-library)
                                   orb-note-actions-default))
   (setq orb-note-actions-extra (--remove
                                   (eq (cdr it) #'orb-note-actions-scrap-pdf)
-                                  orb-note-actions-extra))
+                                  orb-note-actions-extra)))
 #+end_src
 
 Add convenient keybinding for accessing note actions
