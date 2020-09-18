@@ -1404,9 +1404,9 @@ Define link hint type for navigating ~notmuch-hello~
     "Return pos of the next widget up to BOUND."
     (let ((start (point)))
       (save-excursion
-        (widget-forward)
+        (widget-forward 1)
         (while (not (tq/link-hint--widget-button-at-point-p))
-          (widget-forward))
+          (widget-forward 1))
         (when (and (tq/link-hint--widget-button-at-point-p)
                    (> (point) start)
                    (< (point) bound))
