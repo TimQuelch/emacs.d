@@ -1391,6 +1391,38 @@ Sometimes I want to send email in both text/HTML or just text. Below are some fu
         :desc "Toggle text/html" "t" #'tq/toggle-message-org-msg))
 #+end_src
 
+Define link hint type for navigating ~notmuch-hello~
+#+begin_src emacs-lisp
+(after! (link-hint notmuch-hello)
+  (defun tq/link-hint--widget-button-at-point-p ()
+    "Return point of the customize widget at the point or nil."
+    (when (get-char-property (point) 'button) (point)))
+
+  (defun tq/link-hint--next-widget-button (bound)
+    "Return pos of the next widget up to BOUND."
+    (let ((start (point)))
+      (save-excursion
+        (widget-forward)
+        (while (not (tq/link-hint--widget-button-at-point-p))
+          (widget-forward))
+        (when (and (tq/link-hint--widget-button-at-point-p)
+                   (> (point) start)
+                   (< (point) bound))
+          (point)))))
+
+  (defun tq/link-hint--copy-widget (pos)
+    "Copy the text of the button at POS."
+    (kill-new (widget-get (widget-at pos) :value)))
+
+  (link-hint-define-type 'tq/notmuch-hello
+    :next #'tq/link-hint--next-widget-button
+    :at-point-p #'tq/link-hint--widget-button-at-point-p
+    :vars '(notmuch-hello-mode)
+    :open #'widget-button-press
+    :copy #'tq/link-hint--copy-widget)
+  (push 'link-hint-tq/notmuch-hello link-hint-types))
+#+end_src
+
 * Languages
 Some extra packages and languages that are not included by doom modules by default
 
