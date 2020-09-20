@@ -161,7 +161,7 @@ Increase the amount of context lines when scrolling full screen-fulls (default i
 
 Wrap lines at fill column when using ~visual-line-mode~
 #+begin_src emacs-lisp :tangle packages.el
-(package! visual-fill-column)
+(package! visual-fill-column :pin "64d38bc1c00953be05c193c01332a633be67aac2")
 #+end_src
 #+begin_src emacs-lisp
 (use-package visual-fill-column
@@ -173,7 +173,7 @@ Wrap lines at fill column when using ~visual-line-mode~
 
 Set up ~mixed-pitch-mode~ in text modes. Proportional fonts are much nicer to read, but I still want fixed pitch in code blocks
 #+begin_src emacs-lisp :tangle packages.el
-(package! mixed-pitch)
+(package! mixed-pitch :pin "d305108f9520e196b533f05d1dcc284cf535faaf")
 #+end_src
 #+begin_src emacs-lisp
 (use-package mixed-pitch
@@ -253,7 +253,7 @@ Enable easy use of ~avy~
 
 Use better ~comment-diwm~
 #+begin_src emacs-lisp :tangle packages.el
-(package! comment-dwim-2)
+(package! comment-dwim-2 :pin "3dfdd58495c46a37708344a57c5c52beca6b2c1c")
 #+end_src
 #+begin_src emacs-lisp
 (use-package! comment-dwim-2
@@ -422,7 +422,7 @@ Disable some of the extra things that Doom enables
 
 I use ~org-super-agenda~ to group tasks in agenda
 #+begin_src emacs-lisp emacs-lisp :tangle packages.el
-(package! org-super-agenda)
+(package! org-super-agenda :pin "3264255989021b8563ea42b5d26acbc2a024f14d")
 #+end_src
 #+begin_src emacs-lisp
 (use-package! org-super-agenda
@@ -755,7 +755,7 @@ Define my default bibliography file (generated and maintained by Zotero/BBL)
 
 I'm using ~org-ref~ to manage citations within org-mode. This might soon be replaced by native citation support though :o
 #+begin_src emacs-lisp :tangle packages.el
-(package! org-ref)
+(package! org-ref :pin "9dbf7cf2069acec47a8e5d027da0a253dff024ca")
 #+end_src
 #+begin_src emacs-lisp
 (use-package! org-ref
@@ -769,7 +769,7 @@ I'm using ~org-ref~ to manage citations within org-mode. This might soon be repl
 
 Use ~helm-bibtex~ as the main way of dealing with bibliographies
 #+begin_src emacs-lisp :tangle packages.el
-(package! helm-bibtex)
+(package! helm-bibtex :pin "12f8809aac3a13dd11a1c664a13f789005f7a199")
 #+end_src
 #+begin_src emacs-lisp
 (use-package! helm-bibtex
@@ -846,10 +846,13 @@ Use ~helm-bibtex~ as the main way of dealing with bibliographies
 
 Setup ~org-roam~, ~org-roam-bibtex~, and ~org-roam-server~ to track source
 #+begin_src emacs-lisp :tangle packages.el
-(package! org-roam :recipe (:host github :repo "org-roam/org-roam"))
-(package! org-roam-bibtex :recipe (:host github :repo "org-roam/org-roam-bibtex"))
+(package! org-roam
+  :recipe (:host github :repo "org-roam/org-roam")
+  :pin "925d225f139525a854e97b1b19494af7cdd7f1c1")
+(package! org-roam-bibtex
+  :recipe (:host github :repo "org-roam/org-roam-bibtex")
+  :pin "3f601130f452a0cec95533a591bc6b07ff29f674")
 ;; (package! org-roam-server :recipe (:host github :repo "org-roam/org-roam-server"))
-(unpin! org-roam org-roam-bibtex org-roam-server)
 #+end_src
 
 Set up more useful keybindings to use and access ~org-roam~
@@ -1060,7 +1063,7 @@ Add convenient keybinding for accessing note actions
 *** Noter
 I don't like the configuration in Doom's ~org-noter~ module so I do it myself
 #+begin_src emacs-lisp :tangle packages.el
-(package! org-noter)
+(package! org-noter :pin "9ead81d42dd4dd5074782d239b2efddf9b8b7b3d")
 #+end_src
 #+begin_src emacs-lisp
 (use-package org-noter
@@ -1112,7 +1115,7 @@ Configure calendars. These use some secret values that I do not commit to git (f
 * Email
 I don't like the inbuilt ~notmuch~ Doom module, so I'm effectively implementing it myself
 #+begin_src emacs-lisp :tangle packages.el
-(package! notmuch)
+(package! notmuch :pin "d127b16afe2e5c0f245400bc74d96208372075a2")
 #+end_src
 #+begin_src emacs-lisp
 (use-package! notmuch
@@ -1263,6 +1266,7 @@ Use ~org-msg~ to write HTML email in a sane way. I've pinned it to a commit that
 #+begin_src emacs-lisp :tangle packages.el
 (package! org-msg
   :recipe (:host github :repo "jeremy-compostella/org-msg")
+  ;; :recipe (:host github :repo "TimQuelch/org-msg")
   :pin "0d8813097f5cc2a1d5a642e54db9e5cbac855c17")
 #+end_src
 #+begin_src emacs-lisp
@@ -1301,7 +1305,7 @@ Hack ~notmuch-company~ to allow it to work with ~org-msg-edit-mode~ and enable i
 
 Use ~helm-notmuch~ for searching email from helm.
 #+begin_src emacs-lisp :tangle packages.el
-(package! helm-notmuch)
+(package! helm-notmuch :pin "97a01497e079a7b6505987e9feba6b603bbec288")
 #+end_src
 #+begin_src emacs-lisp
 (use-package! helm-notmuch
@@ -1432,7 +1436,7 @@ Some extra packages and languages that are not included by doom modules by defau
 
 ** Systemd unit files
 #+begin_src emacs-lisp :tangle packages.el
-(package! systemd)
+(package! systemd :pin "51c148e09a129ddf33d95276aa0e89d4ef6f8dd2")
 #+end_src
 #+begin_src emacs-lisp
 (use-package systemd
@@ -1441,7 +1445,7 @@ Some extra packages and languages that are not included by doom modules by defau
 
 ** Docker compose
 #+begin_src emacs-lisp :tangle packages.el
-(package! docker-compose-mode)
+(package! docker-compose-mode :pin "abaa4f3aeb5c62d7d16e186dd7d77f4e846e126a")
 #+end_src
 #+begin_src emacs-lisp
 (use-package docker-compose-mode
@@ -1458,7 +1462,7 @@ Set up LSP to turn off some python warnings
 ** Documents
 Use ~nov.el~ for reading ebooks.
 #+begin_src emacs-lisp :tangle packages.el
-(package! nov)
+(package! nov :pin "23e5d9c4c63e3a7dc08110a8dfcbb97a1186a37f")
 #+end_src
 #+begin_src emacs-lisp
 (use-package nov
