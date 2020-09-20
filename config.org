@@ -127,7 +127,6 @@ Setup name and email
 Load my secrets (API keys, email configs etc.)
 #+begin_src emacs-lisp
 (defvar tq/secrets-loaded (load (concat doom-private-dir "my-secrets") t))
-(defvar tq/notmuch-config-loaded (load (concat doom-private-dir "notmuch-config") t))
 #+end_src
 
 * UI
@@ -1211,7 +1210,7 @@ Set up the sections in the main hello window
 Setup saved searches. I have a bunch of saved searches in my secret files. If for some reason they aren't loaded I specify some sane defaults. I generally don't use the unread search because it is irrelevant for me (and broken).
 #+begin_src emacs-lisp :tangle no :noweb-ref notmuch-config
 (setq notmuch-saved-searches
-      (if tq/notmuch-config-loaded
+      (if tq/secrets-loaded
           secret/notmuch-saved-searches
         '((:name "inbox"   :query "tag:inbox" :key "i")
           (:name "sent"    :query "tag:sent"  :key "s")
@@ -1222,7 +1221,7 @@ Setup saved searches. I have a bunch of saved searches in my secret files. If fo
 Ensure that send mail goes into the correct folder.
 #+begin_src emacs-lisp :tangle no :noweb-ref notmuch-config
 (setq notmuch-maildir-use-notmuch-insert nil)
-(setq notmuch-fcc-dirs (when tq/notmuch-config-loaded secret/notmuch-fcc-dirs))
+(setq notmuch-fcc-dirs (when tq/secrets-loaded secret/notmuch-fcc-dirs))
 #+end_src
 
 Ensure that sent mail is sent from the correct address. i.e. the one in the header of the message
