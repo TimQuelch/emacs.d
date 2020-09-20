@@ -1115,7 +1115,7 @@ Configure calendars. These use some secret values that I do not commit to git (f
 * Email
 I don't like the inbuilt ~notmuch~ Doom module, so I'm effectively implementing it myself
 #+begin_src emacs-lisp :tangle packages.el
-(package! notmuch :pin "d127b16afe2e5c0f245400bc74d96208372075a2")
+(package! notmuch :pin "45193bab16c728ba892a5d45fc62ef59e2a6ef85")
 #+end_src
 #+begin_src emacs-lisp
 (use-package! notmuch
@@ -1319,11 +1319,6 @@ Disable ~visual-line-mode~ s from message modes
   (add-hook! 'message-mode-hook
     (visual-line-mode -1)
     (visual-fill-column-mode -1)))
-#+end_src
-
-Fix hooks for ~notmuch~ see https://github.com/jeremy-compostella/org-msg/issues/58.
-#+begin_src emacs-lisp :tangle no :noweb-ref notmuch-config
-(remove-hook 'notmuch-mua-send-hook #'notmuch-mua-message-send-hook)
 #+end_src
 
 Sometimes I want to send email in both text/HTML or just text. Below are some functions to switch between the two.
