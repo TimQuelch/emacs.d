@@ -1,0 +1,10 @@
+
+* My emacs configuration
+
+This repo contains my emacs configuration in a literate org-mode file =config.org=. This config is based on Doom emacs.
+
+* Installation
+This repo should be cloned to =~/.doom.d= and Doom should be cloned to =~/.emacs.d=. =config.org= needs to be tangled before doom installation so that =init.el= is produced and Doom knows what modules to use. This can be done with Doom's included =org-tangle= executable, or done manually in emacs org-mode with ~org-babel-tangle~ from =config.org=. After this is done, Dooms usual ~doom [install,sync,upgrade]~ should work as expected.
+
+* Encrypted files
+I've included some encrypted files for my benefit which contain personal information that I don't want public. These are included in the repo for my convenience
