@@ -1111,6 +1111,12 @@ Configure calendars. These use some secret values that I do not commit to git (f
                 secret/gcal-file-alist))))
 #+end_src
 
+Run sync on idle timer
+#+begin_src emacs-lisp
+(after! org-gcal
+  (run-with-idle-timer 600 t #'org-gcal-sync))
+#+end_src
+
 * Email
 I don't like the inbuilt ~notmuch~ Doom module, so I'm effectively implementing it myself
 #+begin_src emacs-lisp :tangle packages.el
