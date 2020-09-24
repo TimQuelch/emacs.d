@@ -260,13 +260,6 @@ Use better ~comment-diwm~
   :config (setq cd2/region-command 'cd2/comment-or-uncomment-region))
 #+end_src
 
-Disable 'q' as macro key. I don't use it and I always press it by mistake when trying to exit something. Also disable '@' as it is irrelevant now.
-#+begin_src emacs-lisp
-(map! (:map 'evil-normal-state-map
-            "q" nil
-            "@" nil))
-#+end_src
-
 Disable some extra packages that I don't really use
 #+begin_src emacs-lisp :tangle packages.el
 (disable-packages! evil-snipe evil-lion)
