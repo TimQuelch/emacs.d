@@ -1263,9 +1263,10 @@ Allow capturing of email in ~notmuch~
 Use ~org-msg~ to write HTML email in a sane way. I've pinned it to a commit that is currently working. It has given me issues in the past and I can't have it breaking and sending broken email to people.
 #+begin_src emacs-lisp :tangle packages.el
 (package! org-msg
-  :recipe (:host github :repo "jeremy-compostella/org-msg")
-  ;; :recipe (:host github :repo "TimQuelch/org-msg")
-  :pin "0d8813097f5cc2a1d5a642e54db9e5cbac855c17")
+  ;; :recipe (:host github :repo "jeremy-compostella/org-msg")
+  ;; :pin "0d8813097f5cc2a1d5a642e54db9e5cbac855c17"
+  :recipe (:host github :repo "TimQuelch/org-msg")
+  )
 #+end_src
 #+begin_src emacs-lisp
 (use-package! org-msg
