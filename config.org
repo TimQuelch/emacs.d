@@ -225,6 +225,18 @@ Increase width of buffer name field in buffer list
   (setq helm-buffer-max-length nil))
 #+end_src
 
+Override Doom's search buffer with swiper-helm. See [[https://github.com/hlissner/doom-emacs/pull/3969][this PR]].
+#+begin_src emacs-lisp
+(defadvice! tq/default-search-buffer ()
+  :override #'+default/search-buffer
+  (interactive)
+  (call-interactively
+   (if (featurep! :completion helm)
+       #'swiper-helm
+     (if (region-active-p)
+         #'swiper-isearch-thing-at-point
+       #'swiper-isearch))))
+#+end_src
 * Company
 Reduce prefix length and delay. I want completion /fast/. THis may cause performance issues
 #+begin_src emacs-lisp
