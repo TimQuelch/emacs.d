@@ -1078,6 +1078,10 @@ I'm mostly happy with doom's configuration for ~jupyter~
   (setq org-babel-default-header-args:jupyter-python
         '((:session . "py")
           (:kernel . "python3")
+          (:async . "no")))
+  (setq org-babel-default-header-args:jupyter-julia
+        '((:session . "jl")
+          (:kernel . "julia-1.5")
           (:async . "no"))))
 #+end_src
 
