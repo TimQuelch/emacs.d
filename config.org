@@ -853,10 +853,10 @@ Setup ~org-roam~, ~org-roam-bibtex~, and ~org-roam-server~ to track source
 #+begin_src emacs-lisp :tangle packages.el
 (package! org-roam
   :recipe (:host github :repo "org-roam/org-roam")
-  :pin "925d225f139525a854e97b1b19494af7cdd7f1c1")
+  :pin "0cce9d116580665d9eb9284d3317ae1beda56bc1")
 (package! org-roam-bibtex
   :recipe (:host github :repo "org-roam/org-roam-bibtex")
-  :pin "3f601130f452a0cec95533a591bc6b07ff29f674")
+  :pin "0cce9d116580665d9eb9284d3317ae1beda56bc1")
 ;; (package! org-roam-server :recipe (:host github :repo "org-roam/org-roam-server"))
 #+end_src
 
