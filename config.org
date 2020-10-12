@@ -1282,7 +1282,7 @@ Use ~org-msg~ to write mixed-mime email in a sane way. I've pinned it to a commi
 (package! org-msg
   :recipe (:host github :repo "jeremy-compostella/org-msg")
   ;; :recipe (:host github :repo "TimQuelch/org-msg")
-  :pin "39ce536531a07b7984825991faffe06c1f5ad635")
+  :pin "557d490ecbd80522a42f7b1fb6aaacca504d4512")
 #+end_src
 #+begin_src emacs-lisp
 (use-package! org-msg
