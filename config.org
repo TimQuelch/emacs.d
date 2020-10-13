@@ -420,7 +420,7 @@ Add simple keybinding to toggle latex fragments in org mode
 
 Disable some of the extra things that Doom enables
 #+begin_src emacs-lisp :tangle packages.el
-(disable-packages! org-superstar org-tree-slide)
+(disable-packages! org-superstar)
 #+end_src
 
 ** Agenda
