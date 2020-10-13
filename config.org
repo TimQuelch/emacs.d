@@ -1407,6 +1407,15 @@ According to the help for the julia module in doom (=SPC h d m "julia"=, =*Langu
   (setq lsp-julia-default-environment "~/.julia/environments/v1.5"))
 #+end_src
 
+Define a minor mode to enable sending to julia-repl
+#+begin_src emacs-lisp
+(define-minor-mode julia-repl-interaction-mode
+  "Toggle keybinds to send lines to the julia-repl"
+  :keymap (let ((map (make-sparse-keymap)))
+            (define-key map (kbd "C-s") #'julia-repl-send-region-or-line)
+            map))
+#+end_src
+
 ** Documents
 Use ~nov.el~ for reading ebooks.
 #+begin_src emacs-lisp :tangle packages.el
