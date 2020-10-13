@@ -122,7 +122,7 @@ By default doom blacklists ~SSH_AUTH_SOCK~ and ~SSH_AUTH_PID~ variables, which m
 Setup name and email
 #+begin_src emacs-lisp
 (setq user-full-name "Tim Quelch"
-      user-mail-address "tim@quelch.name")
+      user-mail-address "tim@tquelch.com")
 #+end_src
 
 Load my secrets (API keys, email configs etc.)
