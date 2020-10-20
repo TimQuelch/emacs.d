@@ -130,6 +130,12 @@ Load my secrets (API keys, email configs etc.)
 (defvar tq/secrets-loaded (load (concat doom-private-dir "my-secrets") t))
 #+end_src
 
+Setup org-crypt to use my key to encrypt-decrypt
+#+begin_src emacs-lisp
+(after! org-crypt
+  (setq org-crypt-key "DBB3C4691BCDC872C63E718D8B0B9C375D438A86"))
+#+end_src
+
 * UI
 Use some nice fonts
 #+begin_src emacs-lisp
