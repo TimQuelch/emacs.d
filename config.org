@@ -778,6 +778,36 @@ I'm using ~org-ref~ to manage citations within org-mode. This might soon be repl
          org-ref-get-pdf-filename-function (lambda (key) (car (bibtex-completion-find-pdf key)))))
 #+end_src
 
+For non-LaTeX exports, I use citeproc to format citations
+#+begin_src emacs-lisp :tangle packages.el
+(package! citeproc-org :pin "22a759c4f0ec80075014dcc594baa4d1b470d995")
+#+end_src
+#+begin_src emacs-lisp
+(use-package! citeproc-org
+  :after ox
+  :config
+  (citeproc-org-setup)
+  (setq citeproc-org-org-bib-header "* References\n"))
+#+end_src
+
+By default ~citeproc-org-org-bib-header~ will insert a level 1 heading. This is not desirable if the minimum headline level in the exported document is not level 1. The following advice determine what the minimum headline level is in the exported document, and adjusts ~citeproc-org-org-bib-header~ to be the correct level.
+#+begin_src emacs-lisp
+(after! citeproc-org
+  (defun tq/min-headline-level ()
+    (--> (org-element-parse-buffer)
+         (org-element-map it 'headline (apply-partially #'org-element-property :level))
+         (or it '(0))
+         (-min it)))
+
+  (defadvice! tq/citeproc-org-render-references (orig &rest args)
+    :around 'citeproc-org-render-references
+    (let* ((minlevel (tq/min-headline-level))
+           (totallevel (max 1 minlevel))
+           (citeproc-org-org-bib-header (concat (make-string totallevel ?*)
+                                                (string-trim-left citeproc-org-org-bib-header "\\**"))))
+      (apply orig args))))
+#+end_src
+
 Use ~helm-bibtex~ as the main way of dealing with bibliographies
 #+begin_src emacs-lisp :tangle packages.el
 (package! helm-bibtex :pin "12f8809aac3a13dd11a1c664a13f789005f7a199")
