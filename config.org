@@ -928,7 +928,7 @@ I want to roll my own ~org-roam~ config rather than use doom's module.
 
 Set directory for my ~org-roam~ notes
 #+begin_src emacs-lisp :tangle no :noweb-ref org-roam-init
-(setq org-roam-directory (concat (file-name-as-directory org-directory) "notes"))
+(setq org-roam-directory (concat (file-name-as-directory org-directory) "notes/"))
 #+end_src
 
 Put the database in the doom cache directory, rather than stored with the notes
