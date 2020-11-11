@@ -5,3 +5,6 @@ This repo should be cloned to =~/.doom.d= and Doom should be cloned to =~/.emacs
 
 * Encrypted files
 I've included some encrypted files for my benefit which contain personal information that I don't want public. These are included in the repo for my convenience
+
+* License
+This repository, configuration, and any code within is licensed under GPLv3
