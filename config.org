@@ -1,7 +1,11 @@
 #+property: header-args :results silent :tangle config.el :noweb no-export
 
 * Preface
+
 #+include: README.org
+
+** On the "Literateness" of this document
+This document tangles to multiple files, namely =config.el=, =packages.el=, and =init.el=, and it frequently uses noweb to insert code blocks into other code blocks. When exported these details aren't visible. This means that the exported version should not be used as the sole source of truth, and you will need to reference the actual =config.org= document for full picture.
 
 * Doom modules
 :PROPERTIES:
