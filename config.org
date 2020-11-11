@@ -1,4 +1,4 @@
-#+property: header-args :results silent :tangle config.el :noweb yes
+#+property: header-args :results silent :tangle config.el :noweb no-export
 
 * Doom modules
 :PROPERTIES:
@@ -6,7 +6,7 @@
 :END:
 
 All my doom modules appear in the following sections
-#+begin_src emacs-lisp :tangle init.el :noweb yes :noweb-ref no
+#+begin_src emacs-lisp :tangle init.el :noweb no-export :noweb-ref no
 (doom!
  <<doom-modules>>
  )
@@ -541,7 +541,7 @@ In my PhD view, I want do discard anything hobby or housework related. I strip o
 #+end_src
 
 Below I'm setting up my main agenda view as well as a projects view
-#+begin_src emacs-lisp :noweb yes
+#+begin_src emacs-lisp :noweb no-export
 (setq org-agenda-custom-commands
       '(("j" "Super agenda" (
                              <<agenda-custom-commands>>
