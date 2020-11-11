@@ -1,5 +1,8 @@
 #+property: header-args :results silent :tangle config.el :noweb no-export
 
+* Preface
+#+include: README.org
+
 * Doom modules
 :PROPERTIES:
 :header-args: :tangle no :results silent :noweb-ref doom-modules
