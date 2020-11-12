@@ -218,6 +218,12 @@ Ensure ~dired-omit-mode~ is not started with dired. It hides some files transpar
   (remove-hook 'dired-mode-hook 'dired-omit-mode))
 #+end_src
 
+Set the dictionary to use ~en_AU~
+#+begin_src emacs-lisp
+(after! ispell
+  (setq ispell-dictionary "en_AU"))
+#+end_src
+
 * Helm
 Use heading of helm as input line
 #+begin_src emacs-lisp
