@@ -760,14 +760,17 @@ Configure my capture templates. These need to go in this advice because doom loa
   (setq org-default-notes-file (expand-file-name "inbox.org" org-directory))
 
   (setq org-capture-templates
-        '(("t" "todo" entry (file org-default-notes-file)
+        `(("t" "todo" entry (file org-default-notes-file)
            "* TODO %?")
           ("n" "note" entry (function (lambda ()
                                         (org-journal-new-entry t)
                                         (while (org-up-heading-safe))))
            "* %(format-time-string org-journal-time-format)%?\n%i")
           ("a" "appointment" entry (file org-default-notes-file)
-           "* %?"))))
+           "* %?")
+          ("j" "journal" plain (file+olp+datetree ,(concat org-directory "journal.org"))
+           (file ,(concat org-directory "templates/journal.org"))
+           :immediate-finish t :jump-to-captured t :tree-type 'week))))
 #+end_src
 
 ** Referencing
