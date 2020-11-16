@@ -140,7 +140,7 @@ Load my secrets (API keys, email configs etc.)
 Setup org-crypt to use my key to encrypt-decrypt
 #+begin_src emacs-lisp
 (after! org-crypt
-  (setq org-crypt-key "DBB3C4691BCDC872C63E718D8B0B9C375D438A86"))
+  (setq org-crypt-key "07CFA8E6B5CA3E4243916E42CAE8E8818C4B8B84"))
 #+end_src
 
 * UI
