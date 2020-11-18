@@ -1157,6 +1157,19 @@ I'm mostly happy with doom's configuration for ~jupyter~
           (:async . "no"))))
 #+end_src
 
+** COMMENT Transclusions
+
+This is noibiot's experimental transclusion library
+#+begin_src emacs-lisp :tangle packages.el
+(package! org-transclusion
+  :recipe (:host github :repo "nobiot/org-transclusion")
+  :pin "781993eb934a8dc1be7029e6ea217fec70416353")
+#+end_src
+#+begin_src emacs-lisp
+(use-package org-transclusion
+  :hook (org-mode . org-transclusion-mode))
+#+end_src
+
 * Calendar
 
 Define directory for calendars to go in
