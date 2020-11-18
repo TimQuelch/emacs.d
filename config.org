@@ -224,6 +224,11 @@ Set the dictionary to use ~en_AU~
   (setq ispell-dictionary "en_AU"))
 #+end_src
 
+Update the pin for ~link-hint~ to use a version that has my PR merged that enables ~notmuch-hello~ link support.
+#+begin_src emacs-lisp :tangle packages.el
+(package! link-hint :pin "e897897d6a92b4ffdbff33acf69f5c661da1123a")
+#+end_src
+
 * Helm
 Use heading of helm as input line
 #+begin_src emacs-lisp
@@ -1384,38 +1389,6 @@ Disable ~visual-line-mode~ s from message modes
   (add-hook! 'message-mode-hook
     (visual-line-mode -1)
     (visual-fill-column-mode -1)))
-#+end_src
-
-Define link hint type for navigating ~notmuch-hello~
-#+begin_src emacs-lisp
-(after! (link-hint notmuch-hello)
-  (defun tq/link-hint--widget-button-at-point-p ()
-    "Return point of the customize widget at the point or nil."
-    (when (get-char-property (point) 'button) (point)))
-
-  (defun tq/link-hint--next-widget-button (bound)
-    "Return pos of the next widget up to BOUND."
-    (let ((start (point)))
-      (save-excursion
-        (widget-forward 1)
-        (while (not (tq/link-hint--widget-button-at-point-p))
-          (widget-forward 1))
-        (when (and (tq/link-hint--widget-button-at-point-p)
-                   (> (point) start)
-                   (< (point) bound))
-          (point)))))
-
-  (defun tq/link-hint--copy-widget (pos)
-    "Copy the text of the button at POS."
-    (kill-new (widget-get (widget-at pos) :value)))
-
-  (link-hint-define-type 'tq/notmuch-hello
-    :next #'tq/link-hint--next-widget-button
-    :at-point-p #'tq/link-hint--widget-button-at-point-p
-    :vars '(notmuch-hello-mode)
-    :open #'widget-button-press
-    :copy #'tq/link-hint--copy-widget)
-  (push 'link-hint-tq/notmuch-hello link-hint-types))
 #+end_src
 
 * Languages
