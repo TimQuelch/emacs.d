@@ -1003,13 +1003,6 @@ Set up a graph view where citation links are excluded
 (map! :leader :prefix "n" "G" #'tq/org-roam-graph-without-cites)
 #+end_src
 
-Change org-roam buffer names to be named after the title
-#+begin_src emacs-lisp :tangle no :noweb-ref org-roam-config
-(add-hook! 'org-roam-file-setup-hook
-  (when-let ((title (org-roam-db--get-titles (buffer-file-name))))
-    (rename-buffer title)))
-#+end_src
-
 Setup case-insensitive completion in ~org-roam~ files
 #+begin_src emacs-lisp :tangle no :noweb-ref org-roam-config
 (add-hook! 'org-roam-file-setup-hook
