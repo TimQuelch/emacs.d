@@ -910,7 +910,7 @@ Setup ~org-roam~, ~org-roam-bibtex~, and ~org-roam-server~ to track source
 #+begin_src emacs-lisp :tangle packages.el
 (package! org-roam
   :recipe (:host github :repo "org-roam/org-roam")
-  :pin "167553b8ee45390d113a72eafba75cb56ced5311")
+  :pin "61e01430e0aea252916cfaf9bdb16705099e61fe")
 (package! org-roam-bibtex
   :recipe (:host github :repo "org-roam/org-roam-bibtex")
   :pin "7c08a8928967a683666dbc1850e41537ab1fa01a")
@@ -960,7 +960,7 @@ Set up capture template. It includes a TODO item to write about the note. I have
 (setq org-roam-capture-templates
       '(("d" "default" plain (function org-roam-capture--get-point)
          "%?"
-         :file-name "%<%Y%m%d%H%M%S>-${slug}"
+         :file-name "${slug}"
          :head "#+title: ${title}\n:preamble:\n#+setupfile: setup.org\n:end:\n\n\n\n* TODO Write about '${title}' :towrite:"
          :unnarrowed t
          :immediate-finish t)))
@@ -974,6 +974,11 @@ Ensure tags come from both the directory and the ~roam_tag~ file property. The d
 Exclude daily notes from the graph
 #+begin_src emacs-lisp :tangle no :noweb-ref org-roam-config
 (setq org-roam-graph-exclude-matcher '("daily/"))
+#+end_src
+
+Update the database immediately on file changes. The alternative is to do it on an idle timer, but I've found that to be buggy and I haven't noticed the immediate updates to be very noticeable.
+#+begin_src emacs-lisp :tangle no :noweb-ref org-roam-config
+(setq org-roam-db-update-method 'immediate)
 #+end_src
 
 Set up an agenda view for nearby notes
@@ -1097,7 +1102,7 @@ Set up literature notes template
       `(("r" "ref" plain
          (function org-roam-capture--get-point)
          ""
-         :file-name ,(concat (file-name-as-directory "lit") "%<%Y%m%d%H%M%S>-${slug}")
+         :file-name ,(concat (file-name-as-directory "lit") "${citekey}")
          :head "#+title: Notes on: ${title}\n#+roam_key: ${ref}\n:preamble:\n#+setupfile: ../setup.org\n:end:\n\n"
          :unnarrowed t
          :immediate-finish t)))
