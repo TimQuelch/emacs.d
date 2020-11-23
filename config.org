@@ -838,6 +838,7 @@ Use ~helm-bibtex~ as the main way of dealing with bibliographies
   :after org-ref
   :config
   (setq! bibtex-completion-pdf-field "file"
+         bibtex-completion-pdf-open-function #'helm-open-file-with-default-tool
          bibtex-completion-bibliography tq/bibliography-file
          helm-bibtex-full-frame nil)
 
