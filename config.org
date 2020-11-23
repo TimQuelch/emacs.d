@@ -902,6 +902,12 @@ Use ~helm-bibtex~ as the main way of dealing with bibliographies
                                      ("breaklines" "true"))))
 #+end_src
 
+Ensure that attachment links are properly expanded before export
+#+begin_src emacs-lisp
+(after! org-attach
+  (add-hook 'org-export-before-parsing-hook #'org-attach-expand-links))
+#+end_src
+
 ** Notetaking
 
 *** Roam
