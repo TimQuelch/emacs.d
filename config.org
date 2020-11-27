@@ -504,7 +504,8 @@ Set up some other useful bindings
 #+begin_src emacs-lisp :tangle no :noweb-ref org-agenda-configuration
 (map! :map org-agenda-mode-map
       :m "w" #'org-save-all-org-buffers
-      :m "f" #'org-agenda-follow-mode)
+      :m "f" #'org-agenda-follow-mode
+      :m "o" #'org-agenda-log-mode)
 #+end_src
 
 Enable habits
