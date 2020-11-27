@@ -515,16 +515,15 @@ Enable habits
 
 *** Agenda views
 :PROPERTIES:
-:header-args: :noweb-ref org-agenda-views :tangle no
+:header-args: :noweb-ref org-agenda-views :tangle no :results silent
 :END:
 
 Setup the groups that appear in the agenda views.
 
 #+begin_src emacs-lisp
 (setq org-super-agenda-groups
-      '((:name "Waiting"
-         :todo "WAITING"
-         :order 103)
+      '((:discard
+         (:todo "WAITING"))
         (:name "Emails"
          :tag "email"
          :order 3)
@@ -555,7 +554,7 @@ Any items that do not fall in one of these filter categories goes in an automati
 
 In my PhD view, I want do discard anything hobby or housework related. I strip out these items in the super agenda groups.
 #+begin_src emacs-lisp
-(defvar tq/phd-org-super-agenda-groups
+(defun tq/phd-org-super-agenda-groups ()
   (cons '(:discard (:tag ("home" "hobby"))) org-super-agenda-groups))
 #+end_src
 
@@ -592,17 +591,25 @@ The next section is the Inbox. These are items that I have captured quickly and 
        (orgs-tag-match-list-sublevels nil)))
 #+end_src
 
-This section shows projects which are stuck. I define projects as todo items with sub todo items. A stuck project is a project where none of the sub-todos has a NEXT keyword. These are projects where I don't have a task to go onto next. I want to see these because I need to go into these projects and evaluate what tasks I can begin next
+This section shows projects which are stuck. I define projects as todo items with sub todo items. A stuck project is a project where none of the sub-todos is scheduled. These are projects where I don't have a task to go onto next. I want to see these because I need to go into these projects and evaluate what tasks I can begin next
 #+begin_src emacs-lisp
 (todo "" ((org-agenda-overriding-header "Stuck projects")
           (org-agenda-skip-function 'tq/skip-all-but-stuck-projects)))
 
 #+end_src
 
-This section shows tasks and projects which are available to be completed (e.g. they are standalone tasks or sub-tasks with a NEXT keyword) but are unscheduled. I want to see these because I need to schedule them to complete sometime.
+This section shows tasks and projects which are available to be completed (e.g. they are standalone tasks or sub-tasks) but are unscheduled. I want to see these because I need to schedule them to complete sometime.
 #+begin_src emacs-lisp
 (todo "" ((org-agenda-overriding-header "Unscheduled available todos")
           (org-agenda-skip-function 'tq/skip-all-but-available-unscheduled-todos)))
+#+end_src
+
+This section contains waiting projects and tasks
+#+begin_src emacs-lisp
+(todo "WAITING" ((org-super-agenda-groups
+                  (--remove (equal '(:discard (:todo "WAITING")) it)
+                            org-super-agenda-groups))
+                 (org-agenda-overriding-header "Waiting")))
 #+end_src
 
 **** Projects view
@@ -629,7 +636,7 @@ This view is the one that I look at during my 'work' day. The first view is the 
 Next It will include the agenda for the current day, discarding any 'home' tasks.
 #+begin_src emacs-lisp
 (agenda "" ((org-super-agenda-groups (cons '(:discard (:time-grid t))
-                                           tq/phd-org-super-agenda-groups ))
+                                           (tq/phd-org-super-agenda-groups) ))
             (org-agenda-span 'day)
             (org-agenda-start-day)))
 #+end_src
@@ -637,22 +644,29 @@ Next It will include the agenda for the current day, discarding any 'home' tasks
 The following sections are pretty much the same as the super agenda, but again ignoring the home tasks
 #+begin_src emacs-lisp
 (tags "inbox"
-      ((org-super-agenda-groups tq/phd-org-super-agenda-groups)
+      ((org-super-agenda-groups (tq/phd-org-super-agenda-groups))
        (org-agenda-overriding-header "Inbox")
        (orgs-tag-match-list-sublevels nil)))
 #+end_src
 
 #+begin_src emacs-lisp
-(todo "" ((org-super-agenda-groups tq/phd-org-super-agenda-groups)
+(todo "" ((org-super-agenda-groups (tq/phd-org-super-agenda-groups))
           (org-agenda-overriding-header "Stuck projects")
           (org-agenda-skip-function 'tq/skip-all-but-stuck-projects)))
 
 #+end_src
 
 #+begin_src emacs-lisp
-(todo "" ((org-super-agenda-groups tq/phd-org-super-agenda-groups)
+(todo "" ((org-super-agenda-groups (tq/phd-org-super-agenda-groups))
           (org-agenda-overriding-header "Unscheduled available todos")
           (org-agenda-skip-function 'tq/skip-all-but-available-unscheduled-todos)))
+#+end_src
+
+#+begin_src emacs-lisp
+(todo "WAITING" ((org-super-agenda-groups
+                  (--remove (equal '(:discard (:todo "WAITING")) it)
+                            (tq/phd-org-super-agenda-groups)))
+                 (org-agenda-overriding-header "Waiting")))
 #+end_src
 
 *** Agenda filters
@@ -664,6 +678,12 @@ Functions that I use to filter the agenda
 #+begin_src emacs-lisp
 (defun tq/is-todo-p ()
   (member (nth 2 (org-heading-components)) org-todo-keywords-1))
+
+(defun tq/is-done-todo-p ()
+  (member (nth 2 (org-heading-components)) org-done-keywords))
+
+(defun tq/is-not-done-todo-p ()
+  (member (nth 2 (org-heading-components)) org-not-done-keywords))
 
 (defun tq/has-subtodo-p ()
   (save-restriction
@@ -717,16 +737,23 @@ Functions that I use to filter the agenda
   "Is task that is not part of a project"
   (and (not (tq/is-subtodo-p)) (tq/is-task-p)))
 
-(defvar tq/next-todo-keyword "NEXT"
-  "The todo keyword indicating the next task in a project. Any project without at least one subtask with this keyword is considered stuck")
+(defun tq/is-scheduled-p ()
+  "Checks whether a task is scheduled"
+  (org-get-scheduled-time (point)))
 
 (defun tq/is-stuck-project-p ()
   "Is a project that is stuck"
   (when (tq/is-project-p)
     (let ((subtree-end (save-excursion (org-end-of-subtree t)))
-          (next-regexp (concat org-outline-regexp-bol tq/next-todo-keyword " ")))
-      (forward-line 1)
-      (not (re-search-forward next-regexp subtree-end t)))))
+          (has-scheduled-subtodo))
+      (save-excursion
+        (forward-line 1)
+        (while (and (not has-scheduled-subtodo)
+                    (< (point) subtree-end)
+                    (re-search-forward org-heading-regexp subtree-end t))
+          (when (and (tq/is-task-p) (tq/is-not-done-todo-p) (tq/is-scheduled-p))
+            (setq has-scheduled-subtodo t)))
+        (not has-scheduled-subtodo)))))
 
 (defun tq/skip-all-but-stuck-projects ()
   "Skip trees that are not stuck projects"
@@ -736,12 +763,11 @@ Functions that I use to filter the agenda
       (save-excursion (or (outline-next-heading) (point-max))))))
 
 (defun tq/skip-all-but-available-unscheduled-todos ()
-  "Skip todos that are unavailable or available but already scheduled. Available todos are standalone tasks or NEXT tasks"
+  "Skip todos that are unavailable or available but already scheduled. Available todos are standalone tasks or subtasks"
   (save-restriction
     (widen)
-    (unless (and (or (tq/is-standalone-task-p)
-                     (string-equal (org-get-todo-state) tq/next-todo-keyword))
-                 (not (org-get-scheduled-time nil)))
+    (unless (and (tq/is-task-p)
+                 (tq/is-unscheduled-p))
       (save-excursion (or (outline-next-heading) (point-max))))))
 
 (defun tq/skip-all-but-projects ()
