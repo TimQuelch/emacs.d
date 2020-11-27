@@ -1200,6 +1200,13 @@ Run sync on idle timer
   (run-with-idle-timer 600 t #'org-gcal-sync))
 #+end_src
 
+For the date picker calendar, I want weeks to start on monday
+#+begin_src emacs-lisp
+(after! calendar
+  (setq calendar-week-start-day 1)
+  (calendar-redraw))
+#+end_src
+
 * Email
 I don't like the inbuilt ~notmuch~ Doom module, so I'm effectively implementing it myself
 #+begin_src emacs-lisp :tangle packages.el
