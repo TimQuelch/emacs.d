@@ -767,7 +767,7 @@ Functions that I use to filter the agenda
   (save-restriction
     (widen)
     (unless (and (tq/is-task-p)
-                 (tq/is-unscheduled-p))
+                 (not (tq/is-scheduled-p)))
       (save-excursion (or (outline-next-heading) (point-max))))))
 
 (defun tq/skip-all-but-projects ()
