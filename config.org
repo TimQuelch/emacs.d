@@ -98,7 +98,7 @@ data
 json
 latex
 markdown
-(org +jupyter +noter +journal +present +hugo)
+(org +journal +present +hugo)
 (python +pyenv)
 (julia +lsp)
 (sh +fish)
@@ -1168,20 +1168,6 @@ I don't like the configuration in Doom's ~org-noter~ module so I do it myself
 Disable ~org-pdftools~ because it breaks ~org-noter~ in ~nov~ mode
 #+begin_src emacs-lisp :tangle packages.el
 (disable-packages! org-pdftools)
-#+end_src
-
-** Babel
-I'm mostly happy with doom's configuration for ~jupyter~
-#+begin_src emacs-lisp
-(after! jupyter
-  (setq org-babel-default-header-args:jupyter-python
-        '((:session . "py")
-          (:kernel . "python3")
-          (:async . "no")))
-  (setq org-babel-default-header-args:jupyter-julia
-        '((:session . "jl")
-          (:kernel . "julia-1.5")
-          (:async . "no"))))
 #+end_src
 
 ** COMMENT Transclusions
