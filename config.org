@@ -98,7 +98,7 @@ data
 json
 latex
 markdown
-(org +journal +present +hugo)
+(org +present +hugo)
 (python +pyenv)
 (julia +lsp)
 (sh +fish)
@@ -794,10 +794,6 @@ Configure my capture templates. These need to go in this advice because doom loa
   (setq org-capture-templates
         `(("t" "todo" entry (file org-default-notes-file)
            "* TODO %?")
-          ("n" "note" entry (function (lambda ()
-                                        (org-journal-new-entry t)
-                                        (while (org-up-heading-safe))))
-           "* %(format-time-string org-journal-time-format)%?\n%i")
           ("a" "appointment" entry (file org-default-notes-file)
            "* %?")
           ("j" "journal" plain (file+olp+datetree ,(concat org-directory "journal.org"))
@@ -951,27 +947,53 @@ Setup ~org-roam~, ~org-roam-bibtex~, and ~org-roam-server~ to track source
 ;; (package! org-roam-server :recipe (:host github :repo "org-roam/org-roam-server"))
 #+end_src
 
-Set up more useful keybindings to use and access ~org-roam~
-#+begin_src emacs-lisp
-(map! :leader
-      :prefix "n"
-      "f" #'org-roam-find-file
-      :map org-roam-mode-map
-      "i" #'org-roam-insert
-      "g" #'org-roam-graph
-      "r" #'org-roam)
-#+end_src
-
 I want to roll my own ~org-roam~ config rather than use doom's module.
 #+begin_src emacs-lisp
 (use-package! org-roam
   :hook (org-load . org-roam-mode)
   :hook (org-roam-backlinks-mode . turn-on-visual-line-mode)
+  :commands (org-roam
+             org-roam-find-file
+             org-roam-buffer-toggle-display
+             org-roam-dailies-find-date
+             org-roam-dailies-find-today
+             org-roam-dailies-find-tomorrow
+             org-roam-dailies-find-yesterday)
   :init
   <<org-roam-init>>
   :config
   <<org-roam-config>>
   )
+#+end_src
+
+Set up useful keybindings to use and access ~org-roam~
+#+begin_src emacs-lisp :tangle no :noweb-ref org-roam-init
+(map! :after org
+      :leader
+      :prefix "n"
+      "f" #'org-roam-find-file
+      "i" #'org-roam-insert
+      "g" #'org-roam-graph
+      "r" #'org-roam
+      "n" #'org-roam-dailies-capture-today
+      "t" #'org-roam-dailies-find-today
+      "d" nil
+      (:prefix ("d" . "by date")
+         :desc "Find previous note" "b" #'org-roam-dailies-find-previous-note
+         :desc "Find date"          "d" #'org-roam-dailies-find-date
+         :desc "Find next note"     "f" #'org-roam-dailies-find-next-note
+         :desc "Find tomorrow"      "m" #'org-roam-dailies-find-tomorrow
+         :desc "Capture today"      "n" #'org-roam-dailies-capture-today
+         :desc "Find today"         "t" #'org-roam-dailies-find-today
+         :desc "Capture Date"       "v" #'org-roam-dailies-capture-date
+         :desc "Find yesterday"     "y" #'org-roam-dailies-find-yesterday
+         :desc "Find directory"     "." #'org-roam-dailies-find-directory)
+      "m" nil
+      (:prefix ("m" . "metadata")
+       "t" #'org-roam-tag-add
+       "T" #'org-roam-tag-delete
+       "a" #'org-roam-alias-add
+       "A" #'org-roam-alias-delete))
 #+end_src
 
 Set directory for my ~org-roam~ notes
@@ -1054,44 +1076,19 @@ Do not update links in other files when changing titles. Links are often context
              'org-roam--update-links-on-title-change)
 #+end_src
 
-*** Journal
-I want to use ~org-journal~ as the way to capture and navigate my daily and fleeting notes
-#+begin_src emacs-lisp
-(after! org-journal
-  <<org-journal-configuration>>
-  )
-#+end_src
-
-Set the journal directory to be inside my roam directory
+Set the dailies directory to be a subdirectory in my base ~org-roam~ directory
 #+begin_src emacs-lisp :tangle no :noweb-ref org-journal-configuration
-(setq org-journal-dir (expand-file-name "daily/" org-roam-directory))
+(setq org-roam-dailies-directory "daily/")
 #+end_src
 
-I want to use a weekly journal file. This should make weekly reviews somewhat easier and will result in fewer overall files
+Set the capture template for my daily notes
 #+begin_src emacs-lisp :tangle no :noweb-ref org-journal-configuration
-(setq org-journal-file-type 'weekly)
-#+end_src
+(setq org-roam-dailies-capture-templates
+      '(("d" "default" entry (function org-roam-capture--get-point)
+         "* %?"
+         :file-name "daily/%<%Y-%m-%d>"
+         :head "#+title: %<%Y-%m-%d>\n")))
 
-Setup file header. This will likely put the date on the first one that I actually create the entry, and not only Monday. This is ok though.
-#+begin_src emacs-lisp :tangle no :noweb-ref org-journal-configuration
-(setq org-journal-file-header "#+title: Weekly journal for %F")
-#+end_src
-
-Set file format to use a .org extension. No idea why this isn't the default
-#+begin_src emacs-lisp :tangle no :noweb-ref org-journal-configuration
-(setq org-journal-file-format "%Y-%m-%d.org")
-#+end_src
-
-Don't carryover any items
-#+begin_src emacs-lisp :tangle no :noweb-ref org-journal-configuration
-(setq org-journal-carryover-items nil)
-#+end_src
-
-Add more convenient mappings for journal access
-#+begin_src emacs-lisp
-(map! :leader :prefix "n"
-      :desc "Journal entry"   "n" #'org-journal-new-entry
-      :desc "Today's journal" "t" (cmd!! #'org-journal-new-entry t))
 #+end_src
 
 I often want to refile ~TODO~ items from journal or other org files into my inbox. This function copies the headline into my inbox, and creates bi-directional links on both headlines. It also marks the original headlines as the ~MOVED~ todo keyword.
