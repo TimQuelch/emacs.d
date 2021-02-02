@@ -290,7 +290,7 @@ Unbind evil jumping keys. I don't use these and I've found that they interfere w
 
 Enable easy use of ~avy~
 #+begin_src emacs-lisp
-(map! "C-'" #'avy-goto-char)
+(map! "C-'" #'avy-goto-char-timer)
 #+end_src
 
 Use better ~comment-diwm~
