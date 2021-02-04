@@ -174,7 +174,7 @@ Increase the amount of context lines when scrolling full screen-fulls (default i
 
 Wrap lines at fill column when using ~visual-line-mode~
 #+begin_src emacs-lisp :tangle packages.el
-(package! visual-fill-column :pin "64d38bc1c00953be05c193c01332a633be67aac2")
+(package! visual-fill-column :pin "68784162d758fbe6a91d04e9caa8f05683fb6ba9")
 #+end_src
 #+begin_src emacs-lisp
 (use-package visual-fill-column
@@ -186,7 +186,7 @@ Wrap lines at fill column when using ~visual-line-mode~
 
 Set up ~mixed-pitch-mode~ in text modes. Proportional fonts are much nicer to read, but I still want fixed pitch in code blocks
 #+begin_src emacs-lisp :tangle packages.el
-(package! mixed-pitch :pin "d305108f9520e196b533f05d1dcc284cf535faaf")
+(package! mixed-pitch :pin "beb22e85f6073a930f7338a78bd186e3090abdd7")
 #+end_src
 #+begin_src emacs-lisp
 (use-package mixed-pitch
@@ -222,11 +222,6 @@ Set the dictionary to use ~en_AU~
 #+begin_src emacs-lisp
 (after! ispell
   (setq ispell-dictionary "en_AU"))
-#+end_src
-
-Update the pin for ~link-hint~ to use a version that has my PR merged that enables ~notmuch-hello~ link support.
-#+begin_src emacs-lisp :tangle packages.el
-(package! link-hint :pin "e897897d6a92b4ffdbff33acf69f5c661da1123a")
 #+end_src
 
 * Helm
@@ -295,7 +290,7 @@ Enable easy use of ~avy~
 
 Use better ~comment-diwm~
 #+begin_src emacs-lisp :tangle packages.el
-(package! comment-dwim-2 :pin "3dfdd58495c46a37708344a57c5c52beca6b2c1c")
+(package! comment-dwim-2 :pin "7cdafd6d98234a7402865b8abdae54a2f2551c94")
 #+end_src
 #+begin_src emacs-lisp
 (use-package! comment-dwim-2
@@ -457,7 +452,7 @@ Disable some of the extra things that Doom enables
 
 I use ~org-super-agenda~ to group tasks in agenda
 #+begin_src emacs-lisp emacs-lisp :tangle packages.el
-(package! org-super-agenda :pin "3264255989021b8563ea42b5d26acbc2a024f14d")
+(package! org-super-agenda :pin "857783ecd3dbe35c72b4eca046e0a5dc64041fdf")
 #+end_src
 #+begin_src emacs-lisp
 (use-package! org-super-agenda
