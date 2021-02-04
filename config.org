@@ -816,7 +816,7 @@ Define my default bibliography file (generated and maintained by Zotero/BBL)
 
 I'm using ~org-ref~ to manage citations within org-mode. This might soon be replaced by native citation support though :o
 #+begin_src emacs-lisp :tangle packages.el
-(package! org-ref :pin "9dbf7cf2069acec47a8e5d027da0a253dff024ca")
+(package! org-ref :pin "052a176b4cc1c080376c183e5e02ab37cb1f0f0a")
 #+end_src
 #+begin_src emacs-lisp
 (use-package! org-ref
@@ -860,7 +860,7 @@ By default ~citeproc-org-org-bib-header~ will insert a level 1 heading. This is 
 
 Use ~helm-bibtex~ as the main way of dealing with bibliographies
 #+begin_src emacs-lisp :tangle packages.el
-(package! helm-bibtex :pin "12f8809aac3a13dd11a1c664a13f789005f7a199")
+(package! helm-bibtex :pin "94807a3d3419f90b505eddc3272e244475eeb4f2")
 #+end_src
 #+begin_src emacs-lisp
 (use-package! helm-bibtex
@@ -946,10 +946,10 @@ Setup ~org-roam~, ~org-roam-bibtex~, and ~org-roam-server~ to track source
 #+begin_src emacs-lisp :tangle packages.el
 (package! org-roam
   :recipe (:host github :repo "org-roam/org-roam")
-  :pin "1b598a461849318fca2df3917c254d8ee483a87e")
+  :pin "fde40dc1c43fcb34cde3253127c3cc27abe7f1a7")
 (package! org-roam-bibtex
   :recipe (:host github :repo "org-roam/org-roam-bibtex")
-  :pin "7c08a8928967a683666dbc1850e41537ab1fa01a")
+  :pin "4b7e2d0fce5a1043ece72934718e4a71ae6565b7")
 ;; (package! org-roam-server :recipe (:host github :repo "org-roam/org-roam-server"))
 #+end_src
 
