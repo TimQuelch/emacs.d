@@ -261,7 +261,7 @@ Reduce prefix length and delay. I want completion /fast/. THis may cause perform
 #+begin_src emacs-lisp
 (after! company
   (setq company-idle-delay 0.3
-        company-minimum-prefix-length 0))
+        company-minimum-prefix-length 1))
 #+end_src
 
 Setup the default backends. By default doom includes ~company-dabbrev~ which adds too much noise. Yasnippet backed is also annoying and not included
