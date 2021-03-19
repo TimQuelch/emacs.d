@@ -1466,6 +1466,12 @@ According to the help for the julia module in doom (=SPC h d m "julia"=, =*Langu
   (setq lsp-julia-default-environment "~/.julia/environments/v1.5"))
 #+end_src
 
+Use ~vterm~ for backend for repl,
+#+begin_src emacs-lisp
+(after! julia-repl
+  (julia-repl-set-terminal-backend 'vterm))
+#+end_src
+
 Define a minor mode to enable sending to julia-repl
 #+begin_src emacs-lisp
 (define-minor-mode julia-repl-interaction-mode
