@@ -1490,3 +1490,10 @@ Use ~nov.el~ for reading ebooks.
 (use-package nov
   :mode ("\\.epub\\'" . nov-mode))
 #+end_src
+
+** MATLAB/Octave
+
+#+begin_src emacs-lisp
+(use-package octave-mode
+  :mode "\\.m\\'")
+#+end_src
