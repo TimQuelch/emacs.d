@@ -73,7 +73,7 @@ Enable syntax and spell checkers
 #+begin_src emacs-lisp
 :checkers
 syntax
-spell
+(spell +aspell +everywhere)
 #+end_src
 
 ** Tools
