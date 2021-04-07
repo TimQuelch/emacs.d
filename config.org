@@ -962,10 +962,10 @@ Setup ~org-roam~, ~org-roam-bibtex~, and ~org-roam-server~ to track source
 #+begin_src emacs-lisp :tangle packages.el
 (package! org-roam
   :recipe (:host github :repo "org-roam/org-roam")
-  :pin "fde40dc1c43fcb34cde3253127c3cc27abe7f1a7")
+  :pin "38b5375354e26165aaf520ea692a2f7d25b33edd")
 (package! org-roam-bibtex
   :recipe (:host github :repo "org-roam/org-roam-bibtex")
-  :pin "81b6fedf99996a78199067e61935964dea9389ee")
+  :pin "87f42c5041e80ed1a6967cae83f658fabb2210e8")
 ;; (package! org-roam-server :recipe (:host github :repo "org-roam/org-roam-server"))
 #+end_src
 
@@ -975,8 +975,10 @@ I want to roll my own ~org-roam~ config rather than use doom's module.
   :hook (org-load . org-roam-mode)
   :hook (org-roam-backlinks-mode . turn-on-visual-line-mode)
   :commands (org-roam
-             org-roam-find-file
-             org-roam-buffer-toggle-display
+             org-roam-node-find
+             org-roam-node-insert
+             org-roam-show-graph
+             org-roam-buffer-toggle
              org-roam-dailies-find-date
              org-roam-dailies-find-today
              org-roam-dailies-find-tomorrow
@@ -993,10 +995,10 @@ Set up useful keybindings to use and access ~org-roam~
 (map! :after org
       :leader
       :prefix "n"
-      "f" #'org-roam-find-file
-      "i" #'org-roam-insert
-      "g" #'org-roam-graph
-      "r" #'org-roam
+      "f" #'org-roam-node-find
+      "i" #'org-roam-node-insert
+      "g" #'org-roam-show-graph
+      "r" #'org-roam-buffer-toggle
       "n" #'org-roam-dailies-capture-today
       "t" #'org-roam-dailies-find-today
       "d" nil
@@ -1028,6 +1030,28 @@ Put the database in the doom cache directory, rather than stored with the notes
 (setq org-roam-db-location (concat doom-cache-dir "org-roam.db"))
 #+end_src
 
+Setup ~org-roam~
+#+begin_src emacs-lisp :tangle no :noweb-ref org-roam-config
+(org-roam-setup)
+#+end_src
+
+Set up org roam buffer sections
+#+begin_src emacs-lisp :tangle no :noweb-ref org-roam-config
+(setq org-roam-mode-sections (list #'org-roam-backlinks-insert-section
+                                   #'org-roam-reflinks-insert-section
+                                   #'org-roam-unlinked-references-insert-section))
+#+end_src
+
+Set up roam buffer to be a side window
+#+begin_src emacs-lisp :tangle no :noweb-ref org-roam-init
+(add-to-list 'display-buffer-alist
+             '(("\\*org-roam\\*"
+                (display-buffer-in-direction)
+                (direction . right)
+                (window-width . 0.33)
+                (window-height . fit-window-to-buffer))))
+#+end_src
+
 Turn off verbosity. I don't like the messages
 #+begin_src emacs-lisp :tangle no :noweb-ref org-roam-config
 (setq org-roam-verbose nil)
@@ -1038,7 +1062,7 @@ Set up capture template. It includes a TODO item to write about the note. I have
 (setq org-roam-capture-templates
       '(("d" "default" plain (function org-roam-capture--get-point)
          "%?"
-         :file-name "${slug}"
+         :file-name "${slug}.org"
          :head "#+title: ${title}\n#+setupfile: setup.org\n\n\n\n* TODO Write about '${title}' :towrite:"
          :unnarrowed t
          :immediate-finish t)))
@@ -1136,7 +1160,7 @@ Enable ~org-roam-bibtex~ and setup capture template
 #+begin_src emacs-lisp
 (use-package org-roam-bibtex
   :commands (org-roam-bibtex-insert-non-ref org-roam-bibtex-find-non-ref)
-  :hook (org-roam-mode . org-roam-bibtex-mode)
+  :hook (org-mode . org-roam-bibtex-mode)
   :config
   <<orb-configuration>>
   )
