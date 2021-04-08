@@ -391,8 +391,11 @@ No longer start with latex or inline images. This is often quite slow.
 #+end_src
 
 Enable the use of org-ids for links to headlines. ~org-id-track-globally~ is on by default in doom, however this only updates the org id file when emacs exits, so I'm not sure if it will work very well for me using a daemoned emacs.
-#+begin_src emacs-lisp :tangle no :noweb-ref org-configuration
-(setq org-id-link-to-org-use-id 'create-if-interactive-and-no-custom-id)
+#+begin_src emacs-lisp
+(use-package! org-id
+  :after org
+  :config
+  (setq org-id-link-to-org-use-id 'create-if-interactive-and-no-custom-id))
 #+end_src
 
 Remove empty clock lines, they achieve nothing.
