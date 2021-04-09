@@ -1113,7 +1113,7 @@ I often want to refile ~TODO~ items from journal or other org files into my inbo
   (map! :map org-mode-map :localleader :prefix "r" "i" #'tq/refile-to-inbox))
 #+end_src
 
-*** Bibtex
+*** BibTeX
 Enable ~org-roam-bibtex~ and setup capture template
 #+begin_src emacs-lisp
 (use-package org-roam-bibtex
