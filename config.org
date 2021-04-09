@@ -1021,7 +1021,7 @@ Set up capture template. It includes a TODO item to write about the note. I have
       '(("d" "default" plain (function org-roam-capture--get-point)
          "%?"
          :file-name "${slug}"
-         :head "#+title: ${title}\n:preamble:\n#+setupfile: setup.org\n:end:\n\n\n\n* TODO Write about '${title}' :towrite:"
+         :head "#+title: ${title}\n#+setupfile: setup.org\n\n\n\n* TODO Write about '${title}' :towrite:"
          :unnarrowed t
          :immediate-finish t)))
 #+end_src
@@ -1131,7 +1131,7 @@ Set up literature notes template
          (function org-roam-capture--get-point)
          ""
          :file-name ,(concat (file-name-as-directory "lit") "${citekey}")
-         :head "#+title: Notes on: ${title}\n#+roam_key: ${ref}\n:preamble:\n#+setupfile: ../setup.org\n:end:\n\n"
+         :head "#+title: Notes on: ${title}\n#+roam_key: ${ref}\n#+setupfile: ../setup.org\n\n"
          :unnarrowed t
          :immediate-finish t)))
 #+end_src
