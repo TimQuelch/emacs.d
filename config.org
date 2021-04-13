@@ -947,7 +947,7 @@ Setup ~org-roam~, ~org-roam-bibtex~, and ~org-roam-server~ to track source
   :pin "fde40dc1c43fcb34cde3253127c3cc27abe7f1a7")
 (package! org-roam-bibtex
   :recipe (:host github :repo "org-roam/org-roam-bibtex")
-  :pin "4b7e2d0fce5a1043ece72934718e4a71ae6565b7")
+  :pin "81b6fedf99996a78199067e61935964dea9389ee")
 ;; (package! org-roam-server :recipe (:host github :repo "org-roam/org-roam-server"))
 #+end_src
 
