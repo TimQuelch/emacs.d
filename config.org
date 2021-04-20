@@ -1430,6 +1430,12 @@ Disable ~visual-line-mode~ s from message modes
     (visual-fill-column-mode -1)))
 #+end_src
 
+Set up some face configurations. The default message summary at the top of a message is in grey, which is very low contrast. Here I change it to yellow.
+#+begin_src emacs-lisp :tangle no :noweb-ref notmuch-config
+(custom-theme-set-faces! 'doom-one
+  `(notmuch-message-summary-face :foreground ,(doom-color 'yellow)))
+#+end_src
+
 * Languages
 Some extra packages and languages that are not included by doom modules by default
 
