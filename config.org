@@ -28,6 +28,10 @@ I'm using company as my inline completion framework, and helm as my navigation/c
 #+end_src
 
 ** UI
+:PROPERTIES:
+:CUSTOM_ID: doom-ui
+:END:
+
 I enable various UI improvements and such here
 #+begin_src emacs-lisp
 :ui
@@ -89,6 +93,10 @@ pdf                                     ; pdf viewing and annotation
 #+end_src
 
 ** Languages
+:PROPERTIES:
+:CUSTOM_ID: doom-lang
+:END:
+
 Enable lots of programming language integrations
 #+begin_src emacs-lisp
 :lang
