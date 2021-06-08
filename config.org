@@ -232,6 +232,12 @@ Set the dictionary to use ~en_AU~
   (setq ispell-dictionary "en_AU"))
 #+end_src
 
+By default bookmarked lines are highlighted in an annoying orange background which often removes other formatting. This disables that.
+#+begin_src emacs-lisp
+(after! bookmark
+  (setq bookmark-fontify nil))
+#+end_src
+
 * Helm
 Use heading of helm as input line
 #+begin_src emacs-lisp
