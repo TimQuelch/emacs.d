@@ -816,6 +816,10 @@ Configure my capture templates. These need to go in this advice because doom loa
            "* %?")
           ("j" "journal" plain (file+olp+datetree ,(concat org-directory "journal.org"))
            (file ,(concat org-directory "templates/journal.org"))
+           :immediate-finish t :jump-to-captured t :tree-type 'week)
+          ("w" "workout" plain
+           (file+olp+datetree ,(concat org-directory "exercise.org") "Workouts")
+           (file ,(concat org-directory "templates/workout.org"))
            :immediate-finish t :jump-to-captured t :tree-type 'week))))
 #+end_src
 
