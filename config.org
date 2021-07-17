@@ -151,6 +151,12 @@ Setup org-crypt to use my key to encrypt-decrypt
   (setq org-crypt-key "07CFA8E6B5CA3E4243916E42CAE8E8818C4B8B84"))
 #+end_src
 
+The following ensure that the ~PATH~ variable is maintained on remote connections. This is important for me because the unimelb HPC (and others) paths are define by ~module load~ in the ~.bash_profile~. This ensures that the explicitly loaded versions of git and other tools are used.
+#+begin_src emacs-lisp
+(after! tramp
+  (add-to-list 'tramp-remote-path 'tramp-own-remote-path))
+#+end_src
+
 * UI
 Use some nice fonts
 #+begin_src emacs-lisp
