@@ -968,10 +968,10 @@ Setup ~org-roam~, ~org-roam-bibtex~, and ~org-roam-server~ to track source
 #+begin_src emacs-lisp :tangle packages.el
 (package! org-roam
   :recipe (:host github :repo "org-roam/org-roam")
-  :pin "31817f3483636300bd587b3f768ef31338427ad0")
+  :pin "2168490d5ada18629958788771e547d8c86fba20")
 (package! org-roam-bibtex
   :recipe (:host github :repo "org-roam/org-roam-bibtex")
-  :pin "5344331ff828729a815e8bb36bd46bcbd444ee9e")
+  :pin "c7f7cb0dc24d11b00ab5ce4de9705461fb1c5581")
 ;; (package! org-roam-server :recipe (:host github :repo "org-roam/org-roam-server"))
 #+end_src
 
@@ -994,6 +994,11 @@ I want to roll my own ~org-roam~ config rather than use doom's module.
   :config
   <<org-roam-config>>
   )
+#+end_src
+
+Acknowledge that I have upgraded to v2 to squash warning
+#+begin_src emacs-lisp
+(setq org-roam-v2-ack t)
 #+end_src
 
 Set up useful keybindings to use and access ~org-roam~
