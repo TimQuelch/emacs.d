@@ -248,8 +248,8 @@ Use heading of helm as input line
 
 Increase size of helm buffers
 #+begin_src emacs-lisp
-(after! helm
-  (set-popup-rule! "^\\*helm" :size 0.3))
+(after! (:and helm helm-rg)
+  (set-popup-rule! "^\\*helm" :size 0.4))
 #+end_src
 
 Increase width of buffer name field in buffer list
