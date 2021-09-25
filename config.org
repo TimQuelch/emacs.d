@@ -182,7 +182,7 @@ Increase the amount of context lines when scrolling full screen-fulls (default i
 
 Wrap lines at fill column when using ~visual-line-mode~
 #+begin_src emacs-lisp :tangle packages.el
-(package! visual-fill-column :pin "68784162d758fbe6a91d04e9caa8f05683fb6ba9")
+(package! visual-fill-column :pin "6fa9e7912af412533aec0da8b8f62c227f9f3f54")
 #+end_src
 #+begin_src emacs-lisp
 (use-package visual-fill-column
@@ -194,7 +194,7 @@ Wrap lines at fill column when using ~visual-line-mode~
 
 Set up ~mixed-pitch-mode~ in text modes. Proportional fonts are much nicer to read, but I still want fixed pitch in code blocks
 #+begin_src emacs-lisp :tangle packages.el
-(package! mixed-pitch :pin "beb22e85f6073a930f7338a78bd186e3090abdd7")
+(package! mixed-pitch :pin "519e05f74825abf04b7d2e0e38ec040d013a125a")
 #+end_src
 #+begin_src emacs-lisp
 (use-package mixed-pitch
@@ -832,7 +832,7 @@ Define my default bibliography file (generated and maintained by Zotero/BBL)
 
 I'm using ~org-ref~ to manage citations within org-mode. This might soon be replaced by native citation support though :o
 #+begin_src emacs-lisp :tangle packages.el
-(package! org-ref :pin "052a176b4cc1c080376c183e5e02ab37cb1f0f0a")
+(package! org-ref :pin "37b64e6cc1068c1b7ffe579851a345aa57772333")
 #+end_src
 #+begin_src emacs-lisp
 (use-package! org-ref
@@ -846,7 +846,7 @@ I'm using ~org-ref~ to manage citations within org-mode. This might soon be repl
 
 For non-LaTeX exports, I use citeproc to format citations
 #+begin_src emacs-lisp :tangle packages.el
-(package! citeproc-org :pin "22a759c4f0ec80075014dcc594baa4d1b470d995")
+(package! citeproc-org :pin "0fb4c96f48b3055a59a397af24d3f1a82cf77b66")
 #+end_src
 #+begin_src emacs-lisp
 (use-package! citeproc-org
@@ -876,7 +876,7 @@ By default ~citeproc-org-org-bib-header~ will insert a level 1 heading. This is 
 
 Use ~helm-bibtex~ as the main way of dealing with bibliographies
 #+begin_src emacs-lisp :tangle packages.el
-(package! helm-bibtex :pin "94807a3d3419f90b505eddc3272e244475eeb4f2")
+(package! helm-bibtex :pin "b85662081de98077f13f1a9fac03764702325d28")
 #+end_src
 #+begin_src emacs-lisp
 (use-package! helm-bibtex
@@ -967,15 +967,14 @@ Setup ~org-roam~, ~org-roam-bibtex~, and ~org-roam-server~ to track source
   :recipe (:host github :repo "org-roam/org-roam-bibtex")
   :pin "9c27f9c573274dc78b9655754ddb412c6f522f99")
 ;; (package! org-roam-server :recipe (:host github :repo "org-roam/org-roam-server"))
+(package! org-roam-ui
+  :recipe (:host github :repo "org-roam/org-roam-ui" :files ("*.el" "out")))
 #+end_src
 
 I want to roll my own ~org-roam~ config rather than use doom's module.
 #+begin_src emacs-lisp
 (use-package! org-roam
-  :hook (org-load . org-roam-mode)
-  :hook (org-roam-backlinks-mode . turn-on-visual-line-mode)
-  :commands (org-roam
-             org-roam-node-find
+  :commands (org-roam-node-find
              org-roam-node-insert
              org-roam-show-graph
              org-roam-buffer-toggle
@@ -1065,10 +1064,24 @@ Turn off verbosity. I don't like the messages
 Set up capture template. It includes a TODO item to write about the note. I have it set to finish immediately, as I don't really like editing them instantly.
 #+begin_src emacs-lisp :tangle no :noweb-ref org-roam-config
 (setq org-roam-capture-templates
-      '(("d" "default" plain (function org-roam-capture--get-point)
-         "%?"
-         :file-name "${slug}.org"
-         :head "#+title: ${title}\n#+setupfile: setup.org\n\n\n\n* TODO Write about '${title}' :towrite:"
+      `(("d" "default" plain "%?"
+         :if-new
+         (file+head
+          "${slug}.org"
+          "#+title: ${title}\n#+setupfile: setup.org\n\n\n\n* TODO Write about '${title}' :towrite:")
+         :unnarrowed t
+         :immediate-finish t)
+        ("e" "empty" plain "%?"
+         :if-new
+         (file+head
+          "${slug}.org"
+          "#+title: ${title}")
+         :unnarrowed t
+         :immediate-finish t)
+        ("r" "ref" plain "%?"
+         :if-new
+         (file+head ,(concat (file-name-as-directory "lit") "${citekey}.org")
+                    "#+title: Notes on: ${title}\n#+setupfile: ../setup.org\n\n")
          :unnarrowed t
          :immediate-finish t)))
 #+end_src
@@ -1121,10 +1134,23 @@ Setup case-insensitive completion in ~org-roam~ files
 (setq org-roam-completion-everywhere nil)
 #+end_src
 
-Do not update links in other files when changing titles. Links are often context dependant and it doesn't make sense to change the it in other files.
+Rename files when title is changed
 #+begin_src emacs-lisp :tangle no :noweb-ref org-roam-config
-(remove-hook 'org-roam-title-change-hook
-             'org-roam--update-links-on-title-change)
+(add-hook! 'after-save-hook
+           (defun org-rename-to-new-title ()
+             (when-let*
+                 ((old-file (buffer-file-name))
+                  (is-roam-file (org-roam-file-p old-file))
+                  (file-node (save-excursion
+                               (goto-char 1)
+                               (org-roam-node-at-point)))
+                  (slug (org-roam-node-slug file-node))
+                  (new-file (expand-file-name (concat slug ".org")))
+                  (different-name? (not (string-equal old-file new-file))))
+               (rename-buffer new-file)
+               (rename-file old-file new-file)
+               (set-visited-file-name new-file)
+               (set-buffer-modified-p nil))))
 #+end_src
 
 Set the dailies directory to be a subdirectory in my base ~org-roam~ directory
@@ -1135,11 +1161,13 @@ Set the dailies directory to be a subdirectory in my base ~org-roam~ directory
 Set the capture template for my daily notes
 #+begin_src emacs-lisp :tangle no :noweb-ref org-journal-configuration
 (setq org-roam-dailies-capture-templates
-      '(("d" "default" entry (function org-roam-capture--get-point)
-         "* %?"
-         :file-name "daily/%<%Y-%m-%d>"
-         :head "#+title: %<%Y-%m-%d>\n")))
-
+      '(("d" "default" entry "* %?"
+         :if-new (file+head
+                  "%<%Y-%m-%d>.org"
+                  "#+title: %<%Y-%m-%d>\n")
+         :unnarrowed t
+         :immediate-finish t
+         :jump-to-captured t)))
 #+end_src
 
 I often want to refile ~TODO~ items from journal or other org files into my inbox. This function copies the headline into my inbox, and creates bi-directional links on both headlines. It also marks the original headlines as the ~MOVED~ todo keyword.
@@ -1158,6 +1186,13 @@ I often want to refile ~TODO~ items from journal or other org files into my inbo
 
 (after! org
   (map! :map org-mode-map :localleader :prefix "r" "i" #'tq/refile-to-inbox))
+#+end_src
+
+Configure web ui
+#+begin_src emacs-lisp
+(use-package org-roam-ui
+  :after org-roam
+  :hook (after-init . org-roam-ui-mode))
 #+end_src
 
 *** BibTeX
@@ -1234,7 +1269,7 @@ This is noibiot's experimental transclusion library
 * Email
 I don't like the inbuilt ~notmuch~ Doom module, so I'm effectively implementing it myself
 #+begin_src emacs-lisp :tangle packages.el
-(package! notmuch :pin "45193bab16c728ba892a5d45fc62ef59e2a6ef85")
+(package! notmuch :pin "8e59438025c88ebd83a78cf12c06ff954d979e01")
 #+end_src
 #+begin_src emacs-lisp
 (use-package! notmuch
@@ -1299,7 +1334,7 @@ Send mail with ~sendmail~
 
 Sort by new
 #+begin_src emacs-lisp :tangle no :noweb-ref notmuch-config
-(setq notmuch-search-oldest-first nil)
+(setq-default notmuch-search-oldest-first nil)
 #+end_src
 
 Fix width of columns in search results
@@ -1386,7 +1421,7 @@ Use ~org-msg~ to write mixed-mime email in a sane way. I've pinned it to a commi
 (package! org-msg
   :recipe (:host github :repo "jeremy-compostella/org-msg")
   ;; :recipe (:host github :repo "TimQuelch/org-msg")
-  :pin "557d490ecbd80522a42f7b1fb6aaacca504d4512")
+  :pin "599e8b056c30e84d584aa54dd7c85339cdb9dc43")
 #+end_src
 #+begin_src emacs-lisp
 (use-package! org-msg
@@ -1407,16 +1442,8 @@ Set up email signature
 (setq org-msg-signature "\n\nThanks,\n\nTim Quelch\n")
 #+end_src
 
-Hack ~notmuch-company~ to allow it to work with ~org-msg-edit-mode~ and enable it.
+Setup company completion for notmuch
 #+begin_src emacs-lisp :tangle no :noweb-ref org-msg-config
-(defadvice! tq/org-msg-notmuch-company (orig-fn &rest args)
-  :around #'notmuch-company
-  (letf! (((symbol-function 'derived-mode-p) (lambda (mode)
-                                               (if (eq mode 'message-mode)
-                                                   t
-                                                 (derived-mode-p mode)))))
-    (apply orig-fn args)))
-
 (set-company-backend!
   '(org-msg-edit-mode notmuch-message-mode)
   'notmuch-company)
@@ -1451,7 +1478,7 @@ Some extra packages and languages that are not included by doom modules by defau
 
 ** Systemd unit files
 #+begin_src emacs-lisp :tangle packages.el
-(package! systemd :pin "51c148e09a129ddf33d95276aa0e89d4ef6f8dd2")
+(package! systemd :pin "b6ae63a236605b1c5e1069f7d3afe06ae32a7bae")
 #+end_src
 #+begin_src emacs-lisp
 (use-package systemd
