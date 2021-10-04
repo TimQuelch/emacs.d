@@ -1427,14 +1427,21 @@ Use ~org-msg~ to write mixed-mime email in a sane way. I've pinned it to a commi
 (use-package! org-msg
   :after notmuch
   :config
-  (org-msg-mode)
   <<org-msg-config>>
+  (org-msg-mode)
   )
+#+end_src
+
+Set notmuch user agent so org-msg knows where to put hooks
+#+begin_src emacs-lisp :tangle no :noweb-ref org-msg-config
+(setq mail-user-agent 'notmuch-user-agent)
 #+end_src
 
 Send email with both HTML and plain text (like a good well adjusted human)
 #+begin_src emacs-lisp :tangle no :noweb-ref org-msg-config
-(setq org-msg-default-alternatives '(text html))
+(setq org-msg-default-alternatives '((new           . (text html))
+                                     (reply-to-html . (text html))
+                                     (reply-to-text . (text))))
 #+end_src
 
 Set up email signature
