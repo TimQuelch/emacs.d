@@ -1141,6 +1141,9 @@ Rename files when title is changed
              (when-let*
                  ((old-file (buffer-file-name))
                   (is-roam-file (org-roam-file-p old-file))
+                  (in-roam-base-directory? (string-equal
+                                            (expand-file-name org-roam-directory)
+                                            (file-name-directory old-file)))
                   (file-node (save-excursion
                                (goto-char 1)
                                (org-roam-node-at-point)))
