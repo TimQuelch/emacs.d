@@ -106,6 +106,7 @@ data
 json
 latex
 markdown
+web
 (org +present +hugo)
 (python +pyenv)
 (julia +lsp)
