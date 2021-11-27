@@ -546,7 +546,7 @@ Any items that do not fall in one of these filter categories goes in an automati
 In my PhD view, I want do discard anything hobby or housework related. I strip out these items in the super agenda groups.
 #+begin_src emacs-lisp
 (defun tq/phd-org-super-agenda-groups ()
-  (cons '(:discard (:tag ("home" "hobby"))) org-super-agenda-groups))
+  (cons '(:discard (:tag ("home" "hobby" "personal"))) org-super-agenda-groups))
 #+end_src
 
 Below I'm setting up my main agenda view as well as a projects view
