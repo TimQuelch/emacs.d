@@ -128,6 +128,15 @@ By default doom blacklists ~SSH_AUTH_SOCK~ and ~SSH_AUTH_PID~ variables, which m
   (add-to-list 'doom-env-whitelist "^SSH_"))
 #+end_src
 
+* Fixes
+
+Apply fixes for error in https://github.com/hlissner/doom-emacs/issues/5785
+
+#+begin_src emacs-lisp
+(general-auto-unbind-keys :off)
+(remove-hook 'doom-after-init-modules-hook #'general-auto-unbind-keys)
+#+end_src
+
 * Personalisation
 Setup name and email
 #+begin_src emacs-lisp
