@@ -959,17 +959,17 @@ Ensure that attachment links are properly expanded before export
 
 *** Roam
 
-Setup ~org-roam~, ~org-roam-bibtex~, and ~org-roam-server~ to track source
+Setup ~org-roam~, ~org-roam-bibtex~, and ~org-roam-ui~ to track source
 #+begin_src emacs-lisp :tangle packages.el
 (package! org-roam
   :recipe (:host github :repo "org-roam/org-roam")
-  :pin "56e66f92d29e64abf46c49d7a3f08c64c8bbbe8a")
+  :pin "67f10864df04e6a789dcca03e8cf7637b571098b")
 (package! org-roam-bibtex
   :recipe (:host github :repo "org-roam/org-roam-bibtex")
-  :pin "9c27f9c573274dc78b9655754ddb412c6f522f99")
-;; (package! org-roam-server :recipe (:host github :repo "org-roam/org-roam-server"))
+  :pin "671c2ae8e9df38d2a7a3476b63355d0d52c0ecd6")
 (package! org-roam-ui
-  :recipe (:host github :repo "org-roam/org-roam-ui" :files ("*.el" "out")))
+  :recipe (:host github :repo "org-roam/org-roam-ui" :files ("*.el" "out"))
+  :pin "9fcc9a8d716254565d06082bc6e861b259c132fd")
 #+end_src
 
 I want to roll my own ~org-roam~ config rather than use doom's module.
