@@ -193,34 +193,6 @@ Wrap lines at fill column when using ~visual-line-mode~
                 'visual-fill-column-split-window-sensibly))
 #+end_src
 
-Set up ~mixed-pitch-mode~ in text modes. Proportional fonts are much nicer to read, but I still want fixed pitch in code blocks
-#+begin_src emacs-lisp :tangle packages.el
-(package! mixed-pitch :pin "519e05f74825abf04b7d2e0e38ec040d013a125a")
-#+end_src
-#+begin_src emacs-lisp
-(use-package mixed-pitch
-  :hook (text-mode . mixed-pitch-mode)
-  :config
-  (pushnew! mixed-pitch-fixed-pitch-faces
-            'org-date
-            'org-special-keyword
-            'org-property-value
-            'org-drawer
-            'org-ref-cite-face
-            'org-tag
-            'org-todo-keyword-todo
-            'org-todo-keyword-habt
-            'org-todo-keyword-done
-            'org-todo-keyword-wait
-            'org-todo-keyword-kill
-            'org-todo-keyword-outd
-            'org-todo
-            'org-done
-            'font-lock-comment-face
-            'line-number
-            'line-number-current-line))
-#+end_src
-
 Ensure ~dired-omit-mode~ is not started with dired. It hides some files transparently and has caused lots of confusion on my part.
 #+begin_src emacs-lisp
 (after! dired
