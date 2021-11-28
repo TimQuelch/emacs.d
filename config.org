@@ -960,10 +960,10 @@ I want to roll my own ~org-roam~ config rather than use doom's module.
              org-roam-node-insert
              org-roam-show-graph
              org-roam-buffer-toggle
-             org-roam-dailies-find-date
-             org-roam-dailies-find-today
-             org-roam-dailies-find-tomorrow
-             org-roam-dailies-find-yesterday)
+             org-roam-dailies-goto-date
+             org-roam-dailies-goto-today
+             org-roam-dailies-goto-tomorrow
+             org-roam-dailies-goto-yesterday)
   :init
   <<org-roam-init>>
   :config
@@ -986,18 +986,18 @@ Set up useful keybindings to use and access ~org-roam~
       "g" #'org-roam-show-graph
       "r" #'org-roam-buffer-toggle
       "n" #'org-roam-dailies-capture-today
-      "t" #'org-roam-dailies-find-today
+      "t" #'org-roam-dailies-goto-today
       "d" nil
       (:prefix ("d" . "by date")
-         :desc "Find previous note" "b" #'org-roam-dailies-find-previous-note
-         :desc "Find date"          "d" #'org-roam-dailies-find-date
-         :desc "Find next note"     "f" #'org-roam-dailies-find-next-note
-         :desc "Find tomorrow"      "m" #'org-roam-dailies-find-tomorrow
+         :desc "Goto previous note" "b" #'org-roam-dailies-goto-previous-note
+         :desc "Goto date"          "d" #'org-roam-dailies-goto-date
+         :desc "Goto next note"     "f" #'org-roam-dailies-goto-next-note
+         :desc "Goto tomorrow"      "m" #'org-roam-dailies-goto-tomorrow
          :desc "Capture today"      "n" #'org-roam-dailies-capture-today
-         :desc "Find today"         "t" #'org-roam-dailies-find-today
+         :desc "Goto today"         "t" #'org-roam-dailies-goto-today
          :desc "Capture Date"       "v" #'org-roam-dailies-capture-date
-         :desc "Find yesterday"     "y" #'org-roam-dailies-find-yesterday
-         :desc "Find directory"     "." #'org-roam-dailies-find-directory)
+         :desc "Goto yesterday"     "y" #'org-roam-dailies-goto-yesterday
+         :desc "Goto directory"     "." #'org-roam-dailies-find-directory)
       "m" nil
       (:prefix ("m" . "metadata")
        "t" #'org-roam-tag-add
