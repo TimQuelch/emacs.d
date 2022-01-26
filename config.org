@@ -318,9 +318,9 @@ Set the org-agenda files to be the org directory. This includes all the files in
   )
 #+end_src
 
-Setting up ~TODO~ states. ~WAITING~ and ~CANCELLED~ require messages when entering these states. I'm trying not to use the ~EMAIL~ state, but keeping it here for archive purposes.
+Setting up ~TODO~ states. I'm trying not to use the ~EMAIL~ state, but keeping it here for archive purposes.
 #+begin_src emacs-lisp  :tangle no :noweb-ref org-configuration
-(setq org-todo-keywords '((sequence "TODO(t)" "NEXT(n)" "WAITING(w)" "|" "DONE(d)")
+(setq org-todo-keywords '((sequence "TODO(t)" "NEXT(n)" "WAITING(w)" "ONHOLD(h)" "|" "DONE(d)")
                           (sequence "EMAIL(e)" "|" "SENT(s)")
                           (sequence "|" "CANCELLED(c)")
                           (sequence "|" "MOVED(m)")))
@@ -523,7 +523,7 @@ Setup the groups that appear in the agenda views.
 #+begin_src emacs-lisp
 (setq org-super-agenda-groups
       '((:discard
-         (:todo "WAITING"))
+         (:todo ("WAITING" "ONHOLD")))
         (:name "Emails"
          :tag "email"
          :order 3)
