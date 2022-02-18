@@ -1510,6 +1510,21 @@ Use ~vterm~ for backend for repl,
   (julia-repl-set-terminal-backend 'vterm))
 #+end_src
 
+Add mapping in org mode to execute julia code. This is really specific and not the best solution, but I find it is far more useful than executing the julia code in the session provided by ~ob-julia~ or by running it in the non-session environment. Issues with this include:
+- Replaces default org mapping (I don't use it though)
+- Works on any code block, not just julia. I guess I could add a simple check to check if it is a julia block, but I haven't made this mistake yet
+- ~C-c C-c~ still does the default behaviour. I need to actually remember that I have this new binding set up
+
+#+begin_src emacs-lisp
+(after! org
+  (defun tq/send-block-to-julia-repl ()
+      (interactive)
+      (save-mark-and-excursion
+        (org-babel-mark-block)
+        (julia-repl-send-region-or-line)))
+  (map! :map org-mode-map "C-c C-v C-c" #'tq/send-block-to-julia-repl))
+#+end_src
+
 Define a minor mode to enable sending to julia-repl
 #+begin_src emacs-lisp
 (define-minor-mode julia-repl-interaction-mode
