@@ -1,4 +1,4 @@
-#+property: header-args :results silent :tangle config.el :noweb no-export
+#+property: header-args :exports code :results silent :tangle config.el :noweb no-export
 
 * Preface
 
