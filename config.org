@@ -273,6 +273,12 @@ Enable the use of =C-u= as the universal argument again
          evil-want-C-u-scroll nil))
 #+end_src
 
+Instead map =C-s= to scroll up.
+#+begin_src emacs-lisp
+(global-unset-key (kbd "C-s"))
+(map! :m "C-s" #'evil-scroll-up)
+#+end_src
+
 Unbind evil jumping keys. I don't use these and I've found that they interfere with other uses of TAB (for example, in notmuch modes)
 #+begin_src emacs-lisp
 (map! :m [tab] nil
