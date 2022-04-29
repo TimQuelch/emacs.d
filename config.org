@@ -820,7 +820,7 @@ Define my default bibliography file (generated and maintained by Zotero/BBL)
 
 I'm using ~org-ref~ to manage citations within org-mode. This might soon be replaced by native citation support though :o
 #+begin_src emacs-lisp :tangle packages.el
-(package! org-ref :pin "37b64e6cc1068c1b7ffe579851a345aa57772333")
+(package! org-ref :pin "6a759a969d92dd1c69f540129ebaa8e47ef70cf3")
 #+end_src
 #+begin_src emacs-lisp
 (use-package! org-ref
@@ -834,7 +834,7 @@ I'm using ~org-ref~ to manage citations within org-mode. This might soon be repl
 
 For non-LaTeX exports, I use citeproc to format citations
 #+begin_src emacs-lisp :tangle packages.el
-(package! citeproc-org :pin "0fb4c96f48b3055a59a397af24d3f1a82cf77b66")
+(package! citeproc-org :pin "20cd7e817420a3f6e7b82faea901a3c67c6d4d9f")
 #+end_src
 #+begin_src emacs-lisp
 (use-package! citeproc-org
@@ -864,7 +864,7 @@ By default ~citeproc-org-org-bib-header~ will insert a level 1 heading. This is 
 
 Use ~helm-bibtex~ as the main way of dealing with bibliographies
 #+begin_src emacs-lisp :tangle packages.el
-(package! helm-bibtex :pin "b85662081de98077f13f1a9fac03764702325d28")
+(package! helm-bibtex :pin "ce8c17690ddad73d01531084b282f221f8eb6669")
 #+end_src
 #+begin_src emacs-lisp
 (use-package! helm-bibtex
@@ -950,13 +950,13 @@ Setup ~org-roam~, ~org-roam-bibtex~, and ~org-roam-ui~ to track source
 #+begin_src emacs-lisp :tangle packages.el
 (package! org-roam
   :recipe (:host github :repo "org-roam/org-roam")
-  :pin "67f10864df04e6a789dcca03e8cf7637b571098b")
+  :pin "69116a4da49448e79ac03aedceeecd9f5ae9b2d4")
 (package! org-roam-bibtex
   :recipe (:host github :repo "org-roam/org-roam-bibtex")
-  :pin "671c2ae8e9df38d2a7a3476b63355d0d52c0ecd6")
+  :pin "efdac6fe4134c33f50b06a0a6d192003d0e5094c")
 (package! org-roam-ui
   :recipe (:host github :repo "org-roam/org-roam-ui" :files ("*.el" "out"))
-  :pin "9fcc9a8d716254565d06082bc6e861b259c132fd")
+  :pin "9474a254390b1e42488a1801fed5826b32a8030b")
 #+end_src
 
 I want to roll my own ~org-roam~ config rather than use doom's module.
@@ -1260,7 +1260,7 @@ This is noibiot's experimental transclusion library
 * Email
 I don't like the inbuilt ~notmuch~ Doom module, so I'm effectively implementing it myself
 #+begin_src emacs-lisp :tangle packages.el
-(package! notmuch :pin "8e59438025c88ebd83a78cf12c06ff954d979e01")
+(package! notmuch :pin "a9b5f8959a20bbce774dec8a65a8b207555e52bd")
 #+end_src
 #+begin_src emacs-lisp
 (use-package! notmuch
