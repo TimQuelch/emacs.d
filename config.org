@@ -1226,37 +1226,6 @@ Add convenient keybinding for accessing note actions
       "b" #'orb-note-actions)
 #+end_src
 
-*** Noter
-I don't like the configuration in Doom's ~org-noter~ module so I do it myself
-#+begin_src emacs-lisp :tangle packages.el
-(package! org-noter :pin "9ead81d42dd4dd5074782d239b2efddf9b8b7b3d")
-#+end_src
-#+begin_src emacs-lisp
-(use-package org-noter
-  :defer t
-  :config
-  (map! :map org-noter-doc-mode-map
-        :leader :n "i" #'org-noter-insert-note))
-#+end_src
-
-Disable ~org-pdftools~ because it breaks ~org-noter~ in ~nov~ mode
-#+begin_src emacs-lisp :tangle packages.el
-(disable-packages! org-pdftools)
-#+end_src
-
-** COMMENT Transclusions
-
-This is noibiot's experimental transclusion library
-#+begin_src emacs-lisp :tangle packages.el
-(package! org-transclusion
-  :recipe (:host github :repo "nobiot/org-transclusion")
-  :pin "781993eb934a8dc1be7029e6ea217fec70416353")
-#+end_src
-#+begin_src emacs-lisp
-(use-package org-transclusion
-  :hook (org-mode . org-transclusion-mode))
-#+end_src
-
 * Email
 I don't like the inbuilt ~notmuch~ Doom module, so I'm effectively implementing it myself
 #+begin_src emacs-lisp :tangle packages.el
@@ -1505,16 +1474,6 @@ Define a minor mode to enable sending to julia-repl
   :keymap (let ((map (make-sparse-keymap)))
             (define-key map (kbd "C-s") #'julia-repl-send-region-or-line)
             map))
-#+end_src
-
-** Documents
-Use ~nov.el~ for reading ebooks.
-#+begin_src emacs-lisp :tangle packages.el
-(package! nov :pin "23e5d9c4c63e3a7dc08110a8dfcbb97a1186a37f")
-#+end_src
-#+begin_src emacs-lisp
-(use-package nov
-  :mode ("\\.epub\\'" . nov-mode))
 #+end_src
 
 ** MATLAB/Octave
