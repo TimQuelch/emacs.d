@@ -24,7 +24,7 @@ I'm using company as my inline completion framework, and helm as my navigation/c
 #+begin_src emacs-lisp
 :completion
 (company +childframe)
-(helm +fuzzy)
+(ivy +fuzzy +icons)
 #+end_src
 
 ** UI
@@ -36,11 +36,12 @@ I enable various UI improvements and such here
 #+begin_src emacs-lisp
 :ui
 doom
+doom-dashboard
 modeline
 nav-flash
 ophints
 (popup +defaults)
-treemacs
+(treemacs +lsp)
 vc-gutter
 vi-tilde-fringe
 window-select
@@ -53,6 +54,7 @@ I use evil keybindings everywhere. I also want to enable snippets and code forma
 (evil +everywhere)
 format
 snippets
+fold
 #+end_src
 
 ** Emacs
@@ -84,12 +86,10 @@ syntax
 Set up a bunch of extra functionality in emacs
 #+begin_src emacs-lisp
 :tools
-(eval +overlay)                         ; evaluation
 docker                                  ; docker
 lookup                                  ; lookup of definitions/docs
 (lsp +peek)                             ; enable language server
 magit                                   ; git wizardry
-pdf                                     ; pdf viewing and annotation
 #+end_src
 
 ** Languages
@@ -107,10 +107,11 @@ json
 latex
 markdown
 web
-(org +present +hugo)
-(python +pyenv)
+(org +hugo)
+(python +lsp)
 (julia +lsp)
 (sh +fish)
+yaml
 #+end_src
 
 ** Config
@@ -120,14 +121,6 @@ Enable bindings and also tell Doom that I'm using a literate config
 literate
 (default +bindings +smartparens)
 #+end_src
-* Environment
-
-By default doom blacklists ~SSH_AUTH_SOCK~ and ~SSH_AUTH_PID~ variables, which means ssh agents don't work. This whitelists them in =init.el=
-#+begin_src emacs-lisp :tangle init.el
-(when noninteractive
-  (add-to-list 'doom-env-whitelist "^SSH_"))
-#+end_src
-
 * Fixes
 
 Apply fixes for error in https://github.com/hlissner/doom-emacs/issues/5785
@@ -218,6 +211,12 @@ By default bookmarked lines are highlighted in an annoying orange background whi
 #+begin_src emacs-lisp
 (after! bookmark
   (setq bookmark-fontify nil))
+#+end_src
+
+Change dashboard to remove header and footer (don't need DOOM in my editor)
+#+begin_src emacs-lisp
+(setq +doom-dashboard-functions '(doom-dashboard-widget-shortmenu
+                                  doom-dashboard-widget-loaded))
 #+end_src
 
 * Helm
