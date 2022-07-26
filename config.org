@@ -121,15 +121,6 @@ Enable bindings and also tell Doom that I'm using a literate config
 literate
 (default +bindings +smartparens)
 #+end_src
-* Fixes
-
-Apply fixes for error in https://github.com/hlissner/doom-emacs/issues/5785
-
-#+begin_src emacs-lisp
-(general-auto-unbind-keys :off)
-(remove-hook 'doom-after-init-modules-hook #'general-auto-unbind-keys)
-#+end_src
-
 * Personalisation
 Setup name and email
 #+begin_src emacs-lisp
