@@ -111,7 +111,7 @@ web
 (python +lsp)
 (julia +lsp)
 (sh +fish)
-yaml
+(yaml +lsp)
 #+end_src
 
 ** Config
