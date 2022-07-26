@@ -24,7 +24,7 @@ I'm using company as my inline completion framework, and helm as my navigation/c
 #+begin_src emacs-lisp
 :completion
 (company +childframe)
-(ivy +fuzzy +icons)
+(ivy +prescient +icons)
 #+end_src
 
 ** UI
