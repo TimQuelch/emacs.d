@@ -174,18 +174,6 @@ Increase the amount of context lines when scrolling full screen-fulls (default i
 (setq next-screen-context-lines 8)
 #+end_src
 
-Wrap lines at fill column when using ~visual-line-mode~
-#+begin_src emacs-lisp :tangle packages.el
-(package! visual-fill-column :pin "6fa9e7912af412533aec0da8b8f62c227f9f3f54")
-#+end_src
-#+begin_src emacs-lisp
-(use-package visual-fill-column
-  :hook (visual-line-mode . visual-fill-column-mode)
-  :config
-  (setq-default split-window-preferred-function
-                'visual-fill-column-split-window-sensibly))
-#+end_src
-
 Ensure ~dired-omit-mode~ is not started with dired. It hides some files transparently and has caused lots of confusion on my part.
 #+begin_src emacs-lisp
 (after! dired
