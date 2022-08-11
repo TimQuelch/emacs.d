@@ -112,6 +112,7 @@ web
 (julia +lsp)
 (sh +fish)
 (yaml +lsp)
+(javascript +lsp)
 #+end_src
 
 ** Config
