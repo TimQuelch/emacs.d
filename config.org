@@ -57,6 +57,11 @@ snippets
 fold
 #+end_src
 
+Disable doom snippets (I use snippets for LSP completion snippets, not weird opinionated pregenerated ones)
+#+begin_src emacs-lisp :tangle packages.el
+(package! doom-snippets :ignore t)
+#+end_src
+
 ** Emacs
 Improve ~dired~, version-control, and parenthesis behaviour
 #+begin_src emacs-lisp
@@ -217,7 +222,7 @@ Reduce prefix length and delay. I want completion /fast/. THis may cause perform
         company-minimum-prefix-length 1))
 #+end_src
 
-Setup the default backends. By default doom includes ~company-dabbrev~ which adds too much noise. Yasnippet backed is also annoying and not included
+Setup the default backends. By default doom includes ~company-dabbrev~ which adds too much noise. Yasnippet backend is also annoying and not included
 #+begin_src emacs-lisp
 (set-company-backend! '(text-mode prog-mode conf-mode) 'company-capf)
 #+end_src
