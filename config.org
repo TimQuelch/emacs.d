@@ -1045,8 +1045,8 @@ Some extra packages and languages that are not included by doom modules by defau
 ** Python
 Set up LSP to turn off some python warnings
 #+begin_src emacs-lisp
-(after! lsp-pyls
-  (setq! lsp-pyls-plugins-pycodestyle-enabled nil))
+(after! python
+  (setq! lsp-pylsp-plugins-pydocstyle-ignore t))
 #+end_src
 
 ** Julia
