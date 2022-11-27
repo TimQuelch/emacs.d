@@ -57,11 +57,6 @@ snippets
 fold
 #+end_src
 
-Disable doom snippets (I use snippets for LSP completion snippets, not weird opinionated pregenerated ones)
-#+begin_src emacs-lisp :tangle packages.el
-(package! doom-snippets :ignore t)
-#+end_src
-
 ** Emacs
 Improve ~dired~, version-control, and parenthesis behaviour
 #+begin_src emacs-lisp
@@ -202,6 +197,9 @@ Change dashboard to remove header and footer (don't need DOOM in my editor)
 #+begin_src emacs-lisp
 (setq +doom-dashboard-functions '(doom-dashboard-widget-shortmenu
                                   doom-dashboard-widget-loaded))
+Disable doom snippets (I use snippets for LSP completion snippets, not weird opinionated pregenerated ones)
+#+begin_src emacs-lisp :tangle packages.el
+(package! doom-snippets :ignore t)
 #+end_src
 
 * Helm
