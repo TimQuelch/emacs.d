@@ -1101,6 +1101,15 @@ Define a minor mode to enable sending to julia-repl
   :mode "\\.m\\'")
 #+end_src
 
+** GraphQL
+
+#+begin_src emacs-lisp :tangle packages.el
+(package! graphql-mode :pin "92136cf9b5a4dcd8c202c8dba9064b497776d2f7")
+#+end_src
+#+begin_src emacs-lisp
+(use-package graphql-mode)
+#+end_src
+
 ** Todoist
 
 #+begin_src emacs-lisp :tangle packages.el
