@@ -113,6 +113,7 @@ web
 (sh +fish)
 (yaml +lsp)
 (javascript +lsp)
+(go + lsp)
 #+end_src
 
 ** Config
