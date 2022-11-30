@@ -1049,16 +1049,6 @@ Set up LSP to turn off some python warnings
 #+end_src
 
 ** Julia
-According to the help for the julia module in doom (=SPC h d m "julia"=, =*Language Server=) I need to manually install =lsp-julia= for some reason,
-#+begin_src emacs-lisp :tangle packages.el
-(package! lsp-julia :recipe (:host github :repo "non-jedi/lsp-julia"))
-#+end_src
-#+begin_src emacs-lisp
-(after! lsp-julia
-  (setq lsp-enable-folding t)
-  (setq lsp-julia-default-environment "~/.julia/environments/v1.5"))
-#+end_src
-
 Use ~vterm~ for backend for repl,
 #+begin_src emacs-lisp
 (after! julia-repl
