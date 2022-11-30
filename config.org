@@ -88,7 +88,7 @@ Set up a bunch of extra functionality in emacs
 docker                                  ; docker
 lookup                                  ; lookup of definitions/docs
 (lsp +peek)                             ; enable language server
-magit                                   ; git wizardry
+(magit +forge)                          ; git wizardry
 #+end_src
 
 ** Languages
