@@ -1126,3 +1126,8 @@ Define a minor mode to enable sending to julia-repl
       (message due)
       (tq/todoist-new-task content due))))
 #+end_src
+
+** Go
+#+begin_src emacs-lisp :tangle packages.el
+(package! go-eldoc :disable t)
+#+end_src
