@@ -112,7 +112,7 @@ web
 (sh +fish)
 (yaml +lsp)
 (javascript +lsp)
-(go + lsp)
+(go +lsp)
 #+end_src
 
 ** Config
@@ -1053,6 +1053,11 @@ Use ~vterm~ for backend for repl,
 #+begin_src emacs-lisp
 (after! julia-repl
   (julia-repl-set-terminal-backend 'vterm))
+#+end_src
+
+Ensure that global environments are used. This still doesn't activate the local environment but it should be good enough.
+#+begin_src emacs-lisp
+(setq lsp-julia-package-dir nil)
 #+end_src
 
 Add mapping in org mode to execute julia code. This is really specific and not the best solution, but I find it is far more useful than executing the julia code in the session provided by ~ob-julia~ or by running it in the non-session environment. Issues with this include:
