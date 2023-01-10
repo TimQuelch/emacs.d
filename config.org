@@ -89,6 +89,7 @@ docker                                  ; docker
 lookup                                  ; lookup of definitions/docs
 lsp                             ; enable language server
 (magit +forge)                          ; git wizardry
+tree-sitter
 #+end_src
 
 ** Languages
@@ -99,20 +100,21 @@ lsp                             ; enable language server
 Enable lots of programming language integrations
 #+begin_src emacs-lisp
 :lang
-(cc +lsp)
+(cc +lsp +tree-sitter)
 emacs-lisp
 data
-json
+(json +lsp +tree-sitter)
 latex
 markdown
-web
+(web +lsp +tree-sitter)
 (org +hugo)
-(python +lsp)
-(julia +lsp)
-(sh +fish)
+(python +lsp +tree-sitter)
+(julia +lsp +tree-sitter)
+(sh +fish +tree-sitter)
 (yaml +lsp)
-(javascript +lsp)
-(go +lsp)
+(javascript +lsp +tree-sitter)
+(go +lsp +tree-sitter)
+(graphql +lsp)
 #+end_src
 
 ** Config
