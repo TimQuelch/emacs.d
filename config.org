@@ -214,7 +214,7 @@ Use heading of helm as input line.
 Reduce prefix length and delay. I want completion /fast/. THis may cause performance issues
 #+begin_src emacs-lisp
 (after! company
-  (setq company-idle-delay 0.1
+  (setq company-idle-delay 0.2
         company-minimum-prefix-length 1))
 #+end_src
 
