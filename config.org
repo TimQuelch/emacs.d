@@ -1012,8 +1012,7 @@ Disable ~visual-line-mode~ s from message modes
 #+begin_src emacs-lisp
 (after! message
   (add-hook! 'message-mode-hook
-    (visual-line-mode -1)
-    (visual-fill-column-mode -1)))
+    (visual-line-mode -1)))
 #+end_src
 
 Set up some face configurations. The default message summary at the top of a message is in grey, which is very low contrast. Here I change it to yellow.
