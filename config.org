@@ -1128,3 +1128,16 @@ Define a minor mode to enable sending to julia-repl
 #+begin_src emacs-lisp :tangle packages.el
 (package! go-eldoc :disable t)
 #+end_src
+
+** Web
+
+#+begin_src emacs-lisp
+(after! web-mode
+  (setq web-mode-comment-formats '(("java"       . "/*")
+                                   ("javascript" . "//")
+                                   ("typescript" . "//")
+                                   ("jsx"        . "//")
+                                   ("tsx"        . "//")
+                                   ("php"        . "/*")
+                                   ("css"        . "/*"))))
+#+end_src
