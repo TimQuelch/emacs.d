@@ -114,7 +114,7 @@ markdown
 (yaml +lsp)
 (javascript +lsp +tree-sitter)
 (go +lsp +tree-sitter)
-(graphql +lsp)
+graphql
 #+end_src
 
 ** Config
@@ -1090,15 +1090,6 @@ Define a minor mode to enable sending to julia-repl
 #+begin_src emacs-lisp
 (use-package octave-mode
   :mode "\\.m\\'")
-#+end_src
-
-** GraphQL
-
-#+begin_src emacs-lisp :tangle packages.el
-(package! graphql-mode :pin "92136cf9b5a4dcd8c202c8dba9064b497776d2f7")
-#+end_src
-#+begin_src emacs-lisp
-(use-package graphql-mode)
 #+end_src
 
 ** Todoist
