@@ -223,6 +223,12 @@ Setup the default backends. By default doom includes ~company-dabbrev~ which add
 (set-company-backend! '(text-mode prog-mode conf-mode) 'company-capf)
 #+end_src
 
+Don't use lsp-snippets. This is causing incorrect formatting on completion. I also don't really use it. See https://github.com/doomemacs/doomemacs/issues/6949 for details.
+#+begin_src emacs-lisp
+(after! lsp-mode
+  (setq lsp-enable-snippet nil))
+#+end_src
+
 * Editing
 Enable the use of =C-u= as the universal argument again
 #+begin_src emacs-lisp
