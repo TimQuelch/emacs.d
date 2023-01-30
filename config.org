@@ -254,6 +254,12 @@ Enable easy use of ~avy~
 (map! "C-'" #'avy-goto-char-timer)
 #+end_src
 
+Reduce avy timeout from 0.5. I find myself getting impatient waiting for an entire half second
+#+begin_src emacs-lisp
+(after! avy
+  (setq avy-timeout-seconds 0.3))
+#+end_src
+
 Use better ~comment-diwm~
 #+begin_src emacs-lisp :tangle packages.el
 (package! comment-dwim-2 :pin "7cdafd6d98234a7402865b8abdae54a2f2551c94")
