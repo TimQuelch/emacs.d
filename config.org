@@ -115,6 +115,7 @@ markdown
 (javascript +lsp +tree-sitter)
 (go +lsp +tree-sitter)
 graphql
+(csharp +lsp +tree-sitter +dotnet)
 #+end_src
 
 ** Config
