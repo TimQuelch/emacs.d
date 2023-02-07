@@ -224,10 +224,11 @@ Setup the default backends. By default doom includes ~company-dabbrev~ which add
 (set-company-backend! '(text-mode prog-mode conf-mode) 'company-capf)
 #+end_src
 
-Don't use lsp-snippets. This is causing incorrect formatting on completion. I also don't really use it. See https://github.com/doomemacs/doomemacs/issues/6949 for details.
+Don't use lsp-snippets. This is causing incorrect formatting on completion. I also don't really use it. See https://github.com/doomemacs/doomemacs/issues/6949 for details. Also increase the file watch threshold from 1000 to 1500. I have some repos that have a very large amount of files :(
 #+begin_src emacs-lisp
 (after! lsp-mode
-  (setq lsp-enable-snippet nil))
+  (setq lsp-enable-snippet nil
+        lsp-file-watch-threshold 1500))
 #+end_src
 
 * Editing
