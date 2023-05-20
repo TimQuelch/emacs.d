@@ -1117,38 +1117,6 @@ Define a minor mode to enable sending to julia-repl
   :mode "\\.m\\'")
 #+end_src
 
-** Todoist
-
-#+begin_src emacs-lisp :tangle packages.el
-(package! todoist :pin "f6906be346073f082a6d1f9ae14932ec2bfd99f5")
-#+end_src
-#+begin_src emacs-lisp
-(use-package todoist
-  :commands (todoist--query)
-  :config
-  (setq! todoist-token secret/todoist-token))
-#+end_src
-
-#+begin_src emacs-lisp
-(defun tq/todoist-new-task (content &optional due description)
- (todoist--query "POST" "/tasks"
-                  (append (list (cons "content" content))
-                          (when due
-                            (list (cons "due_date" due)))
-                          (when description
-                            (list (cons "description" description))))))
-
-(defun tq/org-task-to-todoist ()
-  (interactive)
-  (when (org-current-level)             ; Under a headline
-    (let ((content (nth 4 (org-heading-components)))
-          (due (when-let ((time (org-get-scheduled-time (point))))
-                 (format-time-string "%Y-%m-%d" time))))
-      (message content)
-      (message due)
-      (tq/todoist-new-task content due))))
-#+end_src
-
 ** Go
 #+begin_src emacs-lisp :tangle packages.el
 (package! go-eldoc :disable t)
