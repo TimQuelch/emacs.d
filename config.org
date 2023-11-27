@@ -253,7 +253,8 @@ Unbind evil jumping keys. I don't use these and I've found that they interfere w
 
 Enable easy use of ~avy~
 #+begin_src emacs-lisp
-(map! "C-'" #'avy-goto-char-timer)
+(map! "C-'" #'avy-goto-char-timer
+      "C-\"" #'avy-goto-line)
 #+end_src
 
 Reduce avy timeout from 0.5. I find myself getting impatient waiting for an entire half second
