@@ -580,13 +580,13 @@ Setup ~org-roam~, ~org-roam-bibtex~, and ~org-roam-ui~ to track source
 #+begin_src emacs-lisp :tangle packages.el
 (package! org-roam
   :recipe (:host github :repo "org-roam/org-roam")
-  :pin "69116a4da49448e79ac03aedceeecd9f5ae9b2d4")
+  :pin "5c06471c3a11348342719fd9011486455adeb701")
 (package! org-roam-bibtex
   :recipe (:host github :repo "org-roam/org-roam-bibtex")
   :pin "efdac6fe4134c33f50b06a0a6d192003d0e5094c")
 (package! org-roam-ui
   :recipe (:host github :repo "org-roam/org-roam-ui" :files ("*.el" "out"))
-  :pin "9474a254390b1e42488a1801fed5826b32a8030b")
+  :pin "5ac74960231db0bf7783c2ba7a19a60f582e91ab")
 #+end_src
 
 I want to roll my own ~org-roam~ config rather than use doom's module.
@@ -686,20 +686,7 @@ Set up capture template. It includes a TODO item to write about the note. I have
          :if-new
          (file+head
           "${slug}.org"
-          "#+title: ${title}\n#+setupfile: setup.org\n\n\n\n* TODO Write about '${title}' :towrite:")
-         :unnarrowed t
-         :immediate-finish t)
-        ("e" "empty" plain "%?"
-         :if-new
-         (file+head
-          "${slug}.org"
-          "#+title: ${title}")
-         :unnarrowed t
-         :immediate-finish t)
-        ("r" "ref" plain "%?"
-         :if-new
-         (file+head ,(concat (file-name-as-directory "lit") "${citekey}.org")
-                    "#+title: Notes on: ${title}\n#+setupfile: ../setup.org\n\n")
+          "#+title: ${title}\n\n")
          :unnarrowed t
          :immediate-finish t)))
 #+end_src
