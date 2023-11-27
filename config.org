@@ -108,7 +108,7 @@ latex
 markdown
 (web +lsp +tree-sitter)
 (org +hugo)
-(python +lsp +tree-sitter)
+(python +tree-sitter)
 (julia +lsp +tree-sitter)
 (sh +fish +tree-sitter)
 (yaml +lsp)
