@@ -572,6 +572,11 @@ Ensure that attachment links are properly expanded before export
   (add-hook 'org-export-before-parsing-hook #'org-attach-expand-links))
 #+end_src
 
+Disable 'smart' quote export. This should remove apostrophes and quotes turning into things like ~can&rsquo;t~
+#+begin_src emacs-lisp
+(after! ox (setq org-export-with-smart-quotes nil))
+#+end_src
+
 ** Notetaking
 
 *** Roam
