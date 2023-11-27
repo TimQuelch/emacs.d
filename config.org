@@ -1148,3 +1148,10 @@ Define a minor mode to enable sending to julia-repl
                                    ("php"        . "/*")
                                    ("css"        . "/*"))))
 #+end_src
+
+#+begin_src emacs-lisp
+(after! typescript-mode
+  (setq-hook! 'typescript-mode-hook +format-with-lsp nil))
+(after! web-mode
+  (setq-hook! 'typescript-tsx-mode-hook +format-with-lsp nil))
+#+end_src
