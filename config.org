@@ -231,6 +231,25 @@ Don't use lsp-snippets. This is causing incorrect formatting on completion. I al
         lsp-file-watch-threshold 1500))
 #+end_src
 
+
+* Copilot
+
+#+begin_src emacs-lisp :tangle packages.el
+(package! copilot
+  :recipe (:host github :repo "zerolfx/copilot.el" :files ("*.el" "dist")))
+#+end_src
+
+#+begin_src emacs-lisp
+;; accept completion from copilot and fallback to company
+(use-package! copilot
+  :hook (prog-mode . copilot-mode)
+  :config
+  (map! :leader :desc "Copilot" "t p"  #'copilot-mode)
+  (map! :map copilot-completion-map
+        "C-<tab>" #'copilot-accept-completion
+        "C-M-<tab>" #'copilot-next-completion))
+#+end_src
+
 * Editing
 Enable the use of =C-u= as the universal argument again
 #+begin_src emacs-lisp
