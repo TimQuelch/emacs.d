@@ -4,7 +4,7 @@
 
 ;; I have some secret values in here. This loads them and sets a var to tell us if they are loaded.
 ;; If the un-encrypted my-secrets is not present then this will be false
-(defvar tq/secrets-loaded (load (concat doom-private-dir "my-secrets") t))
+(defvar tq/secrets-loaded (load (concat doom-user-dir "my-secrets") t))
 
 (after! org-crypt
   (setq org-crypt-key "07CFA8E6B5CA3E4243916E42CAE8E8818C4B8B84"))
@@ -148,7 +148,7 @@
         :ni "C-k" #'tq/org-exit-link-forward
         :ni "C-j" #'tq/org-exit-link-backward)
   (map! :map evil-org-mode-map
-        :n "zf" #'org-toggle-latex-fragment)
+        :n "zf" #'org-latex-preview)
   )
 
 (after! org-archive
@@ -194,7 +194,7 @@
 
   (setq org-latex-pdf-process (list "latexmk -shell-escape -bibtex -f -pdf %f"))
 
-  (setq org-latex-listings t)                                         ; Turn on source code inclusion
+  (setq org-latex-src-block-backend t)                                         ; Turn on source code inclusion
   (setq org-latex-listings-options '(("basicstyle" "\\linespread{0.85}\\ttfamily")
                                      ("numbers" "left")
                                      ("numberstyle" "\\tiny")
@@ -209,7 +209,7 @@
                                      ("breaklines" "true"))))
 
 (after! org-attach
-  (add-hook 'org-export-before-parsing-hook #'org-attach-expand-links))
+  (add-hook 'org-export-before-parsing-functions #'org-attach-expand-links))
 
 ;; Disable 'smart' quote export. This should remove apostrophes and quotes turning into things like ~rsquo;~
 ;; The reason this needs to be in a hook rather than just a normal ~after~ is that doom configures
@@ -262,7 +262,7 @@
                   (window-width . 0.33)
                   (window-height . fit-window-to-buffer))))
   :config
-  (org-roam-setup)
+  (org-roam-db-autosync-enable)
   (setq org-roam-mode-sections (list #'org-roam-backlinks-insert-section
                                      #'org-roam-reflinks-insert-section
                                      #'org-roam-unlinked-references-insert-section))
