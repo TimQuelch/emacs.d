@@ -6,8 +6,7 @@
                    ((string-match-p "^\\(alpha\\|epsilon\\)$" (system-name))
                     `((enable-copilot . nil)
                       (font . ,tq/iosevka)
-                      (variable-pitch-font . ,tq/dejavu-sans)
-                      ))
+                      (variable-pitch-font . ,tq/dejavu-sans)))
                    ;; Versent laptop
                    ((string-match-p "-versent$" (system-name))
                     `((enable-copilot . t)
