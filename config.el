@@ -231,32 +231,31 @@
              org-roam-dailies-goto-tomorrow
              org-roam-dailies-goto-yesterday)
   :init
-  (map! :after org
-        :leader
+  (map! :leader
         :prefix "n"
         "f" #'org-roam-node-find
-        "i" #'org-roam-node-insert
-        "g" #'org-roam-show-graph
-        "r" #'org-roam-buffer-toggle
-        "n" #'org-roam-dailies-capture-today
         "t" #'org-roam-dailies-goto-today
         "d" nil
         (:prefix ("d" . "by date")
-         :desc "Goto previous note" "b" #'org-roam-dailies-goto-previous-note
          :desc "Goto date"          "d" #'org-roam-dailies-goto-date
-         :desc "Goto next note"     "f" #'org-roam-dailies-goto-next-note
          :desc "Goto tomorrow"      "m" #'org-roam-dailies-goto-tomorrow
-         :desc "Capture today"      "n" #'org-roam-dailies-capture-today
          :desc "Goto today"         "t" #'org-roam-dailies-goto-today
-         :desc "Capture Date"       "v" #'org-roam-dailies-capture-date
          :desc "Goto yesterday"     "y" #'org-roam-dailies-goto-yesterday
          :desc "Goto directory"     "." #'org-roam-dailies-find-directory)
-        "m" nil
-        (:prefix ("m" . "metadata")
-                 "t" #'org-roam-tag-add
-                 "T" #'org-roam-tag-delete
-                 "a" #'org-roam-alias-add
-                 "A" #'org-roam-alias-delete))
+        :after org
+        "i" #'org-roam-node-insert
+        "g" #'org-roam-show-graph
+        "r" #'org-roam-buffer-toggle
+        (:prefix ("d" . "by date")
+         :desc "Goto previous note" "b" #'org-roam-dailies-goto-previous-note
+         :desc "Goto next note"     "f" #'org-roam-dailies-goto-next-note
+         "m" nil
+         (:prefix ("m" . "metadata")
+                  "t" #'org-roam-tag-add
+                  "T" #'org-roam-tag-delete
+                  "a" #'org-roam-alias-add
+                  "A" #'org-roam-alias-delete)
+         ))
   (setq org-roam-directory (concat (file-name-as-directory org-directory) "notes/"))
   (setq org-roam-db-location (concat doom-cache-dir "org-roam.db"))
   (add-to-list 'display-buffer-alist
