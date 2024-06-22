@@ -120,7 +120,6 @@ graphql
 Enable bindings and also tell Doom that I'm using a literate config
 #+begin_src emacs-lisp
 :config
-literate
 (default +bindings +smartparens)
 #+end_src
 * Personalisation

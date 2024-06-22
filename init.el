@@ -49,6 +49,5 @@
  graphql
  (csharp +lsp +tree-sitter +dotnet)
  :config
- literate
  (default +bindings +smartparens)
  )
