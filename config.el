@@ -31,10 +31,6 @@
 (after! bookmark
   (setq bookmark-fontify nil))
 
-(after! helm
-  (setq helm-echo-input-in-header-line t)
-  (add-hook 'helm-minibuffer-set-up-hook 'helm-hide-minibuffer-maybe))
-
 (after! company
   (setq company-idle-delay 0.2
         company-minimum-prefix-length 1))
@@ -128,76 +124,6 @@
 
 (after! org-clock
   (setq org-clock-out-remove-zero-time-clocks t))
-
-(map! :leader "j" #'org-capture)
-
-(defadvice! tq/setup-capture-templates ()
-  :after #'+org-init-capture-defaults-h
-  (setq org-default-notes-file (expand-file-name "inbox.org" org-directory))
-
-  (setq org-capture-templates
-        `(("t" "todo" entry (file org-default-notes-file)
-           "* TODO %?")
-          ("a" "appointment" entry (file org-default-notes-file)
-           "* %?")
-          ("j" "journal" plain (file+olp+datetree ,(concat org-directory "journal.org"))
-           (file ,(concat org-directory "templates/journal.org"))
-           :immediate-finish t :jump-to-captured t :tree-type 'week)
-          ("w" "workout" plain
-           (file+olp+datetree ,(concat org-directory "exercise.org") "Workouts")
-           (file ,(concat org-directory "templates/workout.org"))
-           :immediate-finish t :jump-to-captured t :tree-type 'week))))
-
-(defvar tq/bibliography-file "~/documents/library.bib")
-
-(use-package! org-ref
-  :after org
-  :defer-incrementally t
-  :init
-  (setq! org-ref-default-bibliography (list tq/bibliography-file)
-         org-ref-default-citation-link "autocite"
-         org-ref-get-pdf-filename-function (lambda (key) (car (bibtex-completion-find-pdf key)))))
-
-(use-package! citeproc-org
-  :after ox
-  :config
-  (citeproc-org-setup)
-  (setq citeproc-org-org-bib-header "* References\n"))
-
-(after! citeproc-org
-  (defun tq/min-headline-level ()
-    (--> (org-element-parse-buffer)
-         (org-element-map it 'headline (apply-partially #'org-element-property :level))
-         (or it '(0))
-         (-min it)))
-
-  (defadvice! tq/citeproc-org-render-references (orig &rest args)
-    :around 'citeproc-org-render-references
-    (let* ((minlevel (tq/min-headline-level))
-           (totallevel (max 1 minlevel))
-           (citeproc-org-org-bib-header (concat (make-string totallevel ?*)
-                                                (string-trim-left citeproc-org-org-bib-header "\\**"))))
-      (apply orig args))))
-
-(use-package! helm-bibtex
-  :after org-ref
-  :config
-  (setq! bibtex-completion-pdf-field "file"
-         bibtex-completion-pdf-open-function #'helm-open-file-with-default-tool
-         bibtex-completion-bibliography tq/bibliography-file
-         helm-bibtex-full-frame nil)
-
-  (setq! bibtex-completion-display-formats
-         '((t . "${author:36} ${title:*} ${year:4} ${=has-pdf=:1}${=has-note=:1} ${=type=:20}")))
-
-  (defadvice! tq/helm-bibtex-window-width ()
-    "Override the window width getter to manually reduce the width"
-    :override
-    #'helm-bibtex-window-width
-    (- (window-body-width) 8))
-
-  (map! :leader :prefix "s"
-        "c" #'helm-bibtex))
 
 (use-package ox-extra
   :after org
@@ -367,113 +293,6 @@
 (use-package org-roam-ui
   :after org-roam
   :hook (after-init . org-roam-ui-mode))
-
-(use-package org-roam-bibtex
-  :commands (org-roam-bibtex-insert-non-ref org-roam-bibtex-find-non-ref)
-  :hook (org-mode . org-roam-bibtex-mode)
-  :config
-  (setq orb-templates
-        `(("r" "ref" plain
-           (function org-roam-capture--get-point)
-           ""
-           :file-name ,(concat (file-name-as-directory "lit") "${citekey}")
-           :head "#+title: Notes on: ${title}\n#+roam_key: ${ref}\n#+setupfile: ../setup.org\n\n"
-           :unnarrowed t
-           :immediate-finish t)))
-  (setq orb-note-actions-frontend 'helm)
-  (setq orb-note-actions-default (--remove
-                                  (eq (cdr it) #'bibtex-completion-add-pdf-to-library)
-                                  orb-note-actions-default))
-  (setq orb-note-actions-extra (--remove
-                                (eq (cdr it) #'orb-note-actions-scrap-pdf)
-                                orb-note-actions-extra))
-  )
-
-(map! :leader :prefix "n"
-      "b" #'orb-note-actions)
-
-(use-package! notmuch
-  :defer t
-  :commands (notmuch notmuch-mua-new-mail)
-  :init
-  (after! org
-    (add-to-list 'org-modules 'ol-notmuch))
-  (map! :leader
-        (:prefix ("e" . "email")
-         :desc "Browse"         "e" (cmd! (notmuch) (widget-forward 4))
-         :desc "New email"      "n" #'notmuch-mua-new-mail
-         :desc "Saved searches" "j" #'notmuch-jump-search
-         :desc "Search"         "s" #'helm-notmuch))
-  
-  (map! :map doom-leader-search-map
-        :desc "Search emails" "e" #'helm-notmuch)
-  :config
-  (defun tq/notmuch-buffer-p (buffer)
-    (or (string-match-p "^\\*notmuch" (buffer-name buffer))
-        (with-current-buffer buffer
-          (equal major-mode 'notmuch-show-mode))))
-  
-  (add-to-list 'doom-real-buffer-functions #'tq/notmuch-buffer-p)
-  (setq notmuch-show-logo nil)
-  (setq notmuch-message-headers-visible t)
-  (setq message-kill-buffer-on-exit t)
-  (setq message-send-mail-function 'message-send-mail-with-sendmail)
-  (setq send-mail-function 'sendmail-send-it)
-  (setq-default notmuch-search-oldest-first nil)
-  (setq notmuch-search-result-format
-        '(("date" . "%12s ")
-          ("count" . "%-7s ")
-          ("authors" . "%-30s ")
-          ("subject" . "%-72s ")
-          ("tags" . "(%s)")))
-  (setq notmuch-tag-formats
-        '(("unread" (propertize tag 'face 'notmuch-tag-unread))))
-  (setq notmuch-hello-sections
-        '(notmuch-hello-insert-header
-          notmuch-hello-insert-saved-searches
-          notmuch-hello-insert-alltags))
-  (setq notmuch-show-all-tags-list t)
-  (setq notmuch-saved-searches
-        (if tq/secrets-loaded
-            secret/notmuch-saved-searches
-          '((:name "inbox"   :query "tag:inbox" :key "i")
-            (:name "sent"    :query "tag:sent"  :key "s")
-            (:name "drafts"  :query "tag:draft" :key "d")
-            (:name "all"     :query "*"         :key "a"))))
-  (setq notmuch-maildir-use-notmuch-insert nil)
-  (setq notmuch-fcc-dirs (when tq/secrets-loaded secret/notmuch-fcc-dirs))
-  (setq mail-envelope-from 'header
-        mail-specify-envelope-from 'header
-        message-sendmail-envelope-from 'header)
-  (defadvice! tq/notmuch-prompt-for-sender ()
-    :override #'notmuch-mua-prompt-for-sender
-    (let ((name (notmuch-user-name))
-          (address (completing-read "From: " (notmuch-user-emails))))
-      (message-make-from name address)))
-  
-  (setq notmuch-always-prompt-for-sender t)
-  (setq mm-text-html-renderer 'gnus-w3m)
-  (defun tq/org-capture-email ()
-    (interactive)
-    (let ((org-capture-templates '(("e" "email"
-                                    entry (file org-default-notes-file)
-                                    "* TODO Reply: %a :email:"
-                                    :immediate-finish t))))
-      (org-capture nil "e")))
-  
-  (map! :map notmuch-show-mode-map
-        :nv "C" #'tq/org-capture-email)
-  (custom-theme-set-faces! 'doom-one
-    `(notmuch-message-summary-face :foreground ,(doom-color 'yellow)))
-  )
-
-(use-package! helm-notmuch
-  :commands helm-notmuch
-  :after notmuch)
-
-(after! message
-  (add-hook! 'message-mode-hook
-    (visual-line-mode -1)))
 
 (use-package systemd
   :defer t)

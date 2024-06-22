@@ -10,7 +10,6 @@
  (popup +defaults)
  (treemacs +lsp)
  vc-gutter
- vi-tilde-fringe
  window-select
  :editor
  (evil +everywhere)
@@ -27,10 +26,10 @@
  syntax
  (spell +aspell +everywhere)
  :tools
- docker                                  ; docker
- lookup                                  ; lookup of definitions/docs
- lsp                             ; enable language server
- (magit +forge)                          ; git wizardry
+ docker
+ lookup
+ lsp
+ (magit +forge)
  tree-sitter
  :lang
  (cc +lsp +tree-sitter)
@@ -44,7 +43,7 @@
  (python +tree-sitter)
  (julia +lsp +tree-sitter)
  (sh +fish +tree-sitter)
- (yaml +lsp)
+ (yaml +lsp +tree-sitter)
  (javascript +lsp +tree-sitter)
  (go +lsp +tree-sitter)
  graphql

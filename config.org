@@ -42,7 +42,6 @@ ophints
 (popup +defaults)
 (treemacs +lsp)
 vc-gutter
-vi-tilde-fringe
 window-select
 #+end_src
 
@@ -84,10 +83,10 @@ syntax
 Set up a bunch of extra functionality in emacs
 #+begin_src emacs-lisp
 :tools
-docker                                  ; docker
-lookup                                  ; lookup of definitions/docs
-lsp                             ; enable language server
-(magit +forge)                          ; git wizardry
+docker
+lookup
+lsp
+(magit +forge)
 tree-sitter
 #+end_src
 
@@ -110,7 +109,7 @@ markdown
 (python +tree-sitter)
 (julia +lsp +tree-sitter)
 (sh +fish +tree-sitter)
-(yaml +lsp)
+(yaml +lsp +tree-sitter)
 (javascript +lsp +tree-sitter)
 (go +lsp +tree-sitter)
 graphql
@@ -198,16 +197,6 @@ By default bookmarked lines are highlighted in an annoying orange background whi
 Disable doom snippets (I use snippets for LSP completion snippets, not weird opinionated pregenerated ones)
 #+begin_src emacs-lisp :tangle packages.el
 (package! doom-snippets :ignore t)
-#+end_src
-
-* Helm
-I now use Ivy as my main search/completion engine, but I still use helm for some things (notmuch, bibtex) so I need to do some setup here.
-
-Use heading of helm as input line.
-#+begin_src emacs-lisp
-(after! helm
-  (setq helm-echo-input-in-header-line t)
-  (add-hook 'helm-minibuffer-set-up-hook 'helm-hide-minibuffer-maybe))
 #+end_src
 
 * Company
@@ -430,110 +419,6 @@ Add simple keybinding to toggle latex fragments in org mode
 Disable some of the extra things that Doom enables
 #+begin_src emacs-lisp :tangle packages.el
 (disable-packages! org-superstar)
-#+end_src
-
-** Capture
-
-Bind capture to something more convenient
-#+begin_src emacs-lisp
-(map! :leader "j" #'org-capture)
-#+end_src
-
-Configure my capture templates. These need to go in this advice because doom loads these on a hook.
-#+begin_src emacs-lisp
-(defadvice! tq/setup-capture-templates ()
-  :after #'+org-init-capture-defaults-h
-  (setq org-default-notes-file (expand-file-name "inbox.org" org-directory))
-
-  (setq org-capture-templates
-        `(("t" "todo" entry (file org-default-notes-file)
-           "* TODO %?")
-          ("a" "appointment" entry (file org-default-notes-file)
-           "* %?")
-          ("j" "journal" plain (file+olp+datetree ,(concat org-directory "journal.org"))
-           (file ,(concat org-directory "templates/journal.org"))
-           :immediate-finish t :jump-to-captured t :tree-type 'week)
-          ("w" "workout" plain
-           (file+olp+datetree ,(concat org-directory "exercise.org") "Workouts")
-           (file ,(concat org-directory "templates/workout.org"))
-           :immediate-finish t :jump-to-captured t :tree-type 'week))))
-#+end_src
-
-** Referencing
-
-Define my default bibliography file (generated and maintained by Zotero/BBL)
-#+begin_src emacs-lisp
-(defvar tq/bibliography-file "~/documents/library.bib")
-#+end_src
-
-I'm using ~org-ref~ to manage citations within org-mode. This might soon be replaced by native citation support though :o
-#+begin_src emacs-lisp :tangle packages.el
-(package! org-ref :pin "6a759a969d92dd1c69f540129ebaa8e47ef70cf3")
-#+end_src
-#+begin_src emacs-lisp
-(use-package! org-ref
-  :after org
-  :defer-incrementally t
-  :init
-  (setq! org-ref-default-bibliography (list tq/bibliography-file)
-         org-ref-default-citation-link "autocite"
-         org-ref-get-pdf-filename-function (lambda (key) (car (bibtex-completion-find-pdf key)))))
-#+end_src
-
-For non-LaTeX exports, I use citeproc to format citations
-#+begin_src emacs-lisp :tangle packages.el
-(package! citeproc-org :pin "20cd7e817420a3f6e7b82faea901a3c67c6d4d9f")
-#+end_src
-#+begin_src emacs-lisp
-(use-package! citeproc-org
-  :after ox
-  :config
-  (citeproc-org-setup)
-  (setq citeproc-org-org-bib-header "* References\n"))
-#+end_src
-
-By default ~citeproc-org-org-bib-header~ will insert a level 1 heading. This is not desirable if the minimum headline level in the exported document is not level 1. The following advice determine what the minimum headline level is in the exported document, and adjusts ~citeproc-org-org-bib-header~ to be the correct level.
-#+begin_src emacs-lisp
-(after! citeproc-org
-  (defun tq/min-headline-level ()
-    (--> (org-element-parse-buffer)
-         (org-element-map it 'headline (apply-partially #'org-element-property :level))
-         (or it '(0))
-         (-min it)))
-
-  (defadvice! tq/citeproc-org-render-references (orig &rest args)
-    :around 'citeproc-org-render-references
-    (let* ((minlevel (tq/min-headline-level))
-           (totallevel (max 1 minlevel))
-           (citeproc-org-org-bib-header (concat (make-string totallevel ?*)
-                                                (string-trim-left citeproc-org-org-bib-header "\\**"))))
-      (apply orig args))))
-#+end_src
-
-Use ~helm-bibtex~ as the main way of dealing with bibliographies
-#+begin_src emacs-lisp :tangle packages.el
-(package! helm-bibtex :pin "ce8c17690ddad73d01531084b282f221f8eb6669")
-#+end_src
-#+begin_src emacs-lisp
-(use-package! helm-bibtex
-  :after org-ref
-  :config
-  (setq! bibtex-completion-pdf-field "file"
-         bibtex-completion-pdf-open-function #'helm-open-file-with-default-tool
-         bibtex-completion-bibliography tq/bibliography-file
-         helm-bibtex-full-frame nil)
-
-  (setq! bibtex-completion-display-formats
-         '((t . "${author:36} ${title:*} ${year:4} ${=has-pdf=:1}${=has-note=:1} ${=type=:20}")))
-
-  (defadvice! tq/helm-bibtex-window-width ()
-    "Override the window width getter to manually reduce the width"
-    :override
-    #'helm-bibtex-window-width
-    (- (window-body-width) 8))
-
-  (map! :leader :prefix "s"
-        "c" #'helm-bibtex))
 #+end_src
 
 ** Exporting
@@ -824,226 +709,6 @@ Configure web ui
 (use-package org-roam-ui
   :after org-roam
   :hook (after-init . org-roam-ui-mode))
-#+end_src
-
-*** BibTeX
-Enable ~org-roam-bibtex~ and setup capture template
-#+begin_src emacs-lisp
-(use-package org-roam-bibtex
-  :commands (org-roam-bibtex-insert-non-ref org-roam-bibtex-find-non-ref)
-  :hook (org-mode . org-roam-bibtex-mode)
-  :config
-  <<orb-configuration>>
-  )
-#+end_src
-
-Set up literature notes template
-#+begin_src emacs-lisp :tangle no :noweb-ref orb-configuration
-(setq orb-templates
-      `(("r" "ref" plain
-         (function org-roam-capture--get-point)
-         ""
-         :file-name ,(concat (file-name-as-directory "lit") "${citekey}")
-         :head "#+title: Notes on: ${title}\n#+roam_key: ${ref}\n#+setupfile: ../setup.org\n\n"
-         :unnarrowed t
-         :immediate-finish t)))
-#+end_src
-
-Set up orb note actions. I remove some of the options that I don't use or want here.
-#+begin_src emacs-lisp :tangle no :noweb-ref orb-configuration
-(setq orb-note-actions-frontend 'helm)
-(setq orb-note-actions-default (--remove
-                                (eq (cdr it) #'bibtex-completion-add-pdf-to-library)
-                                orb-note-actions-default))
-(setq orb-note-actions-extra (--remove
-                              (eq (cdr it) #'orb-note-actions-scrap-pdf)
-                              orb-note-actions-extra))
-#+end_src
-
-Add convenient keybinding for accessing note actions
-#+begin_src emacs-lisp
-(map! :leader :prefix "n"
-      "b" #'orb-note-actions)
-#+end_src
-
-* Email
-I don't like the inbuilt ~notmuch~ Doom module, so I'm effectively implementing it myself
-#+begin_src emacs-lisp :tangle packages.el
-(package! notmuch :pin "a9b5f8959a20bbce774dec8a65a8b207555e52bd")
-#+end_src
-#+begin_src emacs-lisp
-(use-package! notmuch
-  :defer t
-  :commands (notmuch notmuch-mua-new-mail)
-  :init
-  <<notmuch-init>>
-  :config
-  <<notmuch-config>>
-  )
-#+end_src
-
-Ensure that linking to ~notmuch~ emails is enabled in ~org~
-#+begin_src emacs-lisp :tangle no :noweb-ref notmuch-init
-(after! org
-  (add-to-list 'org-modules 'ol-notmuch))
-#+end_src
-
-Add a nice keymap for accessing email
-#+begin_src emacs-lisp :tangle no :noweb-ref notmuch-init
-(map! :leader
-      (:prefix ("e" . "email")
-       :desc "Browse"         "e" (cmd! (notmuch) (widget-forward 4))
-       :desc "New email"      "n" #'notmuch-mua-new-mail
-       :desc "Saved searches" "j" #'notmuch-jump-search
-       :desc "Search"         "s" #'helm-notmuch))
-
-(map! :map doom-leader-search-map
-      :desc "Search emails" "e" #'helm-notmuch)
-#+end_src
-
-Ensure that ~notmuch~ buffers are treated as real buffers
-#+begin_src emacs-lisp :tangle no :noweb-ref notmuch-config
-(defun tq/notmuch-buffer-p (buffer)
-  (or (string-match-p "^\\*notmuch" (buffer-name buffer))
-      (with-current-buffer buffer
-        (equal major-mode 'notmuch-show-mode))))
-
-(add-to-list 'doom-real-buffer-functions #'tq/notmuch-buffer-p)
-#+end_src
-
-Hide the ~notmuch~ logo
-#+begin_src emacs-lisp :tangle no :noweb-ref notmuch-config
-(setq notmuch-show-logo nil)
-#+end_src
-
-Show headers by default
-#+begin_src emacs-lisp :tangle no :noweb-ref notmuch-config
-(setq notmuch-message-headers-visible t)
-#+end_src
-
-Kill message buffers when sent
-#+begin_src emacs-lisp :tangle no :noweb-ref notmuch-config
-(setq message-kill-buffer-on-exit t)
-#+end_src
-
-Send mail with ~sendmail~
-#+begin_src emacs-lisp :tangle no :noweb-ref notmuch-config
-(setq message-send-mail-function 'message-send-mail-with-sendmail)
-(setq send-mail-function 'sendmail-send-it)
-#+end_src
-
-Sort by new
-#+begin_src emacs-lisp :tangle no :noweb-ref notmuch-config
-(setq-default notmuch-search-oldest-first nil)
-#+end_src
-
-Fix width of columns in search results
-#+begin_src emacs-lisp :tangle no :noweb-ref notmuch-config
-(setq notmuch-search-result-format
-      '(("date" . "%12s ")
-        ("count" . "%-7s ")
-        ("authors" . "%-30s ")
-        ("subject" . "%-72s ")
-        ("tags" . "(%s)")))
-#+end_src
-
-Make unread emails specially
-#+begin_src emacs-lisp :tangle no :noweb-ref notmuch-config
-(setq notmuch-tag-formats
-      '(("unread" (propertize tag 'face 'notmuch-tag-unread))))
-#+end_src
-
-Set up the sections in the main hello window
-#+begin_src emacs-lisp :tangle no :noweb-ref notmuch-config
-(setq notmuch-hello-sections
-      '(notmuch-hello-insert-header
-        notmuch-hello-insert-saved-searches
-        notmuch-hello-insert-alltags))
-(setq notmuch-show-all-tags-list t)
-#+end_src
-
-Setup saved searches. I have a bunch of saved searches in my secret files. If for some reason they aren't loaded I specify some sane defaults. I generally don't use the unread search because it is irrelevant for me (and broken).
-#+begin_src emacs-lisp :tangle no :noweb-ref notmuch-config
-(setq notmuch-saved-searches
-      (if tq/secrets-loaded
-          secret/notmuch-saved-searches
-        '((:name "inbox"   :query "tag:inbox" :key "i")
-          (:name "sent"    :query "tag:sent"  :key "s")
-          (:name "drafts"  :query "tag:draft" :key "d")
-          (:name "all"     :query "*"         :key "a"))))
-#+end_src
-
-Ensure that send mail goes into the correct folder.
-#+begin_src emacs-lisp :tangle no :noweb-ref notmuch-config
-(setq notmuch-maildir-use-notmuch-insert nil)
-(setq notmuch-fcc-dirs (when tq/secrets-loaded secret/notmuch-fcc-dirs))
-#+end_src
-
-Ensure that sent mail is sent from the correct address. i.e. the one in the header of the message
-#+begin_src emacs-lisp :tangle no :noweb-ref notmuch-config
-(setq mail-envelope-from 'header
-      mail-specify-envelope-from 'header
-      message-sendmail-envelope-from 'header)
-#+end_src
-
-I want to use helm to choose which email to send email from. The ~notmuch~ default uses ~ido~ which I do not like. I also want to prompt for a sender whenever I create an email from scratch
-#+begin_src emacs-lisp :tangle no :noweb-ref notmuch-config
-(defadvice! tq/notmuch-prompt-for-sender ()
-  :override #'notmuch-mua-prompt-for-sender
-  (let ((name (notmuch-user-name))
-        (address (completing-read "From: " (notmuch-user-emails))))
-    (message-make-from name address)))
-
-(setq notmuch-always-prompt-for-sender t)
-#+end_src
-
-Change the viewer for HTML email to GNUS w3m. It seems to be the best, but idk
-#+begin_src emacs-lisp :tangle no :noweb-ref notmuch-config
-(setq mm-text-html-renderer 'gnus-w3m)
-#+end_src
-
-Allow capturing of email in ~notmuch~
-#+begin_src emacs-lisp :tangle no :noweb-ref notmuch-config
-(defun tq/org-capture-email ()
-  (interactive)
-  (let ((org-capture-templates '(("e" "email"
-                                  entry (file org-default-notes-file)
-                                  "* TODO Reply: %a :email:"
-                                  :immediate-finish t))))
-    (org-capture nil "e")))
-
-(map! :map notmuch-show-mode-map
-      :nv "C" #'tq/org-capture-email)
-#+end_src
-
-Setup company completion for notmuch
-#+begin_src emacs-lisp :tangle no :noweb-ref org-msg-config
-(set-company-backend!
-  '(org-msg-edit-mode notmuch-message-mode)
-  'notmuch-company)
-#+end_src
-
-Use ~helm-notmuch~ for searching email from helm.
-#+begin_src emacs-lisp :tangle packages.el
-(package! helm-notmuch :pin "97a01497e079a7b6505987e9feba6b603bbec288")
-#+end_src
-#+begin_src emacs-lisp
-(use-package! helm-notmuch
-  :commands helm-notmuch
-  :after notmuch)
-#+end_src
-
-Disable ~visual-line-mode~ s from message modes
-#+begin_src emacs-lisp
-(after! message
-  (add-hook! 'message-mode-hook
-    (visual-line-mode -1)))
-#+end_src
-
-Set up some face configurations. The default message summary at the top of a message is in grey, which is very low contrast. Here I change it to yellow.
-#+begin_src emacs-lisp :tangle no :noweb-ref notmuch-config
-(custom-theme-set-faces! 'doom-one
-  `(notmuch-message-summary-face :foreground ,(doom-color 'yellow)))
 #+end_src
 
 * Languages
