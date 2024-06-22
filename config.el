@@ -17,9 +17,8 @@
   (add-to-list 'tramp-remote-path 'tramp-own-remote-path))
 
 ;; Set up Fonts
-;; TODO Set up fallbacks so this doesn't fail if these fonts are not installed
-(setq doom-font (font-spec :family "Iosevka" :size 18)
-      doom-variable-pitch-font (font-spec :family "DejaVu Sans"))
+(setq doom-font (tq/get-config 'font)
+      doom-variable-pitch-font (tq/get-config 'variable-pitch-font))
 
 ;; Configure theme and UI
 (setq doom-one-brighter-comments t
@@ -64,12 +63,11 @@
         lsp-file-watch-threshold 1500))
 
 ;; Configure copilot
-;; TODO maybe parameterise this. Otherwise there are many complaints about missing servers on hosts
-;; where I don't want it installed
 (use-package! copilot
   :hook (prog-mode . copilot-mode)
-  :config
+  :init
   (map! :leader :desc "Copilot" "t p"  #'copilot-mode)
+  :config
   (map! :map copilot-completion-map
         [C-tab] #'copilot-accept-completion
         [C-M-tab] #'copilot-accept-completion-by-word))
@@ -102,8 +100,7 @@
 
 
 ;;;; Org config
-;; TODO paramterise this
-(setq org-directory "~/documents/org/")
+(setq org-directory (tq/get-config 'org-directory "~/documents/org"))
 
 ;; Set the org-agenda files to be the org directory. This includes all the files in the base
 ;; directory, but no sub-directories.
