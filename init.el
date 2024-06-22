@@ -1,7 +1,9 @@
+;; Configure doom modules
 (doom!
  :completion
  (company +childframe)
  (ivy +prescient +icons)
+
  :ui
  doom
  modeline
@@ -11,26 +13,34 @@
  (treemacs +lsp)
  vc-gutter
  window-select
+
  :editor
  (evil +everywhere)
  format
  fold
+
  :emacs
  (dired +icons)
  electric
  vc
  undo
+
+ ;; vterm is a better terminal
  :term
  vterm
+
  :checkers
  syntax
  (spell +aspell +everywhere)
+
  :tools
  docker
  lookup
  lsp
  (magit +forge)
  tree-sitter
+
+ ;; Generally I want LSP and tree-sitter for all languages I use
  :lang
  (cc +lsp +tree-sitter)
  emacs-lisp
@@ -48,6 +58,6 @@
  (go +lsp +tree-sitter)
  graphql
  (csharp +lsp +tree-sitter +dotnet)
+
  :config
- (default +bindings +smartparens)
- )
+ (default +bindings +smartparens))

@@ -1,47 +1,71 @@
+;; Set up personalisation
 (setq user-full-name "Tim Quelch"
       user-mail-address "tim@tquelch.com")
 
+;; I have some secret values in here. This loads them and sets a var to tell us if they are loaded.
+;; If the un-encrypted my-secrets is not present then this will be false
 (defvar tq/secrets-loaded (load (concat doom-private-dir "my-secrets") t))
 
 (after! org-crypt
   (setq org-crypt-key "07CFA8E6B5CA3E4243916E42CAE8E8818C4B8B84"))
 
+;; The following ensure that the `PATH` variable is maintained on remote connections. This is
+;; important for me because the unimelb HPC (and others) paths are define by `module load` in the
+;; `.bash_profile`. This ensures that the explicitly loaded versions of git and other tools are
+;; used.
 (after! tramp
   (add-to-list 'tramp-remote-path 'tramp-own-remote-path))
 
+;; Set up Fonts
+;; TODO Set up fallbacks so this doesn't fail if these fonts are not installed
 (setq doom-font (font-spec :family "Iosevka" :size 18)
       doom-variable-pitch-font (font-spec :family "DejaVu Sans"))
 
+;; Configure theme and UI
 (setq doom-one-brighter-comments t
       doom-one-comment-bg nil
-      doom-theme 'doom-one)
+      doom-theme 'doom-one
+      display-line-numbers-type t)
 
-(setq display-line-numbers-type t)
-
-(setq-default fill-column 100)
-
+;; Increase number of context lines when scrolling by screens
 (setq next-screen-context-lines 8)
 
+;; Increase default fill column
+(setq-default fill-column 100)
+
+;; Ensure ~dired-omit-mode~ is not started with dired. It hides some files transparently.
 (after! dired
   (remove-hook 'dired-mode-hook 'dired-omit-mode))
 
+;; Dictionary to en_AU
 (after! ispell
   (setq ispell-dictionary "en_AU"))
 
+;; By default bookmarked lines are highlighted in an annoying orange background which often removes
+;; other formatting. This disables that.
 (after! bookmark
   (setq bookmark-fontify nil))
 
+;;;; Completion
+;; Reduce prefix length and delay. I want completion /fast/. THis may cause performance issues
 (after! company
   (setq company-idle-delay 0.2
         company-minimum-prefix-length 1))
 
+;; Setup the default backends. By default doom includes ~company-dabbrev~ which adds too much noise.
+;; Yasnippet backend is also annoying and not included
 (set-company-backend! '(text-mode prog-mode conf-mode) 'company-capf)
 
+;; Don't use lsp-snippets. This is causing incorrect formatting on completion. I also don't really
+;; use it. See https://github.com/doomemacs/doomemacs/issues/6949 for details. Also increase the
+;; file watch threshold from 1000 to 1500. I have some repos that have a very large amount of files
 (after! lsp-mode
   (setq lsp-enable-snippet nil
         lsp-file-watch-threshold 1500))
 
-;; accept completion from copilot and fallback to company
+;; Configure copilot
+;; TODO maybe parameterise this. Otherwise there are many complaints about missing servers on hosts
+;; where I don't want it installed
 (use-package! copilot
   :hook (prog-mode . copilot-mode)
   :config
@@ -50,37 +74,48 @@
         [C-tab] #'copilot-accept-completion
         [C-M-tab] #'copilot-accept-completion-by-word))
 
+;;;; Editing and keybinds
+;; Enable the use of =C-u= as the universal argument again
 (after! evil
   (setq! evil-want-C-u-delete nil
          evil-want-C-u-scroll nil))
 
+;; Instead map =C-s= to scroll up.
 (global-unset-key (kbd "C-s"))
 (map! :m "C-s" #'evil-scroll-up)
 
+;; Unbind evil jumping keys. I don't use these and I've found that they interfere with other uses of
+;; TAB (for example, in notmuch modes)
 (map! :m [tab] nil
       :m [C-i] nil)
 
+;; Avy config
 (map! "C-'" #'avy-goto-char-timer
       "C-\"" #'avy-goto-line)
-
 (after! avy
   (setq avy-timeout-seconds 0.3))
 
+;; Use better ~comment-dwim~
 (use-package! comment-dwim-2
   :bind ([remap comment-dwim] . comment-dwim-2)
   :config (setq cd2/region-command 'cd2/comment-or-uncomment-region))
 
+
+;;;; Org config
+;; TODO paramterise this
 (setq org-directory "~/documents/org/")
 
+;; Set the org-agenda files to be the org directory. This includes all the files in the base
+;; directory, but no sub-directories.
 (defvar org-agenda-files nil)
 (add-to-list 'org-agenda-files org-directory)
 
 (after! org
   (setq org-todo-keywords '((sequence "TODO(t)" "NEXT(n)" "WAITING(w)" "ONHOLD(h)" "|" "DONE(d)")
-                            (sequence "EMAIL(e)" "|" "SENT(s)")
+                            (sequence "EMAIL(e)" "|" "SENT(s)") ; deprecated
                             (sequence "|" "CANCELLED(c)")
                             (sequence "|" "MOVED(m)")))
-  (setq org-enforce-todo-dependencies t)
+  (setq org-enforce-todo-dependencies t) ; subtasks must be completed first
   (setq org-log-done 'time)
   (setq org-refile-use-outline-path t)
   (setq org-outline-path-complete-in-steps nil)
@@ -90,8 +125,13 @@
   (setq org-highlight-latex-and-related '(native script entities))
   (setq org-startup-with-latex-preview nil
         org-startup-with-inline-images nil)
+  ;; Turn on auto-revert mode in org mode files so that they automatically update when changed (e.g.
+  ;; by syncthing, dropbox etc.). Doom does not do this automatically, instead only auto-reverting
+  ;; the current buffers, which is fine for most cases except background buffers used for agendas
+  ;; and capture.
   (add-hook 'org-mode-hook 'auto-revert-mode)
   (set-company-backend! 'org-mode 'company-capf)
+  ;; Unmap keybind that I use for avy
   (map! :map org-mode-map "C-'" nil)
   (defun tq/org-exit-link-forward ()
     "Jump just outside a link forward"
@@ -125,6 +165,9 @@
 (after! org-clock
   (setq org-clock-out-remove-zero-time-clocks t))
 
+;;;; Org exporting
+
+;; Don't export headlines tagged with :ignore:
 (use-package ox-extra
   :after org
   :config
@@ -171,7 +214,12 @@
 (after! org-attach
   (add-hook 'org-export-before-parsing-hook #'org-attach-expand-links))
 
-(after! ox (setq org-export-with-smart-quotes nil))
+;; Disable 'smart' quote export. This should remove apostrophes and quotes turning into things like ~rsquo;~
+;; The reason this needs to be in a hook rather than just a normal ~after~ is that doom configures
+;; this in a hook on org load. This additional hook will ensure that this option takes precedence
+(after! org
+  (defun tq/no-smart-quotes () (setq org-export-with-smart-quotes nil))
+  (add-hook! 'org-load-hook :append #'tq/no-smart-quotes))
 
 (use-package! org-roam
   :commands (org-roam-node-find
@@ -194,21 +242,21 @@
         "t" #'org-roam-dailies-goto-today
         "d" nil
         (:prefix ("d" . "by date")
-           :desc "Goto previous note" "b" #'org-roam-dailies-goto-previous-note
-           :desc "Goto date"          "d" #'org-roam-dailies-goto-date
-           :desc "Goto next note"     "f" #'org-roam-dailies-goto-next-note
-           :desc "Goto tomorrow"      "m" #'org-roam-dailies-goto-tomorrow
-           :desc "Capture today"      "n" #'org-roam-dailies-capture-today
-           :desc "Goto today"         "t" #'org-roam-dailies-goto-today
-           :desc "Capture Date"       "v" #'org-roam-dailies-capture-date
-           :desc "Goto yesterday"     "y" #'org-roam-dailies-goto-yesterday
-           :desc "Goto directory"     "." #'org-roam-dailies-find-directory)
+         :desc "Goto previous note" "b" #'org-roam-dailies-goto-previous-note
+         :desc "Goto date"          "d" #'org-roam-dailies-goto-date
+         :desc "Goto next note"     "f" #'org-roam-dailies-goto-next-note
+         :desc "Goto tomorrow"      "m" #'org-roam-dailies-goto-tomorrow
+         :desc "Capture today"      "n" #'org-roam-dailies-capture-today
+         :desc "Goto today"         "t" #'org-roam-dailies-goto-today
+         :desc "Capture Date"       "v" #'org-roam-dailies-capture-date
+         :desc "Goto yesterday"     "y" #'org-roam-dailies-goto-yesterday
+         :desc "Goto directory"     "." #'org-roam-dailies-find-directory)
         "m" nil
         (:prefix ("m" . "metadata")
-         "t" #'org-roam-tag-add
-         "T" #'org-roam-tag-delete
-         "a" #'org-roam-alias-add
-         "A" #'org-roam-alias-delete))
+                 "t" #'org-roam-tag-add
+                 "T" #'org-roam-tag-delete
+                 "a" #'org-roam-alias-add
+                 "A" #'org-roam-alias-delete))
   (setq org-roam-directory (concat (file-name-as-directory org-directory) "notes/"))
   (setq org-roam-db-location (concat doom-cache-dir "org-roam.db"))
   (add-to-list 'display-buffer-alist
@@ -231,31 +279,34 @@
             "#+title: ${title}\n\n")
            :unnarrowed t
            :immediate-finish t)))
+  ;; Ensure tags come from both the directory and the ~roam_tag~ file property. The default is just the property
   (setq org-roam-tag-sources '(prop all-directories))
-  (setq org-roam-graph-exclude-matcher '("daily/"))
+  (setq org-roam-graph-exclude-matcher '("daily/")) ; Exclude daily notes from the graph
+  ;; Update the database immediately on file changes. The alternative is to do it on an idle timer,
+  ;; but I've found that to be buggy and I haven't noticed the immediate updates to be very
+  ;; noticeable.
   (setq org-roam-db-update-method 'immediate)
   (add-hook! 'org-roam-file-setup-hook
     (setq-local completion-ignore-case t))
   (setq org-roam-completion-everywhere nil)
-  (add-hook! 'after-save-hook
-             (defun org-rename-to-new-title ()
-               (when-let*
-                   ((old-file (buffer-file-name))
-                    (is-roam-file (org-roam-file-p old-file))
-                    (in-roam-base-directory? (string-equal
-                                              (expand-file-name org-roam-directory)
-                                              (file-name-directory old-file)))
-                    (file-node (save-excursion
-                                 (goto-char 1)
-                                 (org-roam-node-at-point)))
-                    (slug (org-roam-node-slug file-node))
-                    (new-file (expand-file-name (concat slug ".org")))
-                    (different-name? (not (string-equal old-file new-file))))
-                 (rename-buffer new-file)
-                 (rename-file old-file new-file)
-                 (set-visited-file-name new-file)
-                 (set-buffer-modified-p nil))))
-  )
+  (defun tq/org-rename-to-new-title ()
+    (when-let*
+        ((old-file (buffer-file-name))
+         (is-roam-file (org-roam-file-p old-file))
+         (in-roam-base-directory? (string-equal
+                                   (expand-file-name org-roam-directory)
+                                   (file-name-directory old-file)))
+         (file-node (save-excursion
+                      (goto-char 1)
+                      (org-roam-node-at-point)))
+         (slug (org-roam-node-slug file-node))
+         (new-file (expand-file-name (concat slug ".org")))
+         (different-name? (not (string-equal old-file new-file))))
+      (rename-buffer new-file)
+      (rename-file old-file new-file)
+      (set-visited-file-name new-file)
+      (set-buffer-modified-p nil)))
+  (add-hook! 'after-save-hook #'tq/org-rename-to-new-title))
 
 (setq org-roam-v2-ack t)
 
@@ -285,7 +336,7 @@
         (org-id-goto id)
         (org-set-property "ORIGIN" (concat "[[id:" new-id "]]")))))
   (let ((org-enforce-todo-dependencies nil))
-   (org-map-entries (lambda () (org-todo "MOVED")) nil 'tree)))
+    (org-map-entries (lambda () (org-todo "MOVED")) nil 'tree)))
 
 (after! org
   (map! :map org-mode-map :localleader :prefix "r" "i" #'tq/refile-to-inbox))
@@ -294,37 +345,31 @@
   :after org-roam
   :hook (after-init . org-roam-ui-mode))
 
+
+;;;; Additional language configuration
 (use-package systemd
   :defer t)
 
 (use-package docker-compose-mode
   :defer t)
 
+;; Disable some warnings in python lsp
 (after! python
   (setq! lsp-pylsp-plugins-pydocstyle-ignore t))
 
+;; Use vterm as backend for Julia repl
 (after! julia-repl
   (julia-repl-set-terminal-backend 'vterm))
 
+;; Ensure that global environments are used. This still doesn't activate the local environment but
+;; it should be good enough.
 (setq lsp-julia-package-dir nil)
 
-(after! org
-  (defun tq/send-block-to-julia-repl ()
-      (interactive)
-      (save-mark-and-excursion
-        (org-babel-mark-block)
-        (julia-repl-send-region-or-line)))
-  (map! :map org-mode-map "C-c C-v C-c" #'tq/send-block-to-julia-repl))
-
-(define-minor-mode julia-repl-interaction-mode
-  "Toggle keybinds to send lines to the julia-repl"
-  :keymap (let ((map (make-sparse-keymap)))
-            (define-key map (kbd "C-s") #'julia-repl-send-region-or-line)
-            map))
-
+;; Also used for matlab
 (use-package octave-mode
   :mode "\\.m\\'")
 
+;; Set desired comment style
 (after! web-mode
   (setq web-mode-comment-formats '(("java"       . "/*")
                                    ("javascript" . "//")
@@ -334,6 +379,7 @@
                                    ("php"        . "/*")
                                    ("css"        . "/*"))))
 
+;; Don't use lsp to format ts code. I've find that this doesn't pick up correct prettier configs
 (after! typescript-mode
   (setq-hook! 'typescript-mode-hook +format-with-lsp nil))
 (after! web-mode

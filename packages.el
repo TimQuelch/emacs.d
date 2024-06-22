@@ -1,3 +1,4 @@
+;; Disable doom snippets (I use snippets for LSP completion snippets, not weird opinionated pregenerated ones)
 (package! doom-snippets :ignore t)
 
 (package! copilot
@@ -5,8 +6,10 @@
 
 (package! comment-dwim-2 :pin "7cdafd6d98234a7402865b8abdae54a2f2551c94")
 
+;; Evil packages that I don't use
 (disable-packages! evil-snipe evil-lion)
 
+;; Weird formatting in org
 (disable-packages! org-superstar)
 
 (package! org-roam
@@ -23,6 +26,8 @@
 
 (package! docker-compose-mode :pin "abaa4f3aeb5c62d7d16e186dd7d77f4e846e126a")
 
+;; I keep getting errors with this
 (package! go-eldoc :disable t)
 
+;; This package seems broken. I don't use it so I can safely disable
 (package! code-review :disable t)
