@@ -3,7 +3,7 @@
 
 (if (tq/get-config 'enable-copilot)
     (package! copilot
-      :recipe (:host github :repo "zerolfx/copilot.el" :files ("*.el" "dist")))
+      :recipe (:host github :repo "copilot-emacs/copilot.el" :files ("*.el")))
   (package! copilot :disable t))
 
 (package! comment-dwim-2 :pin "7cdafd6d98234a7402865b8abdae54a2f2551c94")
