@@ -214,9 +214,8 @@
 ;; Disable 'smart' quote export. This should remove apostrophes and quotes turning into things like ~rsquo;~
 ;; The reason this needs to be in a hook rather than just a normal ~after~ is that doom configures
 ;; this in a hook on org load. This additional hook will ensure that this option takes precedence
-(after! org
-  (defun tq/no-smart-quotes () (setq org-export-with-smart-quotes nil))
-  (add-hook! 'org-load-hook :append #'tq/no-smart-quotes))
+(defun tq/no-smart-quotes () (setq org-export-with-smart-quotes nil))
+(add-hook! 'org-load-hook :append #'tq/no-smart-quotes)
 
 (use-package! org-roam
   :commands (org-roam-node-find
