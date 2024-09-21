@@ -82,6 +82,7 @@
  (go +lsp +tree-sitter)
  graphql
  (csharp +lsp +tree-sitter +dotnet)
+ (nix +tree-sitter)
 
  :config
  (default +bindings +smartparens))
