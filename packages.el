@@ -33,3 +33,5 @@
 
 ;; This package seems broken. I don't use it so I can safely disable
 (package! code-review :disable t)
+
+(package! sops :pin "46548b854b35983b2e9e5eb4276634dfc41abfa0")
