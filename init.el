@@ -63,6 +63,7 @@
  lsp
  (magit +forge)
  tree-sitter
+ direnv
 
  ;; Generally I want LSP and tree-sitter for all languages I use
  :lang
