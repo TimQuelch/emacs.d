@@ -400,3 +400,16 @@
 
 (use-package sops
   :hook (after-init . global-sops-mode))
+
+(when (tq/get-config 'load-ssh-agent-from-shell-env nil)
+  (defun tq/load-ssh-agent-from-env ()
+    (interactive)
+    (exec-path-from-shell-copy-envs '("SSH_AUTH_SOCK" "SSH_AGENT_PID")))
+
+  (use-package! exec-path-from-shell
+    :config
+    (setq exec-path-from-shell-arguments nil))
+
+  (after! magit
+    (tq/load-ssh-agent-from-env)
+    (add-to-list 'magit-process-password-prompt-regexps "^Enter passphrase for .*: $")))

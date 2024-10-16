@@ -17,7 +17,8 @@
                     `((enable-copilot . t)
                       (font . ,tq/iosevka)
                       (variable-pitch-font . ,tq/dejavu-sans)
-                      (org-directory . "~/Documents/org")))))
+                      (org-directory . "~/Documents/org")
+                      (load-ssh-agent-from-shell-env . t)))))
 
 (defun tq/get-config (key &optional default)
   (alist-get key tq/config default))
