@@ -56,11 +56,11 @@
 (set-company-backend! '(text-mode prog-mode conf-mode) 'company-capf)
 
 ;; Don't use lsp-snippets. This is causing incorrect formatting on completion. I also don't really
-;; use it. See https://github.com/doomemacs/doomemacs/issues/6949 for details. Also increase the
-;; file watch threshold from 1000 to 1500. I have some repos that have a very large amount of files
+;; use it. See https://github.com/doomemacs/doomemacs/issues/6949 for details.
+;; Disable file watchers. Very poor performance for large projects
 (after! lsp-mode
   (setq lsp-enable-snippet nil
-        lsp-file-watch-threshold 1500))
+        lsp-enable-file-watchers nil))
 
 ;; Configure copilot
 (use-package! copilot
