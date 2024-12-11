@@ -415,3 +415,12 @@
     (add-to-list 'magit-process-password-prompt-regexps "^Enter passphrase for .*: $")))
 
 (setq code-review-auth-login-marker 'forge)
+
+(use-package treesit
+  :config
+  (setq treesit-font-lock-level 4)
+
+(use-package treesit-auto
+  :config
+  (setq treesit-auto-install t)
+  (global-treesit-auto-mode))

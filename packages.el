@@ -33,6 +33,8 @@
 
 (package! sops :pin "46548b854b35983b2e9e5eb4276634dfc41abfa0")
 
+(package! treesit-auto)
+
 (if (tq/get-config 'load-ssh-agent-from-shell-env nil)
     (package! exec-path-from-shell :pin "72ede29a0e0467b3b433e8edbee3c79bab005884")
   (package! exec-path-from-shell :disable t))
