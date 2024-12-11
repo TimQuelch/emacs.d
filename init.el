@@ -84,6 +84,7 @@
  graphql
  (csharp +lsp +dotnet)
  (nix)
+ (rust +lsp)
 
  :config
  (default +bindings +smartparens))
