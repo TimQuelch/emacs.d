@@ -413,3 +413,5 @@
   (after! magit
     (tq/load-ssh-agent-from-env)
     (add-to-list 'magit-process-password-prompt-regexps "^Enter passphrase for .*: $")))
+
+(setq code-review-auth-login-marker 'forge)
