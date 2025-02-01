@@ -464,3 +464,6 @@
          "!Join scalar"
          "!Join mapping"
          "!Join sequence"]))
+
+(use-package aider-doom
+  :hook (after-init . aider-doom-setup-keys))
