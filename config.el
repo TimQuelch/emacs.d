@@ -396,8 +396,6 @@
   (dolist (host '("github.com_timquelch" "github.com_timquelch-woodside"))
     (add-to-list 'magit-clone-url-format (cons host "%h:%n"))))
 
-(add-to-list 'auth-sources "~/.authinfo")
-
 (use-package sops
   :hook (after-init . global-sops-mode))
 
