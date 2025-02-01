@@ -56,7 +56,7 @@
 
  :checkers
  syntax
- (spell +aspell +everywhere)
+ (spell +aspell)
 
  :tools
  docker
