@@ -31,9 +31,6 @@
 ;; I keep getting errors with this
 (package! go-eldoc :disable t)
 
-;; This package seems broken. I don't use it so I can safely disable
-(package! code-review :disable t)
-
 (package! sops :pin "46548b854b35983b2e9e5eb4276634dfc41abfa0")
 
 (package! aider :recipe (:host github :repo "tninja/aider.el" :files ("aider.el" "aider-doom.el")))
