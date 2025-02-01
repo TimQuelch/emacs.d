@@ -75,7 +75,7 @@
  markdown
  (web +lsp)
  (org +hugo)
- (python)
+ (python +lsp +pyright)
  (julia +lsp)
  (sh +fish)
  (yaml +lsp)
