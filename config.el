@@ -469,3 +469,7 @@
 
 (use-package aider-doom
   :hook (after-init . aider-doom-setup-keys))
+
+;; Disable spell fu mode for yaml mode. yaml-mode is derived from text-mode, which turns on spell
+;; checking on hook. yaml-mode-hook should run after this hook to turn it off again
+(add-hook! 'yaml-mode-hook (spell-fu-mode -1))
