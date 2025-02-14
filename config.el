@@ -451,12 +451,12 @@
          "!Join mapping"
          "!Join sequence"]))
 
-(use-package aider-doom
-  :hook (after-init . aider-doom-setup-keys))
-
-(use-package aider
+(use-package aidermacs
   :config
-  (setq aider-args '("--watch-files")))
+  (setq aidermacs-args '("--watch-files")))
+
+(use-package aidermacs-doom
+  :hook (after-init . aidermacs-doom-setup-keys))
 
 ;; Disable spell fu mode for yaml mode. yaml-mode is derived from text-mode, which turns on spell
 ;; checking on hook. yaml-mode-hook should run after this hook to turn it off again
