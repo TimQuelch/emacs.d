@@ -33,7 +33,7 @@
 
 (package! sops :pin "46548b854b35983b2e9e5eb4276634dfc41abfa0")
 
-(package! aider :recipe (:host github :repo "tninja/aider.el" :files ("aider.el" "aider-doom.el")))
+(package! aider :recipe (:host github :repo "MatthewZMD/aidermacs" :files ("aider.el" "aider-doom.el")))
 
 (if (tq/get-config 'load-ssh-agent-from-shell-env nil)
     (package! exec-path-from-shell :pin "72ede29a0e0467b3b433e8edbee3c79bab005884")
