@@ -380,22 +380,6 @@
 (after! web-mode
   (setq-hook! 'typescript-tsx-mode-hook +format-with-lsp nil))
 
-;; Add host configs for SSH hosts
-(after! forge
-  (dolist (host '("github.com_TimQuelch" "github.com_TimQuelch-Woodside"))
-    (add-to-list 'forge-alist (cons host (cdr (assoc "github.com" forge-alist))))))
-
-(after! browse-at-remote
-  (add-to-list 'browse-at-remote-remote-type-regexps
-               '(:host "^github\\.com_timquelch\\(?:-woodside\\)?$" :type "github" :actual-host "github.com")))
-
-(after! magit
-  (add-to-list 'magit-clone-name-alist
-               '("\\`\\(?:github\\.com_timquelch\\(?:-woodside\\):\\)?\\([^:]+\\)\\'" "github.com" "user (this is ignored)"))
-
-  (dolist (host '("github.com_timquelch" "github.com_timquelch-woodside"))
-    (add-to-list 'magit-clone-url-format (cons host "%h:%n"))))
-
 (use-package sops
   :hook (after-init . global-sops-mode))
 
