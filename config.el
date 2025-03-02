@@ -452,11 +452,14 @@
          "!Join sequence"]))
 
 (use-package aidermacs
+  :commands (aidermacs-run aidermacs-run-in-current-dir)
   :config
-  (setq aidermacs-args '("--watch-files")))
-
-(use-package aidermacs-doom
-  :hook (after-init . aidermacs-doom-setup-keys))
+  ;; loading the vterm backend is skipped if vterm is not currently loaded. In my config loading
+  ;; vterm is deferred until it is acutally used, so we need to manually load the backend (which
+  ;; will also actually trigger loading vterm)
+  (require 'aidermacs-backend-vterm)
+  (setq aidermacs-extra-args '("--watch-files")
+        aidermacs-backend 'vterm))
 
 ;; Disable spell fu mode for yaml mode. yaml-mode is derived from text-mode, which turns on spell
 ;; checking on hook. yaml-mode-hook should run after this hook to turn it off again
