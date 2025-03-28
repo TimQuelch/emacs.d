@@ -64,6 +64,7 @@
  lsp
  (magit +forge)
  direnv
+ (terraform +lsp)
 
  ;; Generally I want LSP and tree-sitter for all languages I use
  :lang
