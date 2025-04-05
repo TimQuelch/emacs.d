@@ -27,7 +27,7 @@
 (doom!
  :completion
  (company +childframe)
- (ivy +prescient +icons)
+ (vertico +icons)
 
  :ui
  doom

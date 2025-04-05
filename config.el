@@ -458,7 +458,7 @@
   ;; vterm is deferred until it is acutally used, so we need to manually load the backend (which
   ;; will also actually trigger loading vterm)
   (require 'aidermacs-backend-vterm)
-  (setq aidermacs-extra-args '("--watch-files")
+  (setq aidermacs-watch-files t
         aidermacs-backend 'vterm))
 
 ;; Disable spell fu mode for yaml mode. yaml-mode is derived from text-mode, which turns on spell
