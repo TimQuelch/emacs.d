@@ -9,7 +9,7 @@
                       (variable-pitch-font . ,tq/dejavu-sans)))
                    ;; Versent laptop
                    ((string-match-p "-versent$" (system-name))
-                    `((enable-copilot . t)
+                    `((enable-copilot . nil)
                       (font . ,tq/iosevka)
                       (variable-pitch-font . ,tq/dejavu-sans)))
                    ;; Client mac
