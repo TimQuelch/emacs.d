@@ -1,3 +1,5 @@
+;; -*- lexical-binding: t; -*-
+
 (defvar tq/iosevka (font-spec :family "Iosevka" :size 18))
 (defvar tq/dejavu-sans (font-spec :family "DejaVu Sans"))
 

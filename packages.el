@@ -1,3 +1,5 @@
+;; -*- lexical-binding: t; -*-
+
 ;; Disable doom snippets (I use snippets for LSP completion snippets, not weird opinionated pregenerated ones)
 (package! doom-snippets :ignore t)
 

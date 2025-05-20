@@ -1,3 +1,5 @@
+;; -*- lexical-binding: t; -*-
+
 ;; Set up personalisation
 (setq user-full-name "Tim Quelch"
       user-mail-address "tim@tquelch.com")
@@ -464,3 +466,17 @@
 ;; Disable spell fu mode for yaml mode. yaml-mode is derived from text-mode, which turns on spell
 ;; checking on hook. yaml-mode-hook should run after this hook to turn it off again
 (add-hook! 'yaml-mode-hook (spell-fu-mode -1))
+
+;; Add host configs for SSH hosts
+(dolist (host '("primary_github" "client_github"))
+  (let ((host host))
+    (after! forge
+      (add-to-list 'forge-alist (cons host (cdr (assoc "github.com" forge-alist)))))
+
+    (after! browse-at-remote
+      (add-to-list 'browse-at-remote-remote-type-regexps
+                   `(:host ,(concat "^" host "$") :type "github" :actual-host "github.com")))
+    (after! magit
+      (add-to-list 'magit-clone-name-alist
+                   `(,(concat "\\`" host "\\([^:]+\\)\\'") "github.com" "user (this is ignored)"))
+      (add-to-list 'magit-clone-url-format (cons host "%h:%n")))))
