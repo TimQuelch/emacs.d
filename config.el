@@ -480,3 +480,23 @@
       (add-to-list 'magit-clone-name-alist
                    `(,(concat "\\`" host "\\([^:]+\\)\\'") "github.com" "user (this is ignored)"))
       (add-to-list 'magit-clone-url-format (cons host "%h:%n")))))
+
+;; Override +vc/browse-at-remote,{-kill} to first check if the thing at point is a forge topic
+
+(defun tq/browse-at-remote ()
+  (interactive)
+  (require 'forge)
+  (if (forge-topic-at-point)
+      (forge-browse)
+    (+vc/browse-at-remote)))
+
+(defun tq/browse-at-remote-kill ()
+  (interactive)
+  (require 'forge)
+  (if (forge-topic-at-point)
+      (forge-copy-url-at-point-as-kill)
+    (+vc/browse-at-remote-kill)
+    (message "Copied to clipboard")))
+
+(map! :leader (:prefix-map ("g" . "git") "y" #'tq/browse-at-remote-kill
+                           (:prefix ("o" . "open in browser") "o" #'tq/browse-at-remote)))
