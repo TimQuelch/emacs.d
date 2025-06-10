@@ -18,10 +18,10 @@
 
 (package! org-roam
   :recipe (:host github :repo "org-roam/org-roam")
-  :pin "5c06471c3a11348342719fd9011486455adeb701")
+  :pin "c17295134510c8759baad0e8a9f151029d5e5fe1")
 (package! org-roam-bibtex
   :recipe (:host github :repo "org-roam/org-roam-bibtex")
-  :pin "efdac6fe4134c33f50b06a0a6d192003d0e5094c")
+  :pin "b065198f2c3bc2a47ae520acd2b1e00e7b0171e6")
 (package! org-roam-ui
   :recipe (:host github :repo "org-roam/org-roam-ui" :files ("*.el" "out"))
   :pin "5ac74960231db0bf7783c2ba7a19a60f582e91ab")
