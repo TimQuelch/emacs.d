@@ -500,3 +500,6 @@
 
 (map! :leader (:prefix-map ("g" . "git") "y" #'tq/browse-at-remote-kill
                            (:prefix ("o" . "open in browser") "o" #'tq/browse-at-remote)))
+
+;; Required so that 'merge pr' options are shown
+(after! magit (setq transient-default-level 7))
