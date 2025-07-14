@@ -53,14 +53,11 @@
   (setq corfu-auto-delay 0.2
         corfu-auto-prefix 1))
 
-;; Don't use lsp-snippets. This is causing incorrect formatting on completion. I also don't really
-;; use it. See https://github.com/doomemacs/doomemacs/issues/6949 for details.
-;; Disable file watchers. Very poor performance for large projects
 (after! lsp-mode
   (setq lsp-enable-snippet t
         lsp-enable-file-watchers t
-        lsp-semantic-tokens-enable t
-        lsp-semantic-tokens-honor-refresh-requests t))
+        lsp-semantic-tokens-enable nil
+        lsp-semantic-tokens-honor-refresh-requests nil))
 
 ;; Configure copilot
 (use-package! copilot
