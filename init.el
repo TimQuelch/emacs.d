@@ -45,6 +45,7 @@
  (evil +everywhere)
  format
  fold
+ snippets
 
  :emacs
  (dired +icons)

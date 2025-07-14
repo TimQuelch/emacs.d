@@ -57,8 +57,10 @@
 ;; use it. See https://github.com/doomemacs/doomemacs/issues/6949 for details.
 ;; Disable file watchers. Very poor performance for large projects
 (after! lsp-mode
-  (setq lsp-enable-snippet nil
-        lsp-enable-file-watchers nil))
+  (setq lsp-enable-snippet t
+        lsp-enable-file-watchers t
+        lsp-semantic-tokens-enable t
+        lsp-semantic-tokens-honor-refresh-requests t))
 
 ;; Configure copilot
 (use-package! copilot
@@ -448,6 +450,10 @@
          "!Join scalar"
          "!Join mapping"
          "!Join sequence"]))
+
+(use-package lsp-terraform
+  :config
+  (setq lsp-terraform-ls-prefill-required-fields t))
 
 (use-package aidermacs
   :commands (aidermacs-run aidermacs-run-in-current-dir)
