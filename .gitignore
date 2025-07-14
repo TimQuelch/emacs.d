@@ -2,3 +2,4 @@ custom.el
 my-secrets.el
 *.elc
 .aider*
+flycheck_config.el

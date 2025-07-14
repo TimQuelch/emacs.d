@@ -48,14 +48,10 @@
   (setq bookmark-fontify nil))
 
 ;;;; Completion
-;; Reduce prefix length and delay. I want completion /fast/. THis may cause performance issues
-(after! company
-  (setq company-idle-delay 0.2
-        company-minimum-prefix-length 1))
-
-;; Setup the default backends. By default doom includes ~company-dabbrev~ which adds too much noise.
-;; Yasnippet backend is also annoying and not included
-(set-company-backend! '(text-mode prog-mode conf-mode) 'company-capf)
+;; Reduce prefix length and delay. I want completion fast. This may cause performance issues
+(after! corfu
+  (setq corfu-auto-delay 0.2
+        corfu-auto-prefix 1))
 
 ;; Don't use lsp-snippets. This is causing incorrect formatting on completion. I also don't really
 ;; use it. See https://github.com/doomemacs/doomemacs/issues/6949 for details.

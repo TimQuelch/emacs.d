@@ -28,7 +28,7 @@
 ;; Configure doom modules
 (doom!
  :completion
- (company +childframe)
+ (corfu +icons)
  (vertico +icons)
 
  :ui
