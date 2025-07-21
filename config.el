@@ -502,3 +502,7 @@
 
 ;; Required so that 'merge pr' options are shown
 (after! magit (setq transient-default-level 7))
+
+;; Open project after switching
+(after! projectile
+  (setq projectile-switch-project-action 'dired-jump))
