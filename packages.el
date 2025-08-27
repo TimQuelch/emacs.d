@@ -44,3 +44,12 @@
 (if (tq/get-config 'load-ssh-agent-from-shell-env nil)
     (package! exec-path-from-shell :pin "72ede29a0e0467b3b433e8edbee3c79bab005884")
   (package! exec-path-from-shell :disable t))
+
+;; Fix broken gitlab pacakges. Restrictive firewalls mean cloning from gitlab is inconsistent.
+;; Replace with github mirrors
+(package! shrink-path
+  :recipe (:host github :repo "TimQuelch/shrink-path.el")
+  :pin "c14882c8599aec79a6e8ef2d06454254bb3e1e41")
+(package! gcmh
+  :recipe (:host github :repo "emacsmirror/gcmh")
+  :pin "0089f9c3a6d4e9a310d0791cf6fa8f35642ecfd9")
