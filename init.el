@@ -2,25 +2,17 @@
 
 (defvar tq/iosevka (font-spec :family "Iosevka" :size 18))
 (defvar tq/dejavu-sans (font-spec :family "DejaVu Sans"))
+(defvar tq/dejavu-serif (font-spec :family "DejaVu Serif"))
 
 (defvar tq/config (cond
                    ;; Personal laptop
                    ((string-match-p "^\\(alpha\\|epsilon\\)$" (system-name))
-                    `((enable-copilot . nil)
-                      (font . ,tq/iosevka)
-                      (variable-pitch-font . ,tq/dejavu-sans)))
+                    `((enable-copilot . nil)))
                    ;; Versent laptop
                    ((string-match-p "-versent$" (system-name))
-                    `((enable-copilot . nil)
-                      (font . ,tq/iosevka)
-                      (variable-pitch-font . ,tq/dejavu-sans)))
-                   ;; Client mac
-                   ((string-match-p "^WEL" (system-name))
-                    `((enable-copilot . t)
-                      (font . ,tq/iosevka)
-                      (variable-pitch-font . ,tq/dejavu-sans)
-                      (org-directory . "~/Documents/org")
-                      (load-ssh-agent-from-shell-env . t)))))
+                    `((enable-copilot . nil)))
+                   ((string-match-p ".*" (system-name))
+                    `((enable-copilot . nil)))))
 
 (defun tq/get-config (key &optional default)
   (alist-get key tq/config default))

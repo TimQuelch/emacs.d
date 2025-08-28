@@ -19,8 +19,9 @@
   (add-to-list 'tramp-remote-path 'tramp-own-remote-path))
 
 ;; Set up Fonts
-(setq doom-font (tq/get-config 'font)
-      doom-variable-pitch-font (tq/get-config 'variable-pitch-font))
+(setq doom-font (tq/get-config 'font tq/iosevka)
+      doom-serif-font (tq/get-config 'serif-font tq/dejavu-serif)
+      doom-variable-pitch-font (tq/get-config 'variable-pitch-font tq/dejavu-sans))
 
 ;; Configure theme and UI
 (setq doom-one-brighter-comments t
