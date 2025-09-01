@@ -60,27 +60,28 @@
  (magit +forge)
  direnv
  (terraform +lsp)
+ tree-sitter
 
  ;; Generally I want LSP and tree-sitter for all languages I use
  :lang
- (cc +lsp)
+ (cc +lsp +tree-sitter)
  emacs-lisp
  data
- (json +lsp)
+ (json +lsp +tree-sitter)
  latex
- markdown
- (web +lsp)
+ (markdown +tree-sitter)
+ (web +lsp +tree-sitter)
  (org +hugo)
- (python +lsp +pyright)
- (julia +lsp)
- (sh +fish)
- (yaml +lsp)
- (javascript +lsp)
- (go +lsp)
+ (python +lsp +pyright +tree-sitter)
+ (julia +lsp +tree-sitter)
+ (sh +fish +powershell)
+ (yaml +tree-sitter)
+ (javascript +lsp +tree-sitter)
+ (go +lsp +tree-sitteer)
  graphql
- (csharp +lsp +dotnet)
- (nix)
- (rust +lsp)
+ (csharp +lsp +dotnet +tree-sitter)
+ (nix +lsp +tree-sitter)
+ (rust +lsp +tree-sitter)
 
  :config
  (default +bindings +smartparens))
