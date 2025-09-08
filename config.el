@@ -501,6 +501,17 @@
 (map! :leader (:prefix-map ("g" . "git") "y" #'tq/browse-at-remote-kill
                            (:prefix ("o" . "open in browser") "o" #'tq/browse-at-remote)))
 
+;; If we are running in WSL use the default windows browser instead of whatever browser is found by
+;; browse-url-default-browser. This usually ends up being eww which is almost certainly not what I
+;; want.
+(let ((cmd-exe "/mnt/c/Windows/System32/cmd.exe")
+      (cmd-args '("/c" "start")))
+  (when (and (featurep :system 'wsl)
+             (file-exists-p cmd-exe))
+    (setq browse-url-generic-program  cmd-exe
+          browse-url-generic-args     cmd-args
+          browse-url-browser-function 'browse-url-generic)))
+
 ;; Required so that 'merge pr' options are shown
 (after! magit (setq transient-default-level 7))
 
