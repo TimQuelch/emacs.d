@@ -518,3 +518,19 @@
 ;; Open project after switching
 (after! projectile
   (setq projectile-switch-project-action 'dired-jump))
+
+;; Optimise tramp
+;; The implements some recommendations from https://coredumped.dev/2025/06/18/making-tramp-go-brrrr./
+(setq tramp-use-scp-direct-remote-copying t
+      ;; Ensure my unicode prompt is detected by tramp. Otherwise it will hang. Only addition to
+      ;; patterns is the '❯' character
+      tramp-shell-prompt-pattern (rx (| bol "\r")
+                                     (* (not (any "\n#$%>❯]")))
+                                     (? "#") (any "#$%>]❯") (* blank))
+      magit-tramp-pipe-stty-settings 'pty)
+(connection-local-set-profile-variables 'remote-direct-async-process '((tramp-direct-async-process . t)))
+(connection-local-set-profiles '(:application tramp :protocol "scp") 'remote-direct-async-process)
+(connection-local-set-profiles '(:application tramp :protocol "ssh") 'remote-direct-async-process)
+
+;; Run apheleia formatters locally (default is to not run them at all)
+(setq apheleia-remote-algorithm 'local)
