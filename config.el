@@ -517,7 +517,8 @@
 
 ;; Open project after switching
 (after! projectile
-  (setq projectile-switch-project-action 'dired-jump))
+  (setq projectile-switch-project-action 'dired-jump)
+  (setq projectile-project-search-path '("~/repos" "~/documents")))
 
 ;; Optimise tramp
 ;; The implements some recommendations from https://coredumped.dev/2025/06/18/making-tramp-go-brrrr./
