@@ -535,3 +535,8 @@
 
 ;; Run apheleia formatters locally (default is to not run them at all)
 (setq apheleia-remote-algorithm 'local)
+
+;; Don't auto collapse toml lists. My current main uses for toml files is package manager configs
+;; e.g. Cargo.lock and pyproject.toml. I rarely want dependency lists to be collapsed into a single
+;; line (even if they are short)
+(set-formatter! 'taplo '("taplo" "format" "--colors" "never" "--option" "array_auto_collapse=false" "-"))
