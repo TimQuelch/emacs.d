@@ -53,3 +53,8 @@
 (package! gcmh
   :recipe (:host github :repo "emacsmirror/gcmh")
   :pin "0089f9c3a6d4e9a310d0791cf6fa8f35642ecfd9")
+
+;; Use fork which includes some fixes (both my fixes and PRs to upstream which have not been merged)
+(package! browse-at-remote
+  :recipe (:host github :repo "TimQuelch/browse-at-remote" :branch "dev")
+  :pin "b6f4f29a6597f5c7b48de928ab5fec27c32db6af")
