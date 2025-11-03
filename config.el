@@ -465,7 +465,12 @@
 
 ;; Disable spell fu mode for yaml mode. yaml-mode is derived from text-mode, which turns on spell
 ;; checking on hook. yaml-mode-hook should run after this hook to turn it off again
-(add-hook! '(yaml-mode-hook yaml-ts-mode-hook) (spell-fu-mode -1))
+;; Also ensure that tab-width is correctly set in the tree-sitter mode
+(after! yaml-ts-mode
+  (add-hook! 'yaml-ts-mode-hook
+    (require 'yaml-mode)
+    (spell-fu-mode -1)
+    (setq-local tab-width yaml-indent-offset)))
 
 ;; Add host configs for SSH hosts
 (dolist (host '("primary_github" "client_github"))
