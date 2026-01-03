@@ -540,3 +540,7 @@
 ;; e.g. Cargo.lock and pyproject.toml. I rarely want dependency lists to be collapsed into a single
 ;; line (even if they are short)
 (set-formatter! 'taplo '("taplo" "format" "--colors" "never" "--option" "array_auto_collapse=false" "-"))
+
+;; Prefer to use 'clippy' instead of 'check' in rust lsp
+(after! lsp-rust
+  (setq lsp-rust-analyzer-cargo-watch-command "clippy"))
