@@ -541,6 +541,7 @@
 ;; line (even if they are short)
 (set-formatter! 'taplo '("taplo" "format" "--colors" "never" "--option" "array_auto_collapse=false" "-"))
 
-;; Prefer to use 'clippy' instead of 'check' in rust lsp
-(after! lsp-rust
-  (setq lsp-rust-analyzer-cargo-watch-command "clippy"))
+;; doom doesn't map clippy fix by default
+(after! rustic
+  (map! :map rustic-mode-map :localleader
+        (:prefix ("b" . "build") :desc "cargo clippy fix" "F" #'rustic-cargo-clippy-fix)))
