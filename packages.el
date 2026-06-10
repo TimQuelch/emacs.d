@@ -11,7 +11,7 @@
 (package! comment-dwim-2 :pin "7cdafd6d98234a7402865b8abdae54a2f2551c94")
 
 ;; Evil packages that I don't use
-(disable-packages! evil-snipe evil-lion)
+(disable-packages! evil-snipe evil-lion evil-numbers)
 
 ;; Weird formatting in org
 (disable-packages! org-superstar)
