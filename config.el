@@ -29,6 +29,10 @@
       doom-theme 'doom-one
       display-line-numbers-type t)
 
+;; Override frame titles to remove the 'Doom'
+(setq frame-title-format '("%b – Emacs")
+      icon-title-format frame-title-format)
+
 ;; Increase number of context lines when scrolling by screens
 (setq next-screen-context-lines 8)
 
