@@ -457,16 +457,6 @@
   :config
   (setq lsp-terraform-ls-prefill-required-fields t))
 
-(use-package aidermacs
-  :commands (aidermacs-run aidermacs-run-in-current-dir)
-  :config
-  ;; loading the vterm backend is skipped if vterm is not currently loaded. In my config loading
-  ;; vterm is deferred until it is acutally used, so we need to manually load the backend (which
-  ;; will also actually trigger loading vterm)
-  (require 'aidermacs-backend-vterm)
-  (setq aidermacs-watch-files t
-        aidermacs-backend 'vterm))
-
 ;; Disable spell fu mode for yaml mode. yaml-mode is derived from text-mode, which turns on spell
 ;; checking on hook. yaml-mode-hook should run after this hook to turn it off again
 ;; Also ensure that tab-width is correctly set in the tree-sitter mode
