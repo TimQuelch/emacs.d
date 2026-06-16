@@ -23,10 +23,6 @@
 
 (package! systemd :pin "b6ae63a236605b1c5e1069f7d3afe06ae32a7bae")
 
-(package! docker-compose-mode :pin "abaa4f3aeb5c62d7d16e186dd7d77f4e846e126a")
-
-(package! terraform-doc :pin "31f1c47453ad14181883f78258a72c02b95d9783")
-
 (package! just-mode :pin "4c0df4cc4b8798f1a7e99fb78b79c4bf7eec12c1")
 
 ;; I keep getting errors with this

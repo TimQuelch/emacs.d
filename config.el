@@ -337,24 +337,9 @@
 (use-package systemd
   :defer t)
 
-(use-package docker-compose-mode
-  :defer t)
-
 ;; Disable some warnings in python lsp
 (after! python
   (setopt lsp-pylsp-plugins-pydocstyle-ignore t))
-
-;; Use vterm as backend for Julia repl
-(after! julia-repl
-  (julia-repl-set-terminal-backend 'vterm))
-
-;; Ensure that global environments are used. This still doesn't activate the local environment but
-;; it should be good enough.
-(setq lsp-julia-package-dir nil)
-
-;; Also used for matlab
-(use-package octave-mode
-  :mode "\\.m\\'")
 
 ;; Set desired comment style
 (after! web-mode
