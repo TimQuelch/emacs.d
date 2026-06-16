@@ -7,12 +7,12 @@
 (defvar tq/config (cond
                    ;; Personal laptop
                    ((string-match-p "^\\(alpha\\|epsilon\\)$" (system-name))
-                    `((enable-copilot . nil)))
+                    `())
                    ;; Versent laptop
                    ((string-match-p "-versent$" (system-name))
-                    `((enable-copilot . nil)))
+                    `())
                    ((string-match-p ".*" (system-name))
-                    `((enable-copilot . nil)))))
+                    `())))
 
 (defun tq/get-config (key &optional default)
   (alist-get key tq/config default))

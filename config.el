@@ -64,16 +64,6 @@
         lsp-semantic-tokens-enable nil
         lsp-semantic-tokens-honor-refresh-requests nil))
 
-;; Configure copilot
-(use-package copilot
-  :hook (prog-mode . copilot-mode)
-  :init
-  (map! :leader :desc "Copilot" "t p"  #'copilot-mode)
-  :config
-  (map! :map copilot-completion-map
-        [C-tab] #'copilot-accept-completion
-        [C-M-tab] #'copilot-accept-completion-by-word))
-
 ;;;; Editing and keybinds
 ;; Enable the use of =C-u= as the universal argument again
 (after! evil
