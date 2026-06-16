@@ -65,7 +65,7 @@
         lsp-semantic-tokens-honor-refresh-requests nil))
 
 ;; Configure copilot
-(use-package! copilot
+(use-package copilot
   :hook (prog-mode . copilot-mode)
   :init
   (map! :leader :desc "Copilot" "t p"  #'copilot-mode)
@@ -77,8 +77,8 @@
 ;;;; Editing and keybinds
 ;; Enable the use of =C-u= as the universal argument again
 (after! evil
-  (setq! evil-want-C-u-delete nil
-         evil-want-C-u-scroll nil))
+  (setopt evil-want-C-u-delete nil
+          evil-want-C-u-scroll nil))
 
 ;; Instead map =C-s= to scroll up.
 (global-unset-key (kbd "C-s"))
@@ -96,7 +96,7 @@
   (setq avy-timeout-seconds 0.3))
 
 ;; Use better ~comment-dwim~
-(use-package! comment-dwim-2
+(use-package comment-dwim-2
   :bind ([remap comment-dwim] . comment-dwim-2)
   :config (setq cd2/region-command 'cd2/comment-or-uncomment-region))
 
@@ -156,7 +156,7 @@
 (after! org-archive
   (setq org-archive-location "archive/%s_archive::datetree/"))
 
-(use-package! org-id
+(use-package org-id
   :after org
   :config
   (setq org-id-link-to-org-use-id 'create-if-interactive-and-no-custom-id))
@@ -219,7 +219,7 @@
 (defun tq/no-smart-quotes () (setq org-export-with-smart-quotes nil))
 (add-hook! 'org-load-hook :append #'tq/no-smart-quotes)
 
-(use-package! org-roam
+(use-package org-roam
   :commands (org-roam-node-find
              org-roam-node-insert
              org-roam-show-graph
@@ -352,7 +352,7 @@
 
 ;; Disable some warnings in python lsp
 (after! python
-  (setq! lsp-pylsp-plugins-pydocstyle-ignore t))
+  (setopt lsp-pylsp-plugins-pydocstyle-ignore t))
 
 ;; Use vterm as backend for Julia repl
 (after! julia-repl
@@ -390,7 +390,7 @@
     (interactive)
     (exec-path-from-shell-copy-envs '("SSH_AUTH_SOCK" "SSH_AGENT_PID")))
 
-  (use-package! exec-path-from-shell
+  (use-package exec-path-from-shell
     :config
     (setq exec-path-from-shell-arguments nil))
 
