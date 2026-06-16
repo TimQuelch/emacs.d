@@ -328,11 +328,6 @@
 (after! org
   (map! :map org-mode-map :localleader :prefix "r" "i" #'tq/refile-to-inbox))
 
-(use-package org-roam-ui
-  :after org-roam
-  :hook (after-init . org-roam-ui-mode))
-
-
 ;;;; Additional language configuration
 (use-package systemd
   :defer t)
