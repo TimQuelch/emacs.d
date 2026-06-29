@@ -485,7 +485,7 @@
 (after! magit
   (setq transient-default-level 7)
   (if (fboundp 'magit-commit-oid)
-    (warn "magit-commit-oid is now defined. remove the magit-rev-hash shim from config.el")
+      (warn "magit-commit-oid is now defined. remove the magit-rev-hash shim from config.el")
     (defalias 'magit-commit-oid #'magit-rev-hash)))
 
 ;; Open project after switching
