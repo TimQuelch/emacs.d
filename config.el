@@ -427,6 +427,13 @@
   :config
   (setq lsp-terraform-ls-prefill-required-fields t))
 
+(use-package terraform-mode
+  :config
+  ;; Set formatter to opentofu if available, else terraform. Apheleia defaults to opentofu in
+  ;; aphelia-mode-alist however sometimes only teraform is avilable
+  (add-hook! 'terraform-mode-hook
+    (setq-local apheleia-formatter (if (executable-find "tofu") 'opentofu 'terraform))))
+
 ;; Disable spell fu mode for yaml mode. yaml-mode is derived from text-mode, which turns on spell
 ;; checking on hook. yaml-mode-hook should run after this hook to turn it off again
 ;; Also ensure that tab-width is correctly set in the tree-sitter mode
