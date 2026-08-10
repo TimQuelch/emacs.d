@@ -495,6 +495,13 @@
       (warn "magit-commit-oid is now defined. remove the magit-rev-hash shim from config.el")
     (defalias 'magit-commit-oid #'magit-rev-hash)))
 
+;; For magit push, swap the 'p' suffix to push implicitly rather than to pushRemote. Effectively
+;; this runs `git push` with no args. This ensures that the upstream is automatically set up if
+;; push.autoSetupRemote is set to true.
+(after! magit-push
+  (transient-replace-suffix 'magit-push "p" '("R" magit-push-current-to-pushremote))
+  (transient-insert-suffix 'magit-push "o" '("p" magit-push-implicitly)))
+
 ;; Open project after switching
 (after! projectile
   (setq projectile-switch-project-action 'dired-jump)
