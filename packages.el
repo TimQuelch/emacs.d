@@ -3,8 +3,6 @@
 ;; Disable doom snippets (I use snippets for LSP completion snippets, not weird opinionated pregenerated ones)
 (package! doom-snippets :ignore t)
 
-(package! comment-dwim-2 :pin "7cdafd6d98234a7402865b8abdae54a2f2551c94")
-
 ;; Evil packages that I don't use
 (disable-packages! evil-snipe evil-lion evil-numbers)
 
