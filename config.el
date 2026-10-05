@@ -465,13 +465,6 @@
           browse-url-generic-args     cmd-args
           browse-url-browser-function 'browse-url-generic)))
 
-;; Required so that 'merge pr' options are shown
-(after! magit
-  (setq transient-default-level 7)
-  (if (fboundp 'magit-commit-oid)
-      (warn "magit-commit-oid is now defined. remove the magit-rev-hash shim from config.el")
-    (defalias 'magit-commit-oid #'magit-rev-hash)))
-
 ;; For magit push, swap the 'p' suffix to push implicitly rather than to pushRemote. Effectively
 ;; this runs `git push` with no args. This ensures that the upstream is automatically set up if
 ;; push.autoSetupRemote is set to true.
