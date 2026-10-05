@@ -85,12 +85,6 @@
 (after! avy
   (setq avy-timeout-seconds 0.3))
 
-;; Use better ~comment-dwim~
-(use-package comment-dwim-2
-  :bind ([remap comment-dwim] . comment-dwim-2)
-  :config (setq cd2/region-command 'cd2/comment-or-uncomment-region))
-
-
 ;;;; Org config
 (setq org-directory (tq/get-config 'org-directory "~/documents/org"))
 
