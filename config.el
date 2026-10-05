@@ -443,6 +443,9 @@
     (after! forge
       (add-to-list 'forge-alist (cons host (cdr (assoc "github.com" forge-alist)))))
 
+    (after! git-link
+      (add-to-list 'git-link-web-host-alist (cons host "github.com")))
+
     (after! magit
       (add-to-list 'magit-clone-name-alist
                    `(,(concat "\\`" host "\\([^:]+\\)\\'") "github.com" "user (this is ignored)"))
