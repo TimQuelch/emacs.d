@@ -74,6 +74,8 @@
 (global-unset-key (kbd "C-s"))
 (map! :m "C-s" #'evil-scroll-up)
 
+(map! [remap comment-dwim] #'evilnc-comment-or-uncomment-lines)
+
 ;; Unbind evil jumping keys. I don't use these and I've found that they interfere with other uses of
 ;; TAB (for example, in notmuch modes)
 (map! :m [tab] nil
